@@ -545,6 +545,21 @@ pub fn bash_word(raw: &str, g: &str, v: &str, breaks: &str) -> String {
     }
 }
 
+/// `complete-me clip git|url|path|dir`: the clipboard as one `value<TAB>description` line, if it fits.
+pub fn run_clip(args: &[String]) -> i32 {
+    let Some(want) = args.first() else {
+        eprintln!("usage: complete-me clip git|url|path|dir");
+        return 2;
+    };
+    match clip(&clipboard_text(), want) {
+        Some((v, d)) => {
+            println!("{v}\t{d}");
+            0
+        }
+        None => 1,
+    }
+}
+
 pub fn run(args: &[String]) -> i32 {
     let a = Args::parse(args, &["--shell", "--breaks"]);
     let text = a.rest.join(" ");

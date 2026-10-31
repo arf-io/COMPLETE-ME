@@ -17,6 +17,7 @@ usage: complete-me <command> [args]
   snippets …          list | phrasebook | fish-abbrs | pick
   bash2fish [CODE]    translate bash to fish with a safety check
   extras --shell S -- LINE   bash/zsh: regex, find, ssh, clipboard and history candidates
+  clip git|url|path|dir      the clipboard, if it fits that slot
   --version
 ";
 
@@ -48,6 +49,7 @@ pub fn main(args: &[String]) -> i32 {
         "snippets" => snippets::run(rest),
         "bash2fish" => bashfish::run(rest),
         "extras" => extras::run(rest),
+        "clip" => extras::run_clip(rest),
         other => {
             eprintln!("complete-me: unknown command {other:?}\n\n{USAGE}");
             2

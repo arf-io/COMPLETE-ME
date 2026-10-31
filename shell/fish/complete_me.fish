@@ -130,48 +130,10 @@ end
 # The clipboard is offered as a completion only when it is ONE line that fits the slot:
 # a git URL after `git clone`, a URL for curl/wget/…, or a path that exists. Anything else
 # (passwords, prose, code) is never shown. Reads time out quickly so TAB never hangs.
-function __complete_me_clipboard_text
-    if set -q COMPLETE_ME_CLIPBOARD          # tests
-        printf '%s' $COMPLETE_ME_CLIPBOARD
-    else if set -q WAYLAND_DISPLAY; and command -q wl-paste
-        timeout 0.4 wl-paste -n -t text 2>/dev/null
-    else if set -q DISPLAY; and command -q xclip
-        timeout 0.4 xclip -o -selection clipboard 2>/dev/null
-    else if set -q DISPLAY; and command -q xsel
-        timeout 0.4 xsel -ob 2>/dev/null
-    else if command -q pbpaste
-        timeout 0.4 pbpaste 2>/dev/null
-    end
-end
-
+# One reader for all three shells (src/extras.rs): wl-paste / xclip / xsel / pbpaste with its own
+# 0.4 s timeout (macOS has no `timeout` command), COMPLETE_ME_CLIPBOARD for tests.
 function __complete_me_clip -a want -d 'complete-me: the clipboard, if it is a URL/git URL/path (want: git|url|path|dir)'
-    set -l lines (__complete_me_clipboard_text | string sub -l 4096 | string trim)
-    test (count $lines) -eq 1; or return
-    set -l c $lines[1]
-    test -n "$c"; or return
-    string match -q -- '* *' $c; and not string match -q -- 'file://*' $c; and not test -e "$c"; and return
-    if string match -q -- 'file://*' $c
-        set c (string replace -r -- '^file://(localhost)?' '' $c | string unescape --style=url)
-    end
-    switch $want
-        case git
-            if string match -qr -- '^(git@[\w.-]+:[\w./~-]+|(ssh|git|https?)://[\w.@:-]+/[\w./~-]+)$' $c
-                if string match -qr -- '\.git/?$|^git@|^ssh://|^git://|github\.com|gitlab|bitbucket|codeberg|sr\.ht|gitea|forgejo|//git\.' $c
-                    printf '%s\tgit URL from clipboard\n' (string replace -r -- '/$' '' $c)
-                end
-            end
-        case url
-            string match -qr -- '^(https?|ftp)://\S+$' $c; and printf '%s\tURL from clipboard\n' $c
-        case path dir
-            set -l p (string replace -r -- '^~' $HOME $c)
-            if test "$want" = dir
-                test -d "$p"; and printf '%s/\tdirectory from clipboard\n' (string trim -r -c / -- $c)
-            else if test -d "$p"
-                printf '%s/\tdirectory from clipboard\n' (string trim -r -c / -- $c)
-            else if test -e "$p"
-                printf '%s\tfile from clipboard\n' $c
-            end
-    end
+    command complete-me clip $want 2>/dev/null
 end
 
 complete -c git -n '__fish_seen_subcommand_from clone' -k -a '(__complete_me_clip git)'
