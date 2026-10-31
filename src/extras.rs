@@ -495,8 +495,56 @@ pub fn compute(line: &Line, history: &[String], want_clip: bool) -> Out {
     out
 }
 
+// ------------------------------------------------------------ bash: what readline actually replaces
+
+/// The unquoted value of a row (regex rows arrive single-quoted, find's `\;` and `\(` escaped).
+fn bare(g: &str, v: &str) -> String {
+    match g {
+        "regex" if v.len() >= 2 && v.starts_with('\'') && v.ends_with('\'') => v[1..v.len() - 1].replace("'\\''", "'"),
+        "find" if v.starts_with('\\') => v[1..].to_string(),
+        _ => v.to_string(),
+    }
+}
+
+/// Inside double quotes, `\`, `$`, `` ` `` and `"` need a backslash.
+fn dq_escape(s: &str) -> String {
+    let mut o = String::new();
+    for c in s.chars() {
+        if "\\$`\"".contains(c) {
+            o.push('\\');
+        }
+        o.push(c);
+    }
+    o
+}
+
+/// What bash should put in COMPREPLY for a row. Readline replaces only part of the word: after an
+/// opening quote (and then word breaks inside the quote don't count), or else after the last
+/// COMP_WORDBREAKS character (`=`, `:` …). So the word is rewritten to continue from there.
+pub fn bash_word(raw: &str, g: &str, v: &str, breaks: &str) -> String {
+    let b = bare(g, v);
+    let open = matches!(g, "regex" | "find" | "hist" | "histopt" | "clip" | "ssh")
+        .then(|| raw.chars().next().filter(|q| (*q == '\'' || *q == '"') && !raw[1..].contains(*q)))
+        .flatten();
+    let more_to_type = b.ends_with('/') || b.ends_with('=');
+    match open {
+        Some('\'') => format!("{}{}", b.replace('\'', "'\\''"), if more_to_type { "" } else { "'" }),
+        Some(_) => format!("{}{}", dq_escape(&b), if more_to_type { "" } else { "\"" }),
+        None => {
+            let full = if matches!(g, "regex" | "find") { v.to_string() } else { crate::util::shquote(&b) };
+            let full = if full == "''" { b } else { full };
+            let cut = raw.char_indices().filter(|(_, c)| breaks.contains(*c) && !c.is_whitespace() && *c != '\'' && *c != '"')
+                .last().map(|(i, c)| i + c.len_utf8()).unwrap_or(0);
+            match full.get(..cut) {
+                Some(p) if cut > 0 && p == &raw[..cut] => full[cut..].to_string(),
+                _ => full,
+            }
+        }
+    }
+}
+
 pub fn run(args: &[String]) -> i32 {
-    let a = Args::parse(args, &["--shell"]);
+    let a = Args::parse(args, &["--shell", "--breaks"]);
     let text = a.rest.join(" ");
     let history: Vec<String> = if a.has("--history") {
         use std::io::Read;
@@ -509,9 +557,13 @@ pub fn run(args: &[String]) -> i32 {
     };
     let line = split_line(&text);
     let out = compute(&line, &history, !a.has("--no-clipboard"));
-    // The header carries the word under the cursor as typed, so bash can trim what it split off at = or :.
+    // The header carries the word under the cursor as typed. For bash, rows are already rewritten
+    // to replace exactly what readline replaces (see bash_word).
     let mut s = format!("{}\t{}\n", if out.replace { "replace" } else { "add" }, line.raw);
+    let bash = a.value("--shell").as_deref() == Some("bash");
+    let breaks = a.value("--breaks").unwrap_or_else(|| "\"'><=;|&(:".to_string());
     for (g, v, d) in out.rows {
+        let v = if bash { bash_word(&line.raw, g, &v, &breaks) } else { v };
         s.push_str(&format!("{g}\t{v}\t{}\n", d.replace(['\t', '\n'], " ")));
     }
     print!("{s}");
@@ -568,6 +620,22 @@ mod tests {
         assert_eq!(got, w(&["2222", "22"]));
         let got: Vec<String> = history_args(&h, &w(&["ssh"]), "a").into_iter().map(|r| r.0).collect();
         assert_eq!(got, w(&["alpha"]));
+    }
+
+    #[test]
+    fn bash_words_continue_what_readline_replaces() {
+        let br = "\"'><=;|&(:";
+        // inside an open quote: bare, then close the quote; ':' inside the quote is not a break
+        assert_eq!(bash_word("'\\d[[:sp", "regex", "'\\d[[:space:]]'", br), "\\d[[:space:]]'");
+        assert_eq!(bash_word("\"\\d", "regex", "'\\d$'", br), "\\\\d\\$\"");
+        // unquoted: the whole quoted word, unless readline only replaces after a break
+        assert_eq!(bash_word("", "regex", "'\\d+'", br), "'\\d+'");
+        assert_eq!(bash_word("-oPasswordAuthentication=", "ssh", "-oPasswordAuthentication=yes", br), "yes");
+        assert_eq!(bash_word("git@github.com:a", "clip", "git@github.com:arf-io/x.git", br), "arf-io/x.git");
+        assert_eq!(bash_word("", "hist", "my file", br), "'my file'");
+        assert_eq!(bash_word("'my", "hist", "my file", br), "my file'");
+        assert_eq!(bash_word("", "hist", "/tmp/", br), "/tmp/");
+        assert_eq!(bash_word("", "find", "\\;", br), "\\;");
     }
 
     #[test]

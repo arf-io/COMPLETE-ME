@@ -207,9 +207,13 @@ fn bash_extras() {
     for &bc in modes {
         let ctx = if bc { "with bash-completion" } else { "plain bash" };
         // regex building blocks, quoted, and nothing else in the pattern slot
+        // unquoted: whole quoted patterns
+        let got = e.bash("grep -E ", &[], None, bc);
+        assert!(got.iter().all(|w| w.starts_with('\'') && w.ends_with('\'')), "{ctx}: {got:?}");
+        // inside an open quote readline replaces only what follows the quote: continue it, then close it
         let got = e.bash("grep -E '\\d", &[], None, bc);
-        assert!(got.contains(&"'\\d+'".to_string()), "{ctx}: {got:?}");
-        assert!(got.iter().all(|w| w.starts_with('\'')), "{ctx}: {got:?}");
+        assert!(got.contains(&"\\d+'".to_string()), "{ctx}: {got:?}");
+        assert!(got.iter().all(|w| w.starts_with("\\d")), "{ctx}: {got:?}");
         // find values, -exec terminators
         assert!(e.bash("find . -type ", &[], None, bc).contains(&"f".to_string()), "{ctx}");
         let got = e.bash("find . -exec rm {} ", &[], None, bc);

@@ -86,7 +86,7 @@ _cm_aug() {
         COMPREPLY=()
     fi
     local left=${COMP_LINE:0:COMP_POINT} out
-    local -a flags=(--shell bash)
+    local -a flags=(--shell bash --breaks "$COMP_WORDBREAKS")
     [[ -n ${COMPLETE_ME_NO_CLIPBOARD-} ]] && flags+=(--no-clipboard)
     # History ranks arguments for commands complete-me knows (or nothing knows); a hand-written
     # completion like git's already knows better than history what fits.
@@ -95,24 +95,18 @@ _cm_aug() {
     else
         out=$(complete-me extras "${flags[@]}" -- "$left" 2>/dev/null)
     fi
-    local head mode raw line word
+    local head mode line word
     local -a rows=() add=() more=()
     mapfile -t rows <<<"$out"
     head=${rows[0]-}
     mode=${head%%$'\t'*}
-    raw=${head#*$'\t'}
-    # readline replaces only the text after the last word-break character (= : and friends);
-    # candidates are whole words, so trim that much off them. Quotes are not breaks here.
-    local cur=${COMP_WORDS[COMP_CWORD]-} cut=0 i wb=${COMP_WORDBREAKS//[[:space:]\'\"]/}
-    for (( i = ${#raw} - 1; i >= 0; i-- )); do
-        [[ $wb == *"${raw:i:1}"* ]] && { cut=$(( i + 1 )); break; }
-    done
-    local recent=0
+    # Rows arrive rewritten to replace exactly what readline replaces (after an open quote, or
+    # after the last COMP_WORDBREAKS character): see bash_word in src/extras.rs.
+    local cur=${COMP_WORDS[COMP_CWORD]-} recent=0
     for line in "${rows[@]:1}"; do
         [[ $line == hist* ]] && recent=1
         word=${line#*$'\t'}
         word=${word%%$'\t'*}
-        (( cut )) && [[ ${word:0:cut} == "${raw:0:cut}" ]] && word=${word:cut}
         [[ -n $word ]] && add+=("$word")
     done
     if [[ $mode == replace ]]; then
@@ -243,7 +237,10 @@ if [[ -z ${COMPLETE_ME_NO_KEYS-} ]]; then
         bind -m $_cm_m -x '"\er": _complete_me_regex_builder' 2>/dev/null
         bind -m $_cm_m -x '"\ex": _complete_me_explain' 2>/dev/null
         bind -m $_cm_m -x '"\ej": _complete_me_snippet' 2>/dev/null
-        [[ -z ${COMPLETE_ME_NO_ABBRS-} ]] && bind -m $_cm_m -x '" ": _complete_me_space' 2>/dev/null
+        # ,snippets on space only where space is a plain space: a magic-space binding is left alone
+        if [[ -z ${COMPLETE_ME_NO_ABBRS-} ]] && [[ $(bind -m $_cm_m -p 2>/dev/null | grep -F '" ":') != *magic-space* ]]; then
+            bind -m $_cm_m -x '" ": _complete_me_space' 2>/dev/null
+        fi
     done
     unset _cm_m
 fi
