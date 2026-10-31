@@ -533,8 +533,10 @@ pub fn bash_word(raw: &str, g: &str, v: &str, breaks: &str) -> String {
         None => {
             let full = if matches!(g, "regex" | "find") { v.to_string() } else { crate::util::shquote(&b) };
             let full = if full == "''" { b } else { full };
-            let cut = raw.char_indices().filter(|(_, c)| breaks.contains(*c) && !c.is_whitespace() && *c != '\'' && *c != '"')
-                .last().map(|(i, c)| i + c.len_utf8()).unwrap_or(0);
+            let cut = raw.char_indices()
+                .rfind(|(_, c)| breaks.contains(*c) && !c.is_whitespace() && *c != '\'' && *c != '"')
+                .map(|(i, c)| i + c.len_utf8())
+                .unwrap_or(0);
             match full.get(..cut) {
                 Some(p) if cut > 0 && p == &raw[..cut] => full[cut..].to_string(),
                 _ => full,
