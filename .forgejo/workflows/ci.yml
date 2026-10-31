@@ -29,9 +29,10 @@ jobs:
         run: |
           set -euo pipefail
           export PATH="$HOME/.cargo/bin:$PATH"
+          # a host runner is a shared machine: use its toolchain, never install one into it
           if ! command -v cargo >/dev/null; then
-            echo "cargo not on the runner: installing a minimal stable toolchain into the runner's home"
-            curl -fsSL https://sh.rustup.rs | sh -s -- -y --profile minimal --component clippy
+            echo "::error::cargo is not installed on this runner (needs Rust + clippy); ask the runner's admin"
+            exit 1
           fi
           cargo --version
           for s in fish bash zsh bwrap fzf; do printf '%-6s ' "$s"; command -v "$s" || echo "missing: its tests are skipped"; done
