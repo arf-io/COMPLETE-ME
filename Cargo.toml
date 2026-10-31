@@ -1,5 +1,6 @@
 [package]
 name = "complete-me"
+license = "MIT"
 version = "3.0.0"
 edition = "2021"
 description = "Tab completion for everything: safe completion generation, regex/find/ssh helpers, bash-in-fish"
