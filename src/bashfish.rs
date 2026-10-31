@@ -1,12 +1,14 @@
-//! Bash typed into fish: translate it with babelfish, check it for danger, hand it back.
+//! Bash typed into fish: translate it (built in: src/sh), check it for danger, hand it back.
 //!
 //! Used by the fish Enter binding: only lines that are NOT valid fish but ARE valid bash get here.
 //! Output protocol (stdout):
 //!     RISK<TAB>reason          zero or more lines; any RISK means the shell asks before running
 //!     ---FISH---
 //!     <translated fish code>
+//!
+//! `bash2fish --raw` reads bash on stdin and prints only the fish (what `source FILE` and
+//! `eval "$(cmd)"` translate through).
 
-use crate::re;
 use crate::util::*;
 use std::io::{Read, Write};
 use std::time::{Duration, Instant};
@@ -43,27 +45,6 @@ pub fn risks(src: &str) -> Vec<String> {
         }
     }
     found
-}
-
-/// Things babelfish leaves as bash-isms: {1..10} brace ranges -> $(seq 1 10).
-pub fn preprocess(src: &str) -> String {
-    let r = re!(r#"(?<![\w$'"]){(-?\d+)\.\.(-?\d+)(?:\.\.(-?\d+))?}"#);
-    let mut out = String::new();
-    let mut last = 0;
-    for m in find_all(r, src) {
-        let whole = m.get(0).unwrap();
-        out += &src[last..whole.start()];
-        let (a, b, step) = (group(&m, 1), group(&m, 2), group(&m, 3));
-        if !step.is_empty() {
-            out += &format!("$(seq {a} {step} {b})");
-        } else {
-            let down = b.parse::<i64>().unwrap_or(0) < a.parse::<i64>().unwrap_or(0);
-            out += &format!("$(seq {a} {}{b})", if down { "-1 " } else { "" });
-        }
-        last = whole.end();
-    }
-    out += &src[last..];
-    out
 }
 
 /// Run argv with `input` on stdin; returns (status, stdout, stderr) or None on spawn failure/timeout.
@@ -113,21 +94,10 @@ pub fn run_stdin(argv: &[&str], input: &str, timeout: Duration) -> Option<(i32, 
     status.map(|s| (s.code().unwrap_or(1), o, e))
 }
 
+/// bash → fish, with the built-in translator (src/sh). Anything it can't translate faithfully
+/// is an error, never a guess.
 pub fn translate(src: &str) -> Result<String, String> {
-    let Some(exe) = which("babelfish") else {
-        return Err("babelfish is not installed (brew install babelfish, or: go install github.com/bouk/babelfish@latest)".into());
-    };
-    let exe = exe.to_string_lossy().into_owned();
-    match run_stdin(&[&exe], &preprocess(src), Duration::from_secs(5)) {
-        None => Err("babelfish failed: timed out".into()),
-        Some((code, out, err)) => {
-            if code != 0 || out.trim().is_empty() {
-                let e = err.trim();
-                return Err(if e.is_empty() { "babelfish could not translate this".into() } else { e.lines().next().unwrap_or("").to_string() });
-            }
-            Ok(out.trim_end_matches('\n').to_string())
-        }
-    }
+    crate::sh::to_fish(src).map(|s| s.trim_end_matches('\n').to_string())
 }
 
 pub fn is_bash(src: &str) -> bool {
@@ -135,6 +105,20 @@ pub fn is_bash(src: &str) -> bool {
 }
 
 pub fn run(args: &[String]) -> i32 {
+    if args.first().map(|s| s.as_str()) == Some("--raw") {
+        let mut s = String::new();
+        let _ = std::io::stdin().read_to_string(&mut s);
+        return match translate(&s) {
+            Ok(code) => {
+                println!("{code}");
+                0
+            }
+            Err(e) => {
+                eprintln!("complete-me bash2fish: {e}");
+                1
+            }
+        };
+    }
     let positional: Vec<&String> = args.iter().filter(|a| a.as_str() != "--").collect();
     let src = match positional.first() {
         Some(s) => s.to_string(),

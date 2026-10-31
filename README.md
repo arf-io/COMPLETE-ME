@@ -80,17 +80,30 @@ It reads every flavour of help text, because humans can't agree on anything: �
 - 🧮 Cipher, MAC and kex lists come live from `ssh -Q`.
 
 ### 🐚➡️🐟 Bash typed into fish just... works?! 🤯
-Muscle memory typed a bash loop into fish? 😬 Just press Enter. It's translated with
-[babelfish](https://github.com/bouk/babelfish), shown to you, and run. 🏃‍♂️💨
+Muscle memory typed a bash loop into fish? 😬 Just press Enter. It's translated, shown to you, and run. 🏃‍♂️💨
+The translator is **built in**: complete-me has its own bash parser and its own bash → fish translator,
+written in Rust 🦀, so there's nothing else to install. It started as a port of
+[babelfish](https://github.com/bouk/babelfish) (thank you, Bouke! 🙏 see `THIRD_PARTY.md`), and then kept going:
 
 ```
 > for i in {1..3}; do echo "n=$i"; done
-bash → fish (babelfish)
+bash → fish
 > for i in (seq 1 3)
-      echo 'n='"$i"
+    echo 'n='"$i"
   end
 n=1 n=2 n=3 🎉
 ```
+
+- 🧮 `$((a * b))`, `((i++))`, `let`, `for ((i = 0; i < n; i++))`: arithmetic, via `math`;
+- 🧵 `cmd &`, `$!`, `|&`, `&>`, `$#`, `$0`, `${a[2]}`, `a[1]=x`, `${x:1:3}`, `${!name}`, `${x^^}`, `$'\t'`, `$(< file)`;
+- 🔍 `[[ $x == h* ]]` and `[[ $x =~ re ]]` really match patterns; `[[ -v name ]]`;
+- 🐛 and it fixes what babelfish got wrong: `"$@"` stays separate words, `x || { a; b; }` keeps its braces,
+  here-docs don't grow an extra newline, `while read -r` works (fish's `read` has no `-r`), `~` expands in
+  `x=~/dir`, `eval "$(ssh-agent -s)"` translates what it evaluates.
+- 🧪 Proven, not promised: 106 snippets are compared with babelfish (81 byte-for-byte, 25 deliberate fixes,
+  each with its reason written down), and 95 are **run in real bash and real fish** and must print the same.
+- 🙅 What it can't translate faithfully (`select`, `coproc`, `declare -A`, extglobs, `set -e`, `read -t`) it
+  says so, instead of guessing.
 
 🚨 **Safety check first.** If it deletes without asking (`rm -rf`), pipes a download into a shell, uses sudo,
 writes to disks or `/etc`, force-pushes, uses `eval` and so on, it **waits** and tells you why. Enter runs it,
@@ -141,7 +154,6 @@ complete-me func mkcd 'mkdir -p $1; and cd $1'    # a real function 🛠️
 | 🐟 | **fish**, 🐚 bash 4.2+, or 🧟 zsh | any of them. fish is still the best one (see above), but bash and zsh get the good stuff too |
 | 🫧 | bubblewrap (`bwrap`) | the sandbox for `--help` probing *(strongly recommended on Linux)* |
 | 🔍 | fzf | live regex builder (alt-r) and snippet picker (alt-j) |
-| 🐠 | babelfish | runs bash typed into fish |
 | 📋 | wl-clipboard / xclip / xsel / pbpaste | clipboard-aware completion |
 | 🐚 | bash-completion | bash: the completions complete-me layers its extras on top of |
 | 👻 | zsh-autosuggestions + zsh-syntax-highlighting | zsh: fish-style gray suggestions from history (→ accepts) and colours |

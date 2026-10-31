@@ -1,0 +1,1 @@
+unsupported: &syntax.BinaryCmd{OpPos:syntax.Pos{offs:0x10, lineCol:0x4011}, Op:0xd, X:(*syntax.Stmt)(0xc0000c0c08), Y:(*syntax.Stmt)(0xc0000c0c60)}

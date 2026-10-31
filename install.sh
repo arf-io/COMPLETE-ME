@@ -13,7 +13,7 @@
 #   curl -fsSL <raw url>/install.sh | bash     clones into ~/.local/share/complete-me, then installs
 #
 # What it changes, and nothing else:
-#   packages (only with your OK)                   rust/cargo (to build), bubblewrap, fzf, babelfish, a clipboard reader,
+#   packages (only with your OK)                   rust/cargo (to build), bubblewrap, fzf, a clipboard reader,
 #                                                  bash-completion (bash), zsh-autosuggestions + zsh-syntax-highlighting (zsh)
 #   ~/.local/bin/complete-me                       the compiled binary (cargo install --root ~/.local)
 #   ~/.config/fish/conf.d/complete_me.fish         one guarded `source` line
@@ -133,17 +133,16 @@ sys_install() {
 
 # ------------------------------------------------------------------ dependencies
 step "Dependencies"
-sys_need=() brew_only=()
+sys_need=()
 dep() {   # dep command "why" required
     if have "$1"; then ok "$1 — $2"; return; fi
     if [ "$3" = 1 ]; then fail "$1 missing — $2 (required)"; else warn "$1 missing — $2"; fi
-    if [ "$1" = babelfish ]; then brew_only+=(babelfish); else sys_need+=("$(pkg_name "$1")"); fi
+    sys_need+=("$(pkg_name "$1")")
 }
 dep cargo "builds complete-me (Rust)" 1
 dep git "fetches COMPLETE-ME" 0
 [ "$OS" != Darwin ] && dep bwrap "sandbox for --help probing (strongly recommended)" 0
 dep fzf "live regex builder (alt-r) and snippet picker (alt-j)" 0
-dep babelfish "runs bash you type into fish (translated to fish first)" 0
 if [ "$OS" != Darwin ]; then
     if [ -n "${WAYLAND_DISPLAY:-}" ]; then dep wl-paste "clipboard-aware completion" 0
     elif [ -n "${DISPLAY:-}" ] && ! have xsel; then dep xclip "clipboard-aware completion" 0; fi
@@ -191,15 +190,6 @@ if [ "$DEPS" = 1 ] && [ "${#sys_need[@]}" -gt 0 ]; then
             run "$BREW" install "${brewable[@]}" && ok "installed via Homebrew: ${brewable[*]}" || rest+=("${brewable[@]}")
         elif [ "${#brewable[@]}" -gt 0 ]; then rest+=("${brewable[@]}"); fi
         [ "${#rest[@]}" -gt 0 ] && warn "install these yourself when you can:  ${SUDO:+$SUDO }${PM:-<package manager>} install ${rest[*]}"
-    fi
-fi
-if [ "$DEPS" = 1 ] && [ "${#brew_only[@]}" -gt 0 ]; then
-    if [ -n "$BREW" ] && ask "Install babelfish (bash→fish translator) with Homebrew?"; then
-        run "$BREW" install babelfish && ok "babelfish installed"
-    elif have go && ask "Install babelfish with 'go install'?"; then
-        run go install github.com/bouk/babelfish@latest && ok "babelfish installed to $(go env GOPATH)/bin"
-    else
-        warn "babelfish not installed: bash typed into fish will get a hint instead of running (brew install babelfish)"
     fi
 fi
 have cargo || { fail "cargo (Rust) is required to build complete-me: https://rustup.rs  (or your package manager's rust)"; exit 1; }

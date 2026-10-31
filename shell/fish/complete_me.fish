@@ -410,7 +410,8 @@ end
 
 # ---------------------------------------------------------------- bash typed into fish
 
-# On Enter: if the line is not valid fish but is valid bash, translate it with babelfish,
+# On Enter: if the line is not valid fish but is valid bash, translate it (complete-me's own
+# bash parser and translator),
 # show the fish version, and run it, unless the safety check flags something. Then it waits
 # for a second Enter (ctrl-c cancels). Turn off with: set -U complete_me_no_bash 1
 function __complete_me_enter -d 'complete-me: run bash typed into fish (translated, safety-checked)'
@@ -425,13 +426,12 @@ function __complete_me_enter -d 'complete-me: run bash typed into fish (translat
         commandline -f execute
         return
     end
-    printf '%s\n' "$line" | command bash -n 2>/dev/null
-    or begin
-        commandline -f execute      # not bash either: let fish report / continue the line
-        return
-    end
     set -l out (command complete-me bash2fish -- "$line" 2>&1)
     set -l rc $status
+    if test $rc -eq 2               # not bash either: let fish report / continue the line
+        commandline -f execute
+        return
+    end
     set -l sep (contains -i -- ---FISH--- $out)
     if test $rc -ne 0; or test -z "$sep"
         printf '\n\e[33mcomplete-me:\e[0m this looks like bash, but it could not be translated: %s\n' "$out[-1]"
@@ -442,13 +442,13 @@ function __complete_me_enter -d 'complete-me: run bash typed into fish (translat
     set -l risky (string match -r -- '^RISK\t.*' $out | string replace -r '^RISK\t' '')
     commandline -r -- $fishcode
     if set -q risky[1]
-        printf '\n\e[33mbash → fish\e[0m (translated by babelfish). \e[31mHeld for a check:\e[0m\n'
+        printf '\n\e[33mbash → fish\e[0m (translated). \e[31mHeld for a check:\e[0m\n'
         printf '  \e[31m⚠\e[0m %s\n' $risky
         printf '  Review the fish version below. \e[1mEnter\e[0m runs it, \e[1mctrl-c\e[0m cancels.\n'
         commandline -f repaint
         return
     end
-    printf '\n\e[2mbash → fish (babelfish)\e[0m\n'
+    printf '\n\e[2mbash → fish\e[0m\n'
     commandline -f repaint execute
 end
 

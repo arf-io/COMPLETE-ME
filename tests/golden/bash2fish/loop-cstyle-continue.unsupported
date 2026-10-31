@@ -1,0 +1,1 @@
+unsupported: &syntax.ForClause{ForPos:syntax.Pos{offs:0x0, lineCol:0x4001}, DoPos:syntax.Pos{offs:0x1b, lineCol:0x401c}, DonePos:syntax.Pos{offs:0x41, lineCol:0x4042}, Select:false, Braces:false, Loop:(*syntax.CStyleLoop)(0xc0000aa400), Do:[]*syntax.Stmt{(*syntax.Stmt)(0xc0000c0d10), (*syntax.Stmt)(0xc0000c0d68)}, DoLast:[]syntax.Comment(nil)}

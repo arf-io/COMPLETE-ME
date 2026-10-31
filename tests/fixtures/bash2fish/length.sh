@@ -1,0 +1,1 @@
+x=hello; echo ${#x}

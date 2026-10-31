@@ -1,0 +1,1 @@
+unsupported: &syntax.CoprocClause{Coproc:syntax.Pos{offs:0x0, lineCol:0x4001}, Name:(*syntax.Word)(nil), Stmt:(*syntax.Stmt)(0xc000156cb8)}

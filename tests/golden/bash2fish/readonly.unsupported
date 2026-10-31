@@ -1,0 +1,1 @@
+unsupported: &syntax.DeclClause{Variant:(*syntax.Lit)(0xc0000ce008), Args:[]*syntax.Assign{(*syntax.Assign)(0xc0000a07b0)}}

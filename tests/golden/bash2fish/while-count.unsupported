@@ -1,0 +1,1 @@
+unsupported: &syntax.BinaryArithm{OpPos:syntax.Pos{offs:0x2c, lineCol:0x402d}, Op:0x44, X:(*syntax.Word)(0xc0000bd1f0), Y:(*syntax.Word)(0xc0000bd218)}

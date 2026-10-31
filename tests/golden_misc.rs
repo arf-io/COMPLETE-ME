@@ -32,7 +32,7 @@ fn misc_goldens() {
         "for i in 1 2; do echo \"$i\"; done", "echo sudoku; echo formula", "dd if=/dev/zero of=/dev/sda",
         "git push --force origin main", "echo hi > ~/.bashrc", ":(){ :|:& };:", "eval $x", "rm /tmp/x",
         "chmod -R 777 /etc", "for i in {1..3}; do :; done", "echo {5..1} {1..10..2} '{1..3}' a{1..2}"];
-    let got: Vec<String> = samples.iter().map(|s| format!("{s}\t{}\t{}", bashfish::risks(s).join("|"), bashfish::preprocess(s))).collect();
+    let got: Vec<String> = samples.iter().map(|s| format!("{s}\t{}", bashfish::risks(s).join("|"))).collect();
     compare("bashfish.txt", &(got.join("\n") + "\n"), &mut fails);
 
     compare("snippets.abbrs.fish", &(snippets::fish_abbrs() + "\n"), &mut fails);

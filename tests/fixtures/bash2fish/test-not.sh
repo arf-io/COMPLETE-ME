@@ -1,0 +1,1 @@
+[[ ! -e /nonexistent ]] && echo missing

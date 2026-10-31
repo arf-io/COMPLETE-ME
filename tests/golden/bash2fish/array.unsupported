@@ -1,0 +1,1 @@
+unsupported: &syntax.ParamExp{Dollar:syntax.Pos{offs:0x18, lineCol:0x4019}, Rbrace:syntax.Pos{offs:0x1e, lineCol:0x401f}, Short:false, Excl:false, Length:false, Width:false, Param:(*syntax.Lit)(0xc0000ce0c8), Index:(*syntax.Word)(0xc0000bd150), Slice:(*syntax.Slice)(nil), Repl:(*syntax.Replace)(nil), Names:0x0, Exp:(*syntax.Expansion)(nil)}
