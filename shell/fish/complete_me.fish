@@ -20,8 +20,10 @@ test -d $__complete_me_gen; or mkdir -p $__complete_me_gen
 # but before fish's own man-page guesses (fish_update_completions).
 if not contains -- $__complete_me_gen $fish_complete_path
     set -l idx 0
-    for j in (seq (count $fish_complete_path))
-        if string match -q -- '*/fish/generated_completions' $fish_complete_path[$j]
+    set -l j 0
+    for d in $fish_complete_path   # builtins only: shell startup must not fork
+        set j (math $j + 1)
+        if string match -q -- '*/fish/generated_completions' $d
             set idx $j
             break
         end
