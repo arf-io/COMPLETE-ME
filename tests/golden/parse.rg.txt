@@ -1,0 +1,104 @@
+NODE			files	
+OPT		-e --regexp	PATTERN				A pattern to search for
+OPT		-f --file	PATTERNFILE				Search for patterns from the given file, with one pattern per line
+OPT		--pre	COMMAND		command		For each input PATH, this flag causes ripgrep to search the standard output of COMMAND…
+OPT		--pre-glob	GLOB				This flag works in conjunction with the --pre flag
+OPT		-z --search-zip					This flag instructs ripgrep to search in compressed files
+OPT		-s --case-sensitive					Execute the search case sensitively
+OPT		--crlf					When enabled, ripgrep will treat CRLF (\r\n) as a line terminator instead of just \n
+OPT		--dfa-size-limit	NUM+SUFFIX?		number		The upper size limit of the regex DFA
+OPT		-E --encoding	ENCODING				Specify the text encoding that ripgrep will use on all files searched
+OPT		--engine	ENGINE		enum	default=;pcre2=;auto=	Specify which regular expression engine to use
+OPT		-F --fixed-strings					Treat all patterns as literals instead of as regular expressions
+OPT		-i --ignore-case					When this flag is provided, all patterns will be searched case insensitively
+OPT		-v --invert-match					This flag inverts matching
+OPT		-x --line-regexp					When enabled, ripgrep will only show matches surrounded by line boundaries
+OPT		-m --max-count	NUM		number		Limit the number of matching lines per file searched to NUM
+OPT		--mmap					When enabled, ripgrep will search using memory maps when possible
+OPT		-U --multiline					This flag enables searching across multiple lines
+OPT		--multiline-dotall					This flag enables "dot all" mode in all regex patterns
+OPT		--no-unicode					This flag disables Unicode mode for all patterns given to ripgrep
+OPT		--null-data					Enabling this flag causes ripgrep to use NUL as a line terminator instead of the default…
+OPT		-P --pcre2					When this flag is present, ripgrep will use the PCRE2 regex engine instead of its…
+OPT		--regex-size-limit	NUM+SUFFIX?		number		The size limit of the compiled regex, where the compiled regex generally corresponds to…
+OPT		-S --smart-case					This flag instructs ripgrep to searches case insensitively if the pattern is all…
+OPT		--stop-on-nonmatch					Enabling this option will cause ripgrep to stop reading a file once it encounters a…
+OPT		-a --text					This flag instructs ripgrep to search binary files as if they were text
+OPT		-j --threads	NUM		number		This flag sets the approximate number of threads to use
+OPT		-w --word-regexp					When enabled, ripgrep will only show matches surrounded by word boundaries
+OPT		--auto-hybrid-regex					DEPRECATED
+OPT		--no-pcre2-unicode					DEPRECATED
+OPT		--binary					Enabling this flag will cause ripgrep to search binary files
+OPT		-L --follow					This flag instructs ripgrep to follow symbolic links while traversing directories
+OPT		-g --glob	GLOB				Include or exclude files and directories for searching that match the given glob
+OPT		--glob-case-insensitive					Process all glob patterns given with the -g/--glob flag case insensitively
+OPT		--iglob	GLOB				Include or exclude files and directories for searching that match the given glob
+OPT		--ignore-file	PATH		file		Specifies a path to one or more gitignore formatted rules files
+OPT		--ignore-file-case-insensitive					Process ignore files (.gitignore, .ignore, etc.) case insensitively
+OPT		-d --max-depth	NUM		number		This flag limits the depth of directory traversal to NUM levels beyond the paths given
+OPT		--max-filesize	NUM+SUFFIX?		number		Ignore files larger than NUM in size
+OPT		--no-ignore					When set, ignore files such as .gitignore, .ignore and .rgignore will not be respected
+OPT		--no-ignore-dot					Don't respect filter rules from .ignore or .rgignore files
+OPT		--no-ignore-exclude					Don't respect filter rules from files that are manually configured for the repository
+OPT		--no-ignore-files					When set, any --ignore-file flags, even ones that come after this flag, are ignored
+OPT		--no-ignore-global					Don't respect filter rules from ignore files that come from "global" sources such as…
+OPT		--no-ignore-parent					When this flag is set, filter rules from ignore files found in parent directories are…
+OPT		--no-ignore-vcs					When given, filter rules from source control ignore files (e.g., .gitignore) are not…
+OPT		--no-require-git					When this flag is given, source control ignore files such as .gitignore are respected…
+OPT		--one-file-system					When enabled, ripgrep will not cross file system boundaries relative to where the search…
+OPT		-t --type	TYPE				This flag limits ripgrep to searching files matching TYPE
+OPT		-T --type-not	TYPE				Do not search files matching TYPE
+OPT		--type-add	TYPESPEC		enum	cpp=;py=;md=	This flag adds a new glob for a particular file type
+OPT		--type-clear	TYPE				Clear the file type globs previously defined for TYPE
+OPT		-u --unrestricted					This flag reduces the level of "smart" filtering
+OPT		-A --after-context	NUM		number		Show NUM lines after each match
+OPT		-B --before-context	NUM		number		Show NUM lines before each match
+OPT		--block-buffered					When enabled, ripgrep will use block buffering
+OPT		-b --byte-offset					Print the 0-based byte offset within the input file before each line of output
+OPT		--color	WHEN		enum	never=Colors will never be used;auto=The default;always=Colors will always be used regardless of where output is…;ansi=Like 'always', but emits ANSI escapes (even in a Windows;none=--colors 'path:none' \	This flag controls when to use colors
+OPT		--colors	COLOR_SPEC		enum	fg=;bg=	This flag specifies color settings for use in the output
+OPT		--column					Show column numbers (1-based)
+OPT		-C --context	NUM		number		Show NUM lines before and after each match
+OPT		--context-separator	SEPARATOR				The string used to separate non-contiguous context lines in the output
+OPT		--field-context-separator	SEPARATOR				Set the field context separator
+OPT		--field-match-separator	SEPARATOR				Set the field match separator
+OPT		--heading					This flag prints the file path above clusters of matches from each file instead of…
+OPT		-h --help					This flag prints the help output for ripgrep
+OPT		--hostname-bin	COMMAND		command		This flag controls how ripgrep determines this system's hostname
+OPT		--hyperlink-format	FORMAT		enum	default=;none=;cursor=;file=;grep=	Set the format of hyperlinks to use when printing results
+OPT		--include-zero					When used with -c/--count or --count-matches, this causes ripgrep to print the number of…
+OPT		--line-buffered					When enabled, ripgrep will always use line buffering
+OPT		-n --line-number					Show line numbers (1-based)
+OPT		-N --no-line-number					Suppress line numbers
+OPT		-M --max-columns	NUM		number		When given, ripgrep will omit lines longer than this limit in bytes
+OPT		--max-columns-preview					Prints a preview for lines exceeding the configured max column limit
+OPT		-0 --null					Whenever a file path is printed, follow it with a NUL byte
+OPT		-o --only-matching					Print only the matched (non-empty) parts of a matching line, with each such part on a…
+OPT		--path-separator	SEPARATOR				Set the path separator to use when printing file paths
+OPT		--passthru					Print both matching and non-matching lines
+OPT		-p --pretty					This is a convenience alias for --color=always --heading --line-number
+OPT		-q --quiet					Do not print anything to stdout
+OPT		-r --replace	REPLACEMENT				Replaces every match with the text given when printing results
+OPT		--sort	SORTBY				This flag enables sorting of results in ascending order
+OPT		--sortr	SORTBY				This flag enables sorting of results in descending order
+OPT		--trim					When set, all ASCII whitespace at the beginning of each line printed will be removed
+OPT		--vimgrep					This flag instructs ripgrep to print results with every match on its own line, including…
+OPT		-H --with-filename					This flag instructs ripgrep to print the file path for each matching line
+OPT		-I --no-filename					This flag instructs ripgrep to never print the file path with each matching line
+OPT		--sort-files					DEPRECATED
+OPT		-c --count					This flag suppresses normal output and shows the number of lines that match the given…
+OPT		--count-matches					This flag suppresses normal output and shows the number of individual matches of the…
+OPT		-l --files-with-matches					Print only the paths with at least one match and suppress match contents
+OPT		--files-without-match					Print the paths that contain zero matches and suppress match contents
+OPT		--json					Enable printing results in a JSON Lines format
+OPT		--debug					Show debug messages
+OPT		--no-ignore-messages					When this flag is enabled, all error messages related to parsing ignore files are…
+OPT		--no-messages					This flag suppresses some error messages
+OPT		--stats					When enabled, ripgrep will print aggregate statistics about the search
+OPT		--trace					Show trace messages
+OPT		--files					Print each file that would be searched without actually performing the search
+OPT		--generate	KIND				This flag instructs ripgrep to generate some special kind of output identified by KIND…
+OPT		--no-config					When set, ripgrep will never read configuration files
+OPT		--pcre2-version					When this flag is present, ripgrep will print the version of PCRE2 in use, along with…
+OPT		--type-list					Show all supported file types and their corresponding globs
+OPT		-V --version					This flag prints ripgrep's version

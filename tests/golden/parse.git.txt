@@ -1,0 +1,48 @@
+NODE			files	
+OPT		-v					
+OPT		--version					
+OPT		-h					
+OPT		--help					
+OPT		-C	<path>		file		
+OPT		-c	<name>				
+OPT		--exec-path	<path>		file		
+OPT		--html-path					
+OPT		--man-path					
+OPT		--info-path					
+OPT		-p					
+OPT		--paginate					
+OPT		-P					
+OPT		--no-pager					
+OPT		--no-replace-objects					
+OPT		--no-lazy-fetch					
+OPT		--no-optional-locks					
+OPT		--no-advice					
+OPT		--bare					
+OPT		--git-dir	<path>		file		
+OPT		--work-tree	<path>		file		
+OPT		--namespace	<name>				
+OPT		--config-env	<name>				
+NODE	clone	Clone a repository into a new directory	files	
+NODE	init	Create an empty Git repository or reinitialize an existing one	files	
+NODE	add	Add file contents to the index	files	
+NODE	mv	Move or rename a file, a directory, or a symlink	files	
+NODE	restore	Restore working tree files	files	
+NODE	rm	Remove files from the working tree and from the index	files	
+NODE	bisect	Use binary search to find the commit that introduced a bug	files	
+NODE	diff	Show changes between commits, commit and working tree, etc	files	
+NODE	grep	Print lines matching a pattern	files	
+NODE	log	Show commit logs	files	
+NODE	show	Show various types of objects	files	
+NODE	status	Show the working tree status	files	
+NODE	backfill	Download missing objects in a partial clone	files	
+NODE	branch	List, create, or delete branches	files	
+NODE	commit	Record changes to the repository	files	
+NODE	history	EXPERIMENTAL: Rewrite history	files	
+NODE	merge	Join two or more development histories together	files	
+NODE	rebase	Reapply commits on top of another base tip	files	
+NODE	reset	Set `HEAD` or the index to a known state	files	
+NODE	switch	Switch branches	files	
+NODE	tag	Create, list, delete or verify tags	files	
+NODE	fetch	Download objects and refs from another repository	files	
+NODE	pull	Fetch from and integrate with another repository or a local branch	files	
+NODE	push	Update remote refs along with associated objects	files	

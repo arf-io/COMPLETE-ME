@@ -1,0 +1,16 @@
+NODE			files	
+OPT		-h					Display this help
+OPT		-v					Show version
+OPT		-j					Display full raw JSON output
+OPT		-D	<path>		file		ZeroTier home path for parameter auto-detect
+OPT		-p	<port>		number		HTTP port (default: auto)
+OPT		-T	<token>				Authentication token (default: auto)
+NODE	info	Display status info	files	
+NODE	listpeers	List all peers	files	
+NODE	peers	List all peers (prettier)	files	
+NODE	listnetworks	List all networks	files	
+NODE	join	Join a network	nofiles	
+NODE	leave	Leave a network	nofiles	
+NODE	set	Set a network setting	nofiles	
+NODE	get	Get a network setting	nofiles	
+NODE	dump	Debug settings dump for support	files	

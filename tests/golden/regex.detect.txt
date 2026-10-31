@@ -1,0 +1,19 @@
+['grep', '-rnE', 'x']	grep ere
+['grep', 'x']	grep bre
+['egrep']	egrep ere
+['fgrep']	fgrep fixed
+['rg', 'x']	rg rust
+['rg', '--pcre2']	rg pcre
+['rg', '--engine=pcre2']	rg pcre
+['sed', '-E']	sed ere
+['sed', '-r']	sed ere
+['sed']	sed bre
+['awk']	awk ere
+['find', '.', '-regextype', 'posix-extended']	find ere
+['find', '.']	find emacs
+['string', 'match']	string pcre
+['python3']	python3 python
+['foo']	foo ere
+['ugrep']	ugrep ere
+['grep', '--perl-regexp']	grep pcre
+['grep', '-F']	grep fixed

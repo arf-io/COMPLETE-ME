@@ -1,0 +1,30 @@
+NODE			nofiles	
+OPT		-V --version					Print version info and exit
+OPT		--list					List installed commands
+OPT		--explain	<CODE>				Provide a detailed explanation of a rustc error message
+OPT		-v --verbose					Use verbose output (-vv very verbose/build.rs output)
+OPT		-q --quiet					Do not print cargo log messages
+OPT		--color	<WHEN>		enum	auto=;always=;never=	Coloring [possible values: auto, always, never]
+OPT		-C	<DIRECTORY>		dir		Change to DIRECTORY before doing anything (nightly-only)
+OPT		--locked					Assert that `Cargo.lock` will remain unchanged
+OPT		--offline					Run without accessing the network
+OPT		--frozen					Equivalent to specifying both --locked and --offline
+OPT		--config	<KEY=VALUE|PATH>		file		Override a configuration value
+OPT		-Z	<FLAG>				Unstable (nightly-only) flags to Cargo, see 'cargo -Z help' for details
+OPT		-h --help					Print help
+NODE	build	Compile the current package	files	b
+NODE	check	Analyze the current package and report errors, but don't build object files	files	c
+NODE	clean	Remove the target directory	files	
+NODE	doc	Build this package's and its dependencies' documentation	files	d
+NODE	new	Create a new cargo package	files	
+NODE	init	Create a new cargo package in an existing directory	files	
+NODE	add	Add dependencies to a manifest file	files	
+NODE	remove	Remove dependencies from a manifest file	files	
+NODE	run	Run a binary or example of the local package	files	r
+NODE	test	Run the tests	files	t
+NODE	bench	Run the benchmarks	files	
+NODE	update	Update dependencies listed in Cargo.lock	files	
+NODE	search	Search registry for crates	files	
+NODE	publish	Package and upload this package to the registry	files	
+NODE	install	Install a Rust binary	files	
+NODE	uninstall	Uninstall a Rust binary	files	

@@ -1,0 +1,69 @@
+NODE			nofiles	
+OPT		--config	string				Location of client config files (default "/tmp/h/.docker")
+OPT		-c --context	string				Name of the context to use to connect to the daemon (overrides DOCKER_HOST env var and…
+OPT		-D --debug					Enable debug mode
+OPT		-H --host	string				Daemon socket to connect to
+OPT		-l --log-level	string		enum	debug=;info=;warn=;error=;fatal=	Set the logging level ("debug", "info", "warn", "error", "fatal") (default "info")
+OPT		--tls					Use TLS; implied by --tlsverify
+OPT		--tlscacert	string				Trust certs signed only by this CA (default "/tmp/h/.docker/ca.pem")
+OPT		--tlscert	string				Path to TLS certificate file (default "/tmp/h/.docker/cert.pem")
+OPT		--tlskey	string				Path to TLS key file (default "/tmp/h/.docker/key.pem")
+OPT		--tlsverify					Use TLS and verify the remote
+OPT		-v --version					Print version information and quit
+NODE	run	Create and run a new container from an image	files	
+NODE	exec	Execute a command in a running container	files	
+NODE	ps	List containers	files	
+NODE	build	Build an image from a Dockerfile	files	
+NODE	pull	Download an image from a registry	files	
+NODE	push	Upload an image to a registry	files	
+NODE	images	List images	files	
+NODE	login	Authenticate to a registry	files	
+NODE	logout	Log out from a registry	files	
+NODE	search	Search Docker Hub for images	files	
+NODE	version	Show the Docker version information	files	
+NODE	info	Display system-wide information	files	
+NODE	builder	Manage builds	files	
+NODE	checkpoint	Manage checkpoints	files	
+NODE	compose	Docker Compose	files	
+NODE	container	Manage containers	files	
+NODE	context	Manage contexts	files	
+NODE	image	Manage images	files	
+NODE	manifest	Manage Docker image manifests and manifest lists	files	
+NODE	network	Manage networks	files	
+NODE	plugin	Manage plugins	files	
+NODE	system	Manage Docker	files	
+NODE	volume	Manage volumes	files	
+NODE	config	Manage Swarm configs	files	
+NODE	node	Manage Swarm nodes	files	
+NODE	secret	Manage Swarm secrets	files	
+NODE	service	Manage Swarm services	files	
+NODE	stack	Manage Swarm stacks	files	
+NODE	swarm	Manage Swarm	files	
+NODE	attach	Attach local standard input, output, and error streams to a running container	files	
+NODE	commit	Create a new image from a container's changes	files	
+NODE	cp	Copy files/folders between a container and the local filesystem	files	
+NODE	create	Create a new container	files	
+NODE	diff	Inspect changes to files or directories on a container's filesystem	files	
+NODE	events	Get real time events from the server	files	
+NODE	export	Export a container's filesystem as a tar archive	files	
+NODE	history	Show the history of an image	files	
+NODE	import	Import the contents from a tarball to create a filesystem image	files	
+NODE	inspect	Return low-level information on Docker objects	files	
+NODE	kill	Kill one or more running containers	files	
+NODE	load	Load an image from a tar archive or STDIN	files	
+NODE	logs	Fetch the logs of a container	files	
+NODE	pause	Pause all processes within one or more containers	files	
+NODE	port	List port mappings or a specific mapping for the container	files	
+NODE	rename	Rename a container	files	
+NODE	restart	Restart one or more containers	files	
+NODE	rm	Remove one or more containers	files	
+NODE	rmi	Remove one or more images	files	
+NODE	save	Save one or more images to a tar archive (streamed to STDOUT by default)	files	
+NODE	start	Start one or more stopped containers	files	
+NODE	stats	Display a live stream of container(s) resource usage statistics	files	
+NODE	stop	Stop one or more running containers	files	
+NODE	tag	Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE	files	
+NODE	top	Display the running processes of a container	files	
+NODE	unpause	Unpause all processes within one or more containers	files	
+NODE	update	Update configuration of one or more containers	files	
+NODE	wait	Block until one or more containers stop, then print their exit codes	files	

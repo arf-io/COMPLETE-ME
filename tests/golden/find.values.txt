@@ -1,0 +1,126 @@
+=== -type
+f	regular file
+d	directory
+l	symbolic link
+p	named pipe (FIFO)
+s	socket
+b	block device
+c	character device
+f,l	regular file or symlink (GNU)
+=== -xtype
+f	regular file
+d	directory
+l	symbolic link
+p	named pipe (FIFO)
+s	socket
+b	block device
+c	character device
+f,l	regular file or symlink (GNU)
+=== -size
++100M	bigger than 100 MiB
++1G	bigger than 1 GiB
+-1k	smaller than 1 KiB
++10M	bigger than 10 MiB
+0	exactly zero size
+-100c	under 100 bytes
+=== -mtime
+-1	modified in the last 24 hours
+-7	modified in the last week
++30	modified more than 30 days ago
++365	modified more than a year ago
+0	modified between now and 24 hours ago
+=== -atime
+-1	accessed in the last 24 hours
+-7	accessed in the last week
++30	accessed more than 30 days ago
++365	accessed more than a year ago
+0	accessed between now and 24 hours ago
+=== -ctime
+-1	status-changed in the last 24 hours
+-7	status-changed in the last week
++30	status-changed more than 30 days ago
++365	status-changed more than a year ago
+0	status-changed between now and 24 hours ago
+=== -mmin
+-5	in the last 5 minutes
+-60	in the last hour
++1440	more than a day ago
+=== -amin
+-5	in the last 5 minutes
+-60	in the last hour
++1440	more than a day ago
+=== -cmin
+-5	in the last 5 minutes
+-60	in the last hour
++1440	more than a day ago
+=== -perm
+-u+x	executable by its owner
+/a+x	executable by anyone
+-o+w	world-writable ⚠
+644	exactly rw-r--r--
+755	exactly rwxr-xr-x
+600	exactly rw-------
+-4000	setuid bit set
+-2000	setgid bit set
+/6000	setuid or setgid
+=== -name
+*.log	log files
+.*	hidden files
+*~	editor backups
+*.bak	backup files
+*.tmp	temporary files
+=== -iname
+*.log	log files
+.*	hidden files
+*~	editor backups
+*.bak	backup files
+*.tmp	temporary files
+=== -path
+*/node_modules/*	anything inside node_modules
+*/.git/*	anything inside .git
+./build/*	inside ./build
+*/target/*	inside a cargo target dir
+=== -ipath
+*/node_modules/*	anything inside node_modules
+*/.git/*	anything inside .git
+./build/*	inside ./build
+*/target/*	inside a cargo target dir
+=== -wholename
+*/node_modules/*	anything inside node_modules
+*/.git/*	anything inside .git
+./build/*	inside ./build
+*/target/*	inside a cargo target dir
+=== -maxdepth
+1	this directory only
+2	one level of subdirectories
+3	two levels
+=== -mindepth
+1	this directory only
+2	one level of subdirectories
+3	two levels
+=== -regextype
+posix-extended	like grep -E (recommended)
+posix-basic	like grep
+emacs	the default
+posix-egrep	like egrep
+=== -printf
+%p\n	path
+%s\t%p\n	size in bytes, path
+%TY-%Tm-%Td %TH:%TM %p\n	modified date, path
+%M %u %g %p\n	permissions, owner, group, path
+%f\n	file name only
+%h\n	parent directory
+=== -newermt
+today	since midnight
+yesterday	since yesterday midnight
+1 hour ago	in the last hour
+2026-01-01	since this date
+=== -nothing
+=== operators
+(	start a group: \( … \) (needed around -o before an action)
+)	end the group
+-o	OR: either side
+-a	AND (the default between tests)
+!	NOT: invert the next test
+-not	NOT: invert the next test
+-prune	do not descend (e.g. -path ./.git -prune -o …)

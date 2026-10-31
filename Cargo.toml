@@ -1,0 +1,28 @@
+[package]
+name = "complete-me"
+version = "3.0.0"
+edition = "2021"
+description = "Tab completion for everything: safe completion generation, regex/find/ssh helpers, bash-in-fish"
+repository = "https://github.com/arf-io/COMPLETE-ME"
+publish = false
+
+[lib]
+name = "complete_me"
+path = "src/lib.rs"
+
+[[bin]]
+name = "complete-me"
+path = "src/main.rs"
+
+[dependencies]
+fancy-regex = "0.14"
+indexmap = "2"
+libc = "0.2"
+sha1_smol = "1"
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 4
+strip = true
+panic = "abort"

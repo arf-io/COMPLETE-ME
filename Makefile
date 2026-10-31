@@ -1,5 +1,5 @@
 # COMPLETE-ME
-.PHONY: install install-yes uninstall test check
+.PHONY: install install-yes uninstall test build check
 
 install:        ## interactive install: deps, shell hooks, self-test
 	./install.sh
@@ -11,7 +11,10 @@ uninstall:
 	./install.sh --uninstall
 
 test:
-	python3 -m unittest discover -s tests -v
+	cargo test --release
+
+build:
+	cargo build --release
 
 check:          ## syntax-check the shell parts
 	bash -n install.sh shell/bash/complete_me.bash

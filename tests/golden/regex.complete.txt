@@ -1,0 +1,1420 @@
+=== ['grep'] ''
+\([0-9]\{1,3\}\.\)\{3\}[0-9]\{1,3\}	recipe: IPv4 address
+[[:alnum:]._%\+-]\+@[[:alnum:].-]\+\.[[:alpha:]]\{2,\}	recipe: email address
+https\?://[^[:space:]\"'<>]\+	recipe: URL
+[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}	recipe: ISO date 2026-10-30
+[0-2][0-9]:[0-5][0-9]\(:[0-5][0-9]\)\?	recipe: time 23:59(:59)
+[0-9a-fA-F]\{8\}-\([0-9a-fA-F]\{4\}-\)\{3\}[0-9a-fA-F]\{12\}	recipe: UUID
+#[0-9a-fA-F]\{6\}	recipe: hex colour #ff8800
+\([0-9a-fA-F]\{2\}:\)\{5\}[0-9a-fA-F]\{2\}	recipe: MAC address
+[0-9]\+\.[0-9]\+\.[0-9]\+	recipe: semver 1.2.3
+TODO\|FIXME\|XXX\|HACK	recipe: TODO / FIXME / XXX
+[[:space:]]\+$	recipe: trailing whitespace
+^[[:space:]]*$	recipe: blank line
+^[[:space:]]*#	recipe: comment line (#)
+-\?[0-9]\+\(\.[0-9]\+\)\?	recipe: number (int or decimal)
+0x[0-9a-fA-F]\+	recipe: hex number 0x1f
+\"[^\"]*\"	recipe: double-quoted string
+^[[:space:]]*\(def\|function\|fn\|func\)[[:space:]]\+[[:alnum:]_]\+	recipe: function definition
+\bWORD\b	recipe: whole word (edit WORD)
+^WORD	recipe: line starting with WORD
+.	any single character
+.*	anything (0 or more of any char)
+^	start of line
+$	end of line
+*	previous item 0+ times
+\+	previous item 1+ times
+\?	previous item optional
+\{2\}	previous item exactly 2 times
+\{2,5\}	previous item 2 to 5 times
+\{3,\}	previous item 3 or more times
+\(	start a group  (close with \))
+\)	end a group
+\|	OR: this or that
+[0-9]	one digit
+[a-z]	one lowercase letter
+[A-Za-z]	one letter
+[^ ]	one non-space character
+[[:space:]]	one whitespace character
+[[:alnum:]_]	one word character
+\.	a literal dot
+\w	a word character (GNU)
+\s	whitespace (GNU)
+\b	word boundary (GNU)
+\<	start of word (GNU)
+\>	end of word (GNU)
+=== ['grep'] "'"
+\([0-9]\{1,3\}\.\)\{3\}[0-9]\{1,3\}	recipe: IPv4 address
+[[:alnum:]._%\+-]\+@[[:alnum:].-]\+\.[[:alpha:]]\{2,\}	recipe: email address
+https\?://[^[:space:]\"'<>]\+	recipe: URL
+[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}	recipe: ISO date 2026-10-30
+[0-2][0-9]:[0-5][0-9]\(:[0-5][0-9]\)\?	recipe: time 23:59(:59)
+[0-9a-fA-F]\{8\}-\([0-9a-fA-F]\{4\}-\)\{3\}[0-9a-fA-F]\{12\}	recipe: UUID
+#[0-9a-fA-F]\{6\}	recipe: hex colour #ff8800
+\([0-9a-fA-F]\{2\}:\)\{5\}[0-9a-fA-F]\{2\}	recipe: MAC address
+[0-9]\+\.[0-9]\+\.[0-9]\+	recipe: semver 1.2.3
+TODO\|FIXME\|XXX\|HACK	recipe: TODO / FIXME / XXX
+[[:space:]]\+$	recipe: trailing whitespace
+^[[:space:]]*$	recipe: blank line
+^[[:space:]]*#	recipe: comment line (#)
+-\?[0-9]\+\(\.[0-9]\+\)\?	recipe: number (int or decimal)
+0x[0-9a-fA-F]\+	recipe: hex number 0x1f
+\"[^\"]*\"	recipe: double-quoted string
+^[[:space:]]*\(def\|function\|fn\|func\)[[:space:]]\+[[:alnum:]_]\+	recipe: function definition
+\bWORD\b	recipe: whole word (edit WORD)
+^WORD	recipe: line starting with WORD
+.	any single character
+.*	anything (0 or more of any char)
+^	start of line
+$	end of line
+*	previous item 0+ times
+\+	previous item 1+ times
+\?	previous item optional
+\{2\}	previous item exactly 2 times
+\{2,5\}	previous item 2 to 5 times
+\{3,\}	previous item 3 or more times
+\(	start a group  (close with \))
+\)	end a group
+\|	OR: this or that
+[0-9]	one digit
+[a-z]	one lowercase letter
+[A-Za-z]	one letter
+[^ ]	one non-space character
+[[:space:]]	one whitespace character
+[[:alnum:]_]	one word character
+\.	a literal dot
+\w	a word character (GNU)
+\s	whitespace (GNU)
+\b	word boundary (GNU)
+\<	start of word (GNU)
+\>	end of word (GNU)
+=== ['grep'] "'err"
+err.	any single character
+err.*	anything (0 or more of any char)
+err$	end of line
+err*	previous item 0+ times
+err\+	previous item 1+ times
+err\?	previous item optional
+err\{2\}	previous item exactly 2 times
+err\{2,5\}	previous item 2 to 5 times
+err\{3,\}	previous item 3 or more times
+err\(	start a group  (close with \))
+err\)	end a group
+err\|	OR: this or that
+err[0-9]	one digit
+err[a-z]	one lowercase letter
+err[A-Za-z]	one letter
+err[^ ]	one non-space character
+err[[:space:]]	one whitespace character
+err[[:alnum:]_]	one word character
+err\.	a literal dot
+err\w	a word character (GNU)
+err\s	whitespace (GNU)
+err\b	word boundary (GNU)
+err\<	start of word (GNU)
+err\>	end of word (GNU)
+=== ['grep'] '"ab\\'
+ab\+	previous item 1+ times
+ab\?	previous item optional
+ab\{2\}	previous item exactly 2 times
+ab\{2,5\}	previous item 2 to 5 times
+ab\{3,\}	previous item 3 or more times
+ab\(	start a group  (close with \))
+ab\)	end a group
+ab\|	OR: this or that
+ab\.	a literal dot
+ab\w	a word character (GNU)
+ab\s	whitespace (GNU)
+ab\b	word boundary (GNU)
+ab\<	start of word (GNU)
+ab\>	end of word (GNU)
+ab\.	a literal '.'
+ab\*	a literal '*'
+ab\+	a literal '+'
+ab\?	a literal '?'
+ab\(	a literal '('
+ab\)	a literal ')'
+ab\[	a literal '['
+ab\]	a literal ']'
+ab\{	a literal '{'
+ab\}	a literal '}'
+ab\|	a literal '|'
+ab\^	a literal '^'
+ab\$	a literal '$'
+ab\/	a literal '/'
+=== ['grep'] 'x'
+x.	any single character
+x.*	anything (0 or more of any char)
+x$	end of line
+x*	previous item 0+ times
+x\+	previous item 1+ times
+x\?	previous item optional
+x\{2\}	previous item exactly 2 times
+x\{2,5\}	previous item 2 to 5 times
+x\{3,\}	previous item 3 or more times
+x\(	start a group  (close with \))
+x\)	end a group
+x\|	OR: this or that
+x[0-9]	one digit
+x[a-z]	one lowercase letter
+x[A-Za-z]	one letter
+x[^ ]	one non-space character
+x[[:space:]]	one whitespace character
+x[[:alnum:]_]	one word character
+x\.	a literal dot
+x\w	a word character (GNU)
+x\s	whitespace (GNU)
+x\b	word boundary (GNU)
+x\<	start of word (GNU)
+x\>	end of word (GNU)
+=== ['grep', '-E'] ''
+([0-9]{1,3}\.){3}[0-9]{1,3}	recipe: IPv4 address
+[[:alnum:]._%+-]+@[[:alnum:].-]+\.[[:alpha:]]{2,}	recipe: email address
+https?://[^[:space:]\"'<>]+	recipe: URL
+[0-9]{4}-[0-9]{2}-[0-9]{2}	recipe: ISO date 2026-10-30
+[0-2][0-9]:[0-5][0-9](:[0-5][0-9])?	recipe: time 23:59(:59)
+[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}	recipe: UUID
+#[0-9a-fA-F]{6}	recipe: hex colour #ff8800
+([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}	recipe: MAC address
+[0-9]+\.[0-9]+\.[0-9]+	recipe: semver 1.2.3
+TODO|FIXME|XXX|HACK	recipe: TODO / FIXME / XXX
+[[:space:]]+$	recipe: trailing whitespace
+^[[:space:]]*$	recipe: blank line
+^[[:space:]]*#	recipe: comment line (#)
+-?[0-9]+(\.[0-9]+)?	recipe: number (int or decimal)
+0x[0-9a-fA-F]+	recipe: hex number 0x1f
+\"[^\"]*\"	recipe: double-quoted string
+^[[:space:]]*(def|function|fn|func)[[:space:]]+[[:alnum:]_]+	recipe: function definition
+\bWORD\b	recipe: whole word (edit WORD)
+^WORD	recipe: line starting with WORD
+.	any single character
+.*	anything (0 or more of any char)
+^	start of line
+$	end of line
+*	previous item 0+ times
++	previous item 1+ times
+?	previous item optional
+{2}	previous item exactly 2 times
+{2,5}	previous item 2 to 5 times
+{3,}	previous item 3 or more times
+(	start a group  (close with ))
+)	end a group
+|	OR: this or that
+[0-9]	one digit
+[a-z]	one lowercase letter
+[A-Za-z]	one letter
+[^ ]	one non-space character
+[[:space:]]	one whitespace character
+[[:alnum:]_]	one word character
+\.	a literal dot
+\w	a word character (GNU)
+\s	whitespace (GNU)
+\b	word boundary (GNU)
+\<	start of word (GNU)
+\>	end of word (GNU)
+=== ['grep', '-E'] "'"
+([0-9]{1,3}\.){3}[0-9]{1,3}	recipe: IPv4 address
+[[:alnum:]._%+-]+@[[:alnum:].-]+\.[[:alpha:]]{2,}	recipe: email address
+https?://[^[:space:]\"'<>]+	recipe: URL
+[0-9]{4}-[0-9]{2}-[0-9]{2}	recipe: ISO date 2026-10-30
+[0-2][0-9]:[0-5][0-9](:[0-5][0-9])?	recipe: time 23:59(:59)
+[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}	recipe: UUID
+#[0-9a-fA-F]{6}	recipe: hex colour #ff8800
+([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}	recipe: MAC address
+[0-9]+\.[0-9]+\.[0-9]+	recipe: semver 1.2.3
+TODO|FIXME|XXX|HACK	recipe: TODO / FIXME / XXX
+[[:space:]]+$	recipe: trailing whitespace
+^[[:space:]]*$	recipe: blank line
+^[[:space:]]*#	recipe: comment line (#)
+-?[0-9]+(\.[0-9]+)?	recipe: number (int or decimal)
+0x[0-9a-fA-F]+	recipe: hex number 0x1f
+\"[^\"]*\"	recipe: double-quoted string
+^[[:space:]]*(def|function|fn|func)[[:space:]]+[[:alnum:]_]+	recipe: function definition
+\bWORD\b	recipe: whole word (edit WORD)
+^WORD	recipe: line starting with WORD
+.	any single character
+.*	anything (0 or more of any char)
+^	start of line
+$	end of line
+*	previous item 0+ times
++	previous item 1+ times
+?	previous item optional
+{2}	previous item exactly 2 times
+{2,5}	previous item 2 to 5 times
+{3,}	previous item 3 or more times
+(	start a group  (close with ))
+)	end a group
+|	OR: this or that
+[0-9]	one digit
+[a-z]	one lowercase letter
+[A-Za-z]	one letter
+[^ ]	one non-space character
+[[:space:]]	one whitespace character
+[[:alnum:]_]	one word character
+\.	a literal dot
+\w	a word character (GNU)
+\s	whitespace (GNU)
+\b	word boundary (GNU)
+\<	start of word (GNU)
+\>	end of word (GNU)
+=== ['grep', '-E'] "'err"
+err.	any single character
+err.*	anything (0 or more of any char)
+err$	end of line
+err*	previous item 0+ times
+err+	previous item 1+ times
+err?	previous item optional
+err{2}	previous item exactly 2 times
+err{2,5}	previous item 2 to 5 times
+err{3,}	previous item 3 or more times
+err(	start a group  (close with ))
+err)	end a group
+err|	OR: this or that
+err[0-9]	one digit
+err[a-z]	one lowercase letter
+err[A-Za-z]	one letter
+err[^ ]	one non-space character
+err[[:space:]]	one whitespace character
+err[[:alnum:]_]	one word character
+err\.	a literal dot
+err\w	a word character (GNU)
+err\s	whitespace (GNU)
+err\b	word boundary (GNU)
+err\<	start of word (GNU)
+err\>	end of word (GNU)
+=== ['grep', '-E'] '"ab\\'
+ab\.	a literal dot
+ab\w	a word character (GNU)
+ab\s	whitespace (GNU)
+ab\b	word boundary (GNU)
+ab\<	start of word (GNU)
+ab\>	end of word (GNU)
+ab\.	a literal '.'
+ab\*	a literal '*'
+ab\+	a literal '+'
+ab\?	a literal '?'
+ab\(	a literal '('
+ab\)	a literal ')'
+ab\[	a literal '['
+ab\]	a literal ']'
+ab\{	a literal '{'
+ab\}	a literal '}'
+ab\|	a literal '|'
+ab\^	a literal '^'
+ab\$	a literal '$'
+ab\/	a literal '/'
+=== ['grep', '-E'] 'x'
+x.	any single character
+x.*	anything (0 or more of any char)
+x$	end of line
+x*	previous item 0+ times
+x+	previous item 1+ times
+x?	previous item optional
+x{2}	previous item exactly 2 times
+x{2,5}	previous item 2 to 5 times
+x{3,}	previous item 3 or more times
+x(	start a group  (close with ))
+x)	end a group
+x|	OR: this or that
+x[0-9]	one digit
+x[a-z]	one lowercase letter
+x[A-Za-z]	one letter
+x[^ ]	one non-space character
+x[[:space:]]	one whitespace character
+x[[:alnum:]_]	one word character
+x\.	a literal dot
+x\w	a word character (GNU)
+x\s	whitespace (GNU)
+x\b	word boundary (GNU)
+x\<	start of word (GNU)
+x\>	end of word (GNU)
+=== ['grep', '-P'] ''
+\b(?:\d{1,3}\.){3}\d{1,3}\b	recipe: IPv4 address
+[\w.%+-]+@[\w.-]+\.[A-Za-z]{2,}	recipe: email address
+https?://[^\s\"'<>]+	recipe: URL
+\b\d{4}-\d{2}-\d{2}\b	recipe: ISO date 2026-10-30
+\b[0-2]\d:[0-5]\d(?::[0-5]\d)?\b	recipe: time 23:59(:59)
+\b[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}\b	recipe: UUID
+#[0-9a-fA-F]{6}\b	recipe: hex colour #ff8800
+\b(?:[0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}\b	recipe: MAC address
+\bv?\d+\.\d+\.\d+(?:-[\w.]+)?\b	recipe: semver 1.2.3
+\b(?:TODO|FIXME|XXX|HACK)\b	recipe: TODO / FIXME / XXX
+\s+$	recipe: trailing whitespace
+^\s*$	recipe: blank line
+^\s*#	recipe: comment line (#)
+-?\d+(?:\.\d+)?	recipe: number (int or decimal)
+\b0x[0-9a-fA-F]+\b	recipe: hex number 0x1f
+\"(?:[^\"\\]|\\.)*\"	recipe: double-quoted string
+^\s*(?:def|function|fn|func)\s+\w+	recipe: function definition
+\bWORD\b	recipe: whole word (edit WORD)
+^WORD	recipe: line starting with WORD
+.	any single character
+.*	anything (0 or more of any char)
+^	start of line
+$	end of line
+*	previous item 0+ times
++	previous item 1+ times
+?	previous item optional
+{2}	previous item exactly 2 times
+{2,5}	previous item 2 to 5 times
+{3,}	previous item 3 or more times
+(	start a group  (close with ))
+)	end a group
+|	OR: this or that
+[0-9]	one digit
+[a-z]	one lowercase letter
+[A-Za-z]	one letter
+[^ ]	one non-space character
+[[:space:]]	one whitespace character
+[[:alnum:]_]	one word character
+\.	a literal dot
+\d	a digit
+\d+	a number (1+ digits)
+\w+	a word
+\s+	whitespace
+\b	word boundary
+(?i)	ignore case from here
+(?:	group without capturing
+.*?	anything, as little as possible (lazy)
+(?=	lookahead: followed by…
+(?!	negative lookahead: not followed by…
+(?<=	lookbehind: preceded by…
+(?<!	negative lookbehind
+\K	keep only what follows
+=== ['grep', '-P'] "'"
+\b(?:\d{1,3}\.){3}\d{1,3}\b	recipe: IPv4 address
+[\w.%+-]+@[\w.-]+\.[A-Za-z]{2,}	recipe: email address
+https?://[^\s\"'<>]+	recipe: URL
+\b\d{4}-\d{2}-\d{2}\b	recipe: ISO date 2026-10-30
+\b[0-2]\d:[0-5]\d(?::[0-5]\d)?\b	recipe: time 23:59(:59)
+\b[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}\b	recipe: UUID
+#[0-9a-fA-F]{6}\b	recipe: hex colour #ff8800
+\b(?:[0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}\b	recipe: MAC address
+\bv?\d+\.\d+\.\d+(?:-[\w.]+)?\b	recipe: semver 1.2.3
+\b(?:TODO|FIXME|XXX|HACK)\b	recipe: TODO / FIXME / XXX
+\s+$	recipe: trailing whitespace
+^\s*$	recipe: blank line
+^\s*#	recipe: comment line (#)
+-?\d+(?:\.\d+)?	recipe: number (int or decimal)
+\b0x[0-9a-fA-F]+\b	recipe: hex number 0x1f
+\"(?:[^\"\\]|\\.)*\"	recipe: double-quoted string
+^\s*(?:def|function|fn|func)\s+\w+	recipe: function definition
+\bWORD\b	recipe: whole word (edit WORD)
+^WORD	recipe: line starting with WORD
+.	any single character
+.*	anything (0 or more of any char)
+^	start of line
+$	end of line
+*	previous item 0+ times
++	previous item 1+ times
+?	previous item optional
+{2}	previous item exactly 2 times
+{2,5}	previous item 2 to 5 times
+{3,}	previous item 3 or more times
+(	start a group  (close with ))
+)	end a group
+|	OR: this or that
+[0-9]	one digit
+[a-z]	one lowercase letter
+[A-Za-z]	one letter
+[^ ]	one non-space character
+[[:space:]]	one whitespace character
+[[:alnum:]_]	one word character
+\.	a literal dot
+\d	a digit
+\d+	a number (1+ digits)
+\w+	a word
+\s+	whitespace
+\b	word boundary
+(?i)	ignore case from here
+(?:	group without capturing
+.*?	anything, as little as possible (lazy)
+(?=	lookahead: followed by…
+(?!	negative lookahead: not followed by…
+(?<=	lookbehind: preceded by…
+(?<!	negative lookbehind
+\K	keep only what follows
+=== ['grep', '-P'] "'err"
+err.	any single character
+err.*	anything (0 or more of any char)
+err$	end of line
+err*	previous item 0+ times
+err+	previous item 1+ times
+err?	previous item optional
+err{2}	previous item exactly 2 times
+err{2,5}	previous item 2 to 5 times
+err{3,}	previous item 3 or more times
+err(	start a group  (close with ))
+err)	end a group
+err|	OR: this or that
+err[0-9]	one digit
+err[a-z]	one lowercase letter
+err[A-Za-z]	one letter
+err[^ ]	one non-space character
+err[[:space:]]	one whitespace character
+err[[:alnum:]_]	one word character
+err\.	a literal dot
+err\d	a digit
+err\d+	a number (1+ digits)
+err\w+	a word
+err\s+	whitespace
+err\b	word boundary
+err(?i)	ignore case from here
+err(?:	group without capturing
+err.*?	anything, as little as possible (lazy)
+err(?=	lookahead: followed by…
+err(?!	negative lookahead: not followed by…
+err(?<=	lookbehind: preceded by…
+err(?<!	negative lookbehind
+err\K	keep only what follows
+=== ['grep', '-P'] '"ab\\'
+ab\.	a literal dot
+ab\d	a digit
+ab\d+	a number (1+ digits)
+ab\w+	a word
+ab\s+	whitespace
+ab\b	word boundary
+ab\K	keep only what follows
+ab\.	a literal '.'
+ab\*	a literal '*'
+ab\+	a literal '+'
+ab\?	a literal '?'
+ab\(	a literal '('
+ab\)	a literal ')'
+ab\[	a literal '['
+ab\]	a literal ']'
+ab\{	a literal '{'
+ab\}	a literal '}'
+ab\|	a literal '|'
+ab\^	a literal '^'
+ab\$	a literal '$'
+ab\/	a literal '/'
+=== ['grep', '-P'] 'x'
+x.	any single character
+x.*	anything (0 or more of any char)
+x$	end of line
+x*	previous item 0+ times
+x+	previous item 1+ times
+x?	previous item optional
+x{2}	previous item exactly 2 times
+x{2,5}	previous item 2 to 5 times
+x{3,}	previous item 3 or more times
+x(	start a group  (close with ))
+x)	end a group
+x|	OR: this or that
+x[0-9]	one digit
+x[a-z]	one lowercase letter
+x[A-Za-z]	one letter
+x[^ ]	one non-space character
+x[[:space:]]	one whitespace character
+x[[:alnum:]_]	one word character
+x\.	a literal dot
+x\d	a digit
+x\d+	a number (1+ digits)
+x\w+	a word
+x\s+	whitespace
+x\b	word boundary
+x(?i)	ignore case from here
+x(?:	group without capturing
+x.*?	anything, as little as possible (lazy)
+x(?=	lookahead: followed by…
+x(?!	negative lookahead: not followed by…
+x(?<=	lookbehind: preceded by…
+x(?<!	negative lookbehind
+x\K	keep only what follows
+=== ['rg'] ''
+\b(?:\d{1,3}\.){3}\d{1,3}\b	recipe: IPv4 address
+[\w.%+-]+@[\w.-]+\.[A-Za-z]{2,}	recipe: email address
+https?://[^\s\"'<>]+	recipe: URL
+\b\d{4}-\d{2}-\d{2}\b	recipe: ISO date 2026-10-30
+\b[0-2]\d:[0-5]\d(?::[0-5]\d)?\b	recipe: time 23:59(:59)
+\b[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}\b	recipe: UUID
+#[0-9a-fA-F]{6}\b	recipe: hex colour #ff8800
+\b(?:[0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}\b	recipe: MAC address
+\bv?\d+\.\d+\.\d+(?:-[\w.]+)?\b	recipe: semver 1.2.3
+\b(?:TODO|FIXME|XXX|HACK)\b	recipe: TODO / FIXME / XXX
+\s+$	recipe: trailing whitespace
+^\s*$	recipe: blank line
+^\s*#	recipe: comment line (#)
+-?\d+(?:\.\d+)?	recipe: number (int or decimal)
+\b0x[0-9a-fA-F]+\b	recipe: hex number 0x1f
+\"(?:[^\"\\]|\\.)*\"	recipe: double-quoted string
+^\s*(?:def|function|fn|func)\s+\w+	recipe: function definition
+\bWORD\b	recipe: whole word (edit WORD)
+^WORD	recipe: line starting with WORD
+.	any single character
+.*	anything (0 or more of any char)
+^	start of line
+$	end of line
+*	previous item 0+ times
++	previous item 1+ times
+?	previous item optional
+{2}	previous item exactly 2 times
+{2,5}	previous item 2 to 5 times
+{3,}	previous item 3 or more times
+(	start a group  (close with ))
+)	end a group
+|	OR: this or that
+[0-9]	one digit
+[a-z]	one lowercase letter
+[A-Za-z]	one letter
+[^ ]	one non-space character
+[[:space:]]	one whitespace character
+[[:alnum:]_]	one word character
+\.	a literal dot
+\d	a digit
+\d+	a number (1+ digits)
+\w+	a word
+\s+	whitespace
+\b	word boundary
+(?i)	ignore case from here
+(?:	group without capturing
+.*?	anything, as little as possible (lazy)
+=== ['rg'] "'"
+\b(?:\d{1,3}\.){3}\d{1,3}\b	recipe: IPv4 address
+[\w.%+-]+@[\w.-]+\.[A-Za-z]{2,}	recipe: email address
+https?://[^\s\"'<>]+	recipe: URL
+\b\d{4}-\d{2}-\d{2}\b	recipe: ISO date 2026-10-30
+\b[0-2]\d:[0-5]\d(?::[0-5]\d)?\b	recipe: time 23:59(:59)
+\b[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}\b	recipe: UUID
+#[0-9a-fA-F]{6}\b	recipe: hex colour #ff8800
+\b(?:[0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}\b	recipe: MAC address
+\bv?\d+\.\d+\.\d+(?:-[\w.]+)?\b	recipe: semver 1.2.3
+\b(?:TODO|FIXME|XXX|HACK)\b	recipe: TODO / FIXME / XXX
+\s+$	recipe: trailing whitespace
+^\s*$	recipe: blank line
+^\s*#	recipe: comment line (#)
+-?\d+(?:\.\d+)?	recipe: number (int or decimal)
+\b0x[0-9a-fA-F]+\b	recipe: hex number 0x1f
+\"(?:[^\"\\]|\\.)*\"	recipe: double-quoted string
+^\s*(?:def|function|fn|func)\s+\w+	recipe: function definition
+\bWORD\b	recipe: whole word (edit WORD)
+^WORD	recipe: line starting with WORD
+.	any single character
+.*	anything (0 or more of any char)
+^	start of line
+$	end of line
+*	previous item 0+ times
++	previous item 1+ times
+?	previous item optional
+{2}	previous item exactly 2 times
+{2,5}	previous item 2 to 5 times
+{3,}	previous item 3 or more times
+(	start a group  (close with ))
+)	end a group
+|	OR: this or that
+[0-9]	one digit
+[a-z]	one lowercase letter
+[A-Za-z]	one letter
+[^ ]	one non-space character
+[[:space:]]	one whitespace character
+[[:alnum:]_]	one word character
+\.	a literal dot
+\d	a digit
+\d+	a number (1+ digits)
+\w+	a word
+\s+	whitespace
+\b	word boundary
+(?i)	ignore case from here
+(?:	group without capturing
+.*?	anything, as little as possible (lazy)
+=== ['rg'] "'err"
+err.	any single character
+err.*	anything (0 or more of any char)
+err$	end of line
+err*	previous item 0+ times
+err+	previous item 1+ times
+err?	previous item optional
+err{2}	previous item exactly 2 times
+err{2,5}	previous item 2 to 5 times
+err{3,}	previous item 3 or more times
+err(	start a group  (close with ))
+err)	end a group
+err|	OR: this or that
+err[0-9]	one digit
+err[a-z]	one lowercase letter
+err[A-Za-z]	one letter
+err[^ ]	one non-space character
+err[[:space:]]	one whitespace character
+err[[:alnum:]_]	one word character
+err\.	a literal dot
+err\d	a digit
+err\d+	a number (1+ digits)
+err\w+	a word
+err\s+	whitespace
+err\b	word boundary
+err(?i)	ignore case from here
+err(?:	group without capturing
+err.*?	anything, as little as possible (lazy)
+=== ['rg'] '"ab\\'
+ab\.	a literal dot
+ab\d	a digit
+ab\d+	a number (1+ digits)
+ab\w+	a word
+ab\s+	whitespace
+ab\b	word boundary
+ab\.	a literal '.'
+ab\*	a literal '*'
+ab\+	a literal '+'
+ab\?	a literal '?'
+ab\(	a literal '('
+ab\)	a literal ')'
+ab\[	a literal '['
+ab\]	a literal ']'
+ab\{	a literal '{'
+ab\}	a literal '}'
+ab\|	a literal '|'
+ab\^	a literal '^'
+ab\$	a literal '$'
+ab\/	a literal '/'
+=== ['rg'] 'x'
+x.	any single character
+x.*	anything (0 or more of any char)
+x$	end of line
+x*	previous item 0+ times
+x+	previous item 1+ times
+x?	previous item optional
+x{2}	previous item exactly 2 times
+x{2,5}	previous item 2 to 5 times
+x{3,}	previous item 3 or more times
+x(	start a group  (close with ))
+x)	end a group
+x|	OR: this or that
+x[0-9]	one digit
+x[a-z]	one lowercase letter
+x[A-Za-z]	one letter
+x[^ ]	one non-space character
+x[[:space:]]	one whitespace character
+x[[:alnum:]_]	one word character
+x\.	a literal dot
+x\d	a digit
+x\d+	a number (1+ digits)
+x\w+	a word
+x\s+	whitespace
+x\b	word boundary
+x(?i)	ignore case from here
+x(?:	group without capturing
+x.*?	anything, as little as possible (lazy)
+=== ['rg', '-P'] ''
+\b(?:\d{1,3}\.){3}\d{1,3}\b	recipe: IPv4 address
+[\w.%+-]+@[\w.-]+\.[A-Za-z]{2,}	recipe: email address
+https?://[^\s\"'<>]+	recipe: URL
+\b\d{4}-\d{2}-\d{2}\b	recipe: ISO date 2026-10-30
+\b[0-2]\d:[0-5]\d(?::[0-5]\d)?\b	recipe: time 23:59(:59)
+\b[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}\b	recipe: UUID
+#[0-9a-fA-F]{6}\b	recipe: hex colour #ff8800
+\b(?:[0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}\b	recipe: MAC address
+\bv?\d+\.\d+\.\d+(?:-[\w.]+)?\b	recipe: semver 1.2.3
+\b(?:TODO|FIXME|XXX|HACK)\b	recipe: TODO / FIXME / XXX
+\s+$	recipe: trailing whitespace
+^\s*$	recipe: blank line
+^\s*#	recipe: comment line (#)
+-?\d+(?:\.\d+)?	recipe: number (int or decimal)
+\b0x[0-9a-fA-F]+\b	recipe: hex number 0x1f
+\"(?:[^\"\\]|\\.)*\"	recipe: double-quoted string
+^\s*(?:def|function|fn|func)\s+\w+	recipe: function definition
+\bWORD\b	recipe: whole word (edit WORD)
+^WORD	recipe: line starting with WORD
+.	any single character
+.*	anything (0 or more of any char)
+^	start of line
+$	end of line
+*	previous item 0+ times
++	previous item 1+ times
+?	previous item optional
+{2}	previous item exactly 2 times
+{2,5}	previous item 2 to 5 times
+{3,}	previous item 3 or more times
+(	start a group  (close with ))
+)	end a group
+|	OR: this or that
+[0-9]	one digit
+[a-z]	one lowercase letter
+[A-Za-z]	one letter
+[^ ]	one non-space character
+[[:space:]]	one whitespace character
+[[:alnum:]_]	one word character
+\.	a literal dot
+\d	a digit
+\d+	a number (1+ digits)
+\w+	a word
+\s+	whitespace
+\b	word boundary
+(?i)	ignore case from here
+(?:	group without capturing
+.*?	anything, as little as possible (lazy)
+(?=	lookahead: followed by…
+(?!	negative lookahead: not followed by…
+(?<=	lookbehind: preceded by…
+(?<!	negative lookbehind
+\K	keep only what follows
+=== ['rg', '-P'] "'"
+\b(?:\d{1,3}\.){3}\d{1,3}\b	recipe: IPv4 address
+[\w.%+-]+@[\w.-]+\.[A-Za-z]{2,}	recipe: email address
+https?://[^\s\"'<>]+	recipe: URL
+\b\d{4}-\d{2}-\d{2}\b	recipe: ISO date 2026-10-30
+\b[0-2]\d:[0-5]\d(?::[0-5]\d)?\b	recipe: time 23:59(:59)
+\b[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}\b	recipe: UUID
+#[0-9a-fA-F]{6}\b	recipe: hex colour #ff8800
+\b(?:[0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}\b	recipe: MAC address
+\bv?\d+\.\d+\.\d+(?:-[\w.]+)?\b	recipe: semver 1.2.3
+\b(?:TODO|FIXME|XXX|HACK)\b	recipe: TODO / FIXME / XXX
+\s+$	recipe: trailing whitespace
+^\s*$	recipe: blank line
+^\s*#	recipe: comment line (#)
+-?\d+(?:\.\d+)?	recipe: number (int or decimal)
+\b0x[0-9a-fA-F]+\b	recipe: hex number 0x1f
+\"(?:[^\"\\]|\\.)*\"	recipe: double-quoted string
+^\s*(?:def|function|fn|func)\s+\w+	recipe: function definition
+\bWORD\b	recipe: whole word (edit WORD)
+^WORD	recipe: line starting with WORD
+.	any single character
+.*	anything (0 or more of any char)
+^	start of line
+$	end of line
+*	previous item 0+ times
++	previous item 1+ times
+?	previous item optional
+{2}	previous item exactly 2 times
+{2,5}	previous item 2 to 5 times
+{3,}	previous item 3 or more times
+(	start a group  (close with ))
+)	end a group
+|	OR: this or that
+[0-9]	one digit
+[a-z]	one lowercase letter
+[A-Za-z]	one letter
+[^ ]	one non-space character
+[[:space:]]	one whitespace character
+[[:alnum:]_]	one word character
+\.	a literal dot
+\d	a digit
+\d+	a number (1+ digits)
+\w+	a word
+\s+	whitespace
+\b	word boundary
+(?i)	ignore case from here
+(?:	group without capturing
+.*?	anything, as little as possible (lazy)
+(?=	lookahead: followed by…
+(?!	negative lookahead: not followed by…
+(?<=	lookbehind: preceded by…
+(?<!	negative lookbehind
+\K	keep only what follows
+=== ['rg', '-P'] "'err"
+err.	any single character
+err.*	anything (0 or more of any char)
+err$	end of line
+err*	previous item 0+ times
+err+	previous item 1+ times
+err?	previous item optional
+err{2}	previous item exactly 2 times
+err{2,5}	previous item 2 to 5 times
+err{3,}	previous item 3 or more times
+err(	start a group  (close with ))
+err)	end a group
+err|	OR: this or that
+err[0-9]	one digit
+err[a-z]	one lowercase letter
+err[A-Za-z]	one letter
+err[^ ]	one non-space character
+err[[:space:]]	one whitespace character
+err[[:alnum:]_]	one word character
+err\.	a literal dot
+err\d	a digit
+err\d+	a number (1+ digits)
+err\w+	a word
+err\s+	whitespace
+err\b	word boundary
+err(?i)	ignore case from here
+err(?:	group without capturing
+err.*?	anything, as little as possible (lazy)
+err(?=	lookahead: followed by…
+err(?!	negative lookahead: not followed by…
+err(?<=	lookbehind: preceded by…
+err(?<!	negative lookbehind
+err\K	keep only what follows
+=== ['rg', '-P'] '"ab\\'
+ab\.	a literal dot
+ab\d	a digit
+ab\d+	a number (1+ digits)
+ab\w+	a word
+ab\s+	whitespace
+ab\b	word boundary
+ab\K	keep only what follows
+ab\.	a literal '.'
+ab\*	a literal '*'
+ab\+	a literal '+'
+ab\?	a literal '?'
+ab\(	a literal '('
+ab\)	a literal ')'
+ab\[	a literal '['
+ab\]	a literal ']'
+ab\{	a literal '{'
+ab\}	a literal '}'
+ab\|	a literal '|'
+ab\^	a literal '^'
+ab\$	a literal '$'
+ab\/	a literal '/'
+=== ['rg', '-P'] 'x'
+x.	any single character
+x.*	anything (0 or more of any char)
+x$	end of line
+x*	previous item 0+ times
+x+	previous item 1+ times
+x?	previous item optional
+x{2}	previous item exactly 2 times
+x{2,5}	previous item 2 to 5 times
+x{3,}	previous item 3 or more times
+x(	start a group  (close with ))
+x)	end a group
+x|	OR: this or that
+x[0-9]	one digit
+x[a-z]	one lowercase letter
+x[A-Za-z]	one letter
+x[^ ]	one non-space character
+x[[:space:]]	one whitespace character
+x[[:alnum:]_]	one word character
+x\.	a literal dot
+x\d	a digit
+x\d+	a number (1+ digits)
+x\w+	a word
+x\s+	whitespace
+x\b	word boundary
+x(?i)	ignore case from here
+x(?:	group without capturing
+x.*?	anything, as little as possible (lazy)
+x(?=	lookahead: followed by…
+x(?!	negative lookahead: not followed by…
+x(?<=	lookbehind: preceded by…
+x(?<!	negative lookbehind
+x\K	keep only what follows
+=== ['sed'] ''
+\([0-9]\{1,3\}\.\)\{3\}[0-9]\{1,3\}	recipe: IPv4 address
+[[:alnum:]._%\+-]\+@[[:alnum:].-]\+\.[[:alpha:]]\{2,\}	recipe: email address
+https\?://[^[:space:]\"'<>]\+	recipe: URL
+[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}	recipe: ISO date 2026-10-30
+[0-2][0-9]:[0-5][0-9]\(:[0-5][0-9]\)\?	recipe: time 23:59(:59)
+[0-9a-fA-F]\{8\}-\([0-9a-fA-F]\{4\}-\)\{3\}[0-9a-fA-F]\{12\}	recipe: UUID
+#[0-9a-fA-F]\{6\}	recipe: hex colour #ff8800
+\([0-9a-fA-F]\{2\}:\)\{5\}[0-9a-fA-F]\{2\}	recipe: MAC address
+[0-9]\+\.[0-9]\+\.[0-9]\+	recipe: semver 1.2.3
+TODO\|FIXME\|XXX\|HACK	recipe: TODO / FIXME / XXX
+[[:space:]]\+$	recipe: trailing whitespace
+^[[:space:]]*$	recipe: blank line
+^[[:space:]]*#	recipe: comment line (#)
+-\?[0-9]\+\(\.[0-9]\+\)\?	recipe: number (int or decimal)
+0x[0-9a-fA-F]\+	recipe: hex number 0x1f
+\"[^\"]*\"	recipe: double-quoted string
+^[[:space:]]*\(def\|function\|fn\|func\)[[:space:]]\+[[:alnum:]_]\+	recipe: function definition
+\bWORD\b	recipe: whole word (edit WORD)
+^WORD	recipe: line starting with WORD
+.	any single character
+.*	anything (0 or more of any char)
+^	start of line
+$	end of line
+*	previous item 0+ times
+\+	previous item 1+ times
+\?	previous item optional
+\{2\}	previous item exactly 2 times
+\{2,5\}	previous item 2 to 5 times
+\{3,\}	previous item 3 or more times
+\(	start a group  (close with \))
+\)	end a group
+\|	OR: this or that
+[0-9]	one digit
+[a-z]	one lowercase letter
+[A-Za-z]	one letter
+[^ ]	one non-space character
+[[:space:]]	one whitespace character
+[[:alnum:]_]	one word character
+\.	a literal dot
+\w	a word character (GNU)
+\s	whitespace (GNU)
+\b	word boundary (GNU)
+\<	start of word (GNU)
+\>	end of word (GNU)
+=== ['sed'] "'"
+\([0-9]\{1,3\}\.\)\{3\}[0-9]\{1,3\}	recipe: IPv4 address
+[[:alnum:]._%\+-]\+@[[:alnum:].-]\+\.[[:alpha:]]\{2,\}	recipe: email address
+https\?://[^[:space:]\"'<>]\+	recipe: URL
+[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}	recipe: ISO date 2026-10-30
+[0-2][0-9]:[0-5][0-9]\(:[0-5][0-9]\)\?	recipe: time 23:59(:59)
+[0-9a-fA-F]\{8\}-\([0-9a-fA-F]\{4\}-\)\{3\}[0-9a-fA-F]\{12\}	recipe: UUID
+#[0-9a-fA-F]\{6\}	recipe: hex colour #ff8800
+\([0-9a-fA-F]\{2\}:\)\{5\}[0-9a-fA-F]\{2\}	recipe: MAC address
+[0-9]\+\.[0-9]\+\.[0-9]\+	recipe: semver 1.2.3
+TODO\|FIXME\|XXX\|HACK	recipe: TODO / FIXME / XXX
+[[:space:]]\+$	recipe: trailing whitespace
+^[[:space:]]*$	recipe: blank line
+^[[:space:]]*#	recipe: comment line (#)
+-\?[0-9]\+\(\.[0-9]\+\)\?	recipe: number (int or decimal)
+0x[0-9a-fA-F]\+	recipe: hex number 0x1f
+\"[^\"]*\"	recipe: double-quoted string
+^[[:space:]]*\(def\|function\|fn\|func\)[[:space:]]\+[[:alnum:]_]\+	recipe: function definition
+\bWORD\b	recipe: whole word (edit WORD)
+^WORD	recipe: line starting with WORD
+.	any single character
+.*	anything (0 or more of any char)
+^	start of line
+$	end of line
+*	previous item 0+ times
+\+	previous item 1+ times
+\?	previous item optional
+\{2\}	previous item exactly 2 times
+\{2,5\}	previous item 2 to 5 times
+\{3,\}	previous item 3 or more times
+\(	start a group  (close with \))
+\)	end a group
+\|	OR: this or that
+[0-9]	one digit
+[a-z]	one lowercase letter
+[A-Za-z]	one letter
+[^ ]	one non-space character
+[[:space:]]	one whitespace character
+[[:alnum:]_]	one word character
+\.	a literal dot
+\w	a word character (GNU)
+\s	whitespace (GNU)
+\b	word boundary (GNU)
+\<	start of word (GNU)
+\>	end of word (GNU)
+=== ['sed'] "'err"
+err.	any single character
+err.*	anything (0 or more of any char)
+err$	end of line
+err*	previous item 0+ times
+err\+	previous item 1+ times
+err\?	previous item optional
+err\{2\}	previous item exactly 2 times
+err\{2,5\}	previous item 2 to 5 times
+err\{3,\}	previous item 3 or more times
+err\(	start a group  (close with \))
+err\)	end a group
+err\|	OR: this or that
+err[0-9]	one digit
+err[a-z]	one lowercase letter
+err[A-Za-z]	one letter
+err[^ ]	one non-space character
+err[[:space:]]	one whitespace character
+err[[:alnum:]_]	one word character
+err\.	a literal dot
+err\w	a word character (GNU)
+err\s	whitespace (GNU)
+err\b	word boundary (GNU)
+err\<	start of word (GNU)
+err\>	end of word (GNU)
+=== ['sed'] '"ab\\'
+ab\+	previous item 1+ times
+ab\?	previous item optional
+ab\{2\}	previous item exactly 2 times
+ab\{2,5\}	previous item 2 to 5 times
+ab\{3,\}	previous item 3 or more times
+ab\(	start a group  (close with \))
+ab\)	end a group
+ab\|	OR: this or that
+ab\.	a literal dot
+ab\w	a word character (GNU)
+ab\s	whitespace (GNU)
+ab\b	word boundary (GNU)
+ab\<	start of word (GNU)
+ab\>	end of word (GNU)
+ab\.	a literal '.'
+ab\*	a literal '*'
+ab\+	a literal '+'
+ab\?	a literal '?'
+ab\(	a literal '('
+ab\)	a literal ')'
+ab\[	a literal '['
+ab\]	a literal ']'
+ab\{	a literal '{'
+ab\}	a literal '}'
+ab\|	a literal '|'
+ab\^	a literal '^'
+ab\$	a literal '$'
+ab\/	a literal '/'
+=== ['sed'] 'x'
+x.	any single character
+x.*	anything (0 or more of any char)
+x$	end of line
+x*	previous item 0+ times
+x\+	previous item 1+ times
+x\?	previous item optional
+x\{2\}	previous item exactly 2 times
+x\{2,5\}	previous item 2 to 5 times
+x\{3,\}	previous item 3 or more times
+x\(	start a group  (close with \))
+x\)	end a group
+x\|	OR: this or that
+x[0-9]	one digit
+x[a-z]	one lowercase letter
+x[A-Za-z]	one letter
+x[^ ]	one non-space character
+x[[:space:]]	one whitespace character
+x[[:alnum:]_]	one word character
+x\.	a literal dot
+x\w	a word character (GNU)
+x\s	whitespace (GNU)
+x\b	word boundary (GNU)
+x\<	start of word (GNU)
+x\>	end of word (GNU)
+=== ['find', '.'] ''
+.*\([0-9]{1,3}\.\){3}[0-9]{1,3}.*	recipe: IPv4 address
+.*[[:alnum:]._%\+-]\+@[[:alnum:].-]\+\.[[:alpha:]]{2,}.*	recipe: email address
+.*https\?://[^[:space:]\"'<>]\+.*	recipe: URL
+.*[0-9]{4}-[0-9]{2}-[0-9]{2}.*	recipe: ISO date 2026-10-30
+.*[0-2][0-9]:[0-5][0-9]\(:[0-5][0-9]\)\?.*	recipe: time 23:59(:59)
+.*[0-9a-fA-F]{8}-\([0-9a-fA-F]{4}-\){3}[0-9a-fA-F]{12}.*	recipe: UUID
+.*#[0-9a-fA-F]{6}.*	recipe: hex colour #ff8800
+.*\([0-9a-fA-F]{2}:\){5}[0-9a-fA-F]{2}.*	recipe: MAC address
+.*[0-9]\+\.[0-9]\+\.[0-9]\+.*	recipe: semver 1.2.3
+.*TODO\|FIXME\|XXX\|HACK.*	recipe: TODO / FIXME / XXX
+.*[[:space:]]\+$.*	recipe: trailing whitespace
+.*^[[:space:]]*$.*	recipe: blank line
+.*^[[:space:]]*#.*	recipe: comment line (#)
+.*-\?[0-9]\+\(\.[0-9]\+\)\?.*	recipe: number (int or decimal)
+.*0x[0-9a-fA-F]\+.*	recipe: hex number 0x1f
+.*\"[^\"]*\".*	recipe: double-quoted string
+.*^[[:space:]]*\(def\|function\|fn\|func\)[[:space:]]\+[[:alnum:]_]\+.*	recipe: function definition
+.*\bWORD\b.*	recipe: whole word (edit WORD)
+.*^WORD.*	recipe: line starting with WORD
+.	any single character
+.*	anything (0 or more of any char)
+^	start of line
+$	end of line
+*	previous item 0+ times
++	previous item 1+ times
+?	previous item optional
+{2}	previous item exactly 2 times
+{2,5}	previous item 2 to 5 times
+{3,}	previous item 3 or more times
+(	start a group  (close with ))
+)	end a group
+|	OR: this or that
+[0-9]	one digit
+[a-z]	one lowercase letter
+[A-Za-z]	one letter
+[^ ]	one non-space character
+[[:space:]]	one whitespace character
+[[:alnum:]_]	one word character
+\.	a literal dot
+\w	a word character (GNU)
+\s	whitespace (GNU)
+\b	word boundary (GNU)
+\<	start of word (GNU)
+\>	end of word (GNU)
+=== ['find', '.'] "'"
+.*\([0-9]{1,3}\.\){3}[0-9]{1,3}.*	recipe: IPv4 address
+.*[[:alnum:]._%\+-]\+@[[:alnum:].-]\+\.[[:alpha:]]{2,}.*	recipe: email address
+.*https\?://[^[:space:]\"'<>]\+.*	recipe: URL
+.*[0-9]{4}-[0-9]{2}-[0-9]{2}.*	recipe: ISO date 2026-10-30
+.*[0-2][0-9]:[0-5][0-9]\(:[0-5][0-9]\)\?.*	recipe: time 23:59(:59)
+.*[0-9a-fA-F]{8}-\([0-9a-fA-F]{4}-\){3}[0-9a-fA-F]{12}.*	recipe: UUID
+.*#[0-9a-fA-F]{6}.*	recipe: hex colour #ff8800
+.*\([0-9a-fA-F]{2}:\){5}[0-9a-fA-F]{2}.*	recipe: MAC address
+.*[0-9]\+\.[0-9]\+\.[0-9]\+.*	recipe: semver 1.2.3
+.*TODO\|FIXME\|XXX\|HACK.*	recipe: TODO / FIXME / XXX
+.*[[:space:]]\+$.*	recipe: trailing whitespace
+.*^[[:space:]]*$.*	recipe: blank line
+.*^[[:space:]]*#.*	recipe: comment line (#)
+.*-\?[0-9]\+\(\.[0-9]\+\)\?.*	recipe: number (int or decimal)
+.*0x[0-9a-fA-F]\+.*	recipe: hex number 0x1f
+.*\"[^\"]*\".*	recipe: double-quoted string
+.*^[[:space:]]*\(def\|function\|fn\|func\)[[:space:]]\+[[:alnum:]_]\+.*	recipe: function definition
+.*\bWORD\b.*	recipe: whole word (edit WORD)
+.*^WORD.*	recipe: line starting with WORD
+.	any single character
+.*	anything (0 or more of any char)
+^	start of line
+$	end of line
+*	previous item 0+ times
++	previous item 1+ times
+?	previous item optional
+{2}	previous item exactly 2 times
+{2,5}	previous item 2 to 5 times
+{3,}	previous item 3 or more times
+(	start a group  (close with ))
+)	end a group
+|	OR: this or that
+[0-9]	one digit
+[a-z]	one lowercase letter
+[A-Za-z]	one letter
+[^ ]	one non-space character
+[[:space:]]	one whitespace character
+[[:alnum:]_]	one word character
+\.	a literal dot
+\w	a word character (GNU)
+\s	whitespace (GNU)
+\b	word boundary (GNU)
+\<	start of word (GNU)
+\>	end of word (GNU)
+=== ['find', '.'] "'err"
+err.	any single character
+err.*	anything (0 or more of any char)
+err$	end of line
+err*	previous item 0+ times
+err+	previous item 1+ times
+err?	previous item optional
+err{2}	previous item exactly 2 times
+err{2,5}	previous item 2 to 5 times
+err{3,}	previous item 3 or more times
+err(	start a group  (close with ))
+err)	end a group
+err|	OR: this or that
+err[0-9]	one digit
+err[a-z]	one lowercase letter
+err[A-Za-z]	one letter
+err[^ ]	one non-space character
+err[[:space:]]	one whitespace character
+err[[:alnum:]_]	one word character
+err\.	a literal dot
+err\w	a word character (GNU)
+err\s	whitespace (GNU)
+err\b	word boundary (GNU)
+err\<	start of word (GNU)
+err\>	end of word (GNU)
+=== ['find', '.'] '"ab\\'
+ab\.	a literal dot
+ab\w	a word character (GNU)
+ab\s	whitespace (GNU)
+ab\b	word boundary (GNU)
+ab\<	start of word (GNU)
+ab\>	end of word (GNU)
+ab\.	a literal '.'
+ab\*	a literal '*'
+ab\+	a literal '+'
+ab\?	a literal '?'
+ab\(	a literal '('
+ab\)	a literal ')'
+ab\[	a literal '['
+ab\]	a literal ']'
+ab\{	a literal '{'
+ab\}	a literal '}'
+ab\|	a literal '|'
+ab\^	a literal '^'
+ab\$	a literal '$'
+ab\/	a literal '/'
+=== ['find', '.'] 'x'
+x.	any single character
+x.*	anything (0 or more of any char)
+x$	end of line
+x*	previous item 0+ times
+x+	previous item 1+ times
+x?	previous item optional
+x{2}	previous item exactly 2 times
+x{2,5}	previous item 2 to 5 times
+x{3,}	previous item 3 or more times
+x(	start a group  (close with ))
+x)	end a group
+x|	OR: this or that
+x[0-9]	one digit
+x[a-z]	one lowercase letter
+x[A-Za-z]	one letter
+x[^ ]	one non-space character
+x[[:space:]]	one whitespace character
+x[[:alnum:]_]	one word character
+x\.	a literal dot
+x\w	a word character (GNU)
+x\s	whitespace (GNU)
+x\b	word boundary (GNU)
+x\<	start of word (GNU)
+x\>	end of word (GNU)
+=== ['grep', '-F'] ''
+=== ['grep', '-F'] "'"
+=== ['grep', '-F'] "'err"
+=== ['grep', '-F'] '"ab\\'
+=== ['grep', '-F'] 'x'
+=== ['string'] ''
+\b(?:\d{1,3}\.){3}\d{1,3}\b	recipe: IPv4 address
+[\w.%+-]+@[\w.-]+\.[A-Za-z]{2,}	recipe: email address
+https?://[^\s\"'<>]+	recipe: URL
+\b\d{4}-\d{2}-\d{2}\b	recipe: ISO date 2026-10-30
+\b[0-2]\d:[0-5]\d(?::[0-5]\d)?\b	recipe: time 23:59(:59)
+\b[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}\b	recipe: UUID
+#[0-9a-fA-F]{6}\b	recipe: hex colour #ff8800
+\b(?:[0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}\b	recipe: MAC address
+\bv?\d+\.\d+\.\d+(?:-[\w.]+)?\b	recipe: semver 1.2.3
+\b(?:TODO|FIXME|XXX|HACK)\b	recipe: TODO / FIXME / XXX
+\s+$	recipe: trailing whitespace
+^\s*$	recipe: blank line
+^\s*#	recipe: comment line (#)
+-?\d+(?:\.\d+)?	recipe: number (int or decimal)
+\b0x[0-9a-fA-F]+\b	recipe: hex number 0x1f
+\"(?:[^\"\\]|\\.)*\"	recipe: double-quoted string
+^\s*(?:def|function|fn|func)\s+\w+	recipe: function definition
+\bWORD\b	recipe: whole word (edit WORD)
+^WORD	recipe: line starting with WORD
+.	any single character
+.*	anything (0 or more of any char)
+^	start of line
+$	end of line
+*	previous item 0+ times
++	previous item 1+ times
+?	previous item optional
+{2}	previous item exactly 2 times
+{2,5}	previous item 2 to 5 times
+{3,}	previous item 3 or more times
+(	start a group  (close with ))
+)	end a group
+|	OR: this or that
+[0-9]	one digit
+[a-z]	one lowercase letter
+[A-Za-z]	one letter
+[^ ]	one non-space character
+[[:space:]]	one whitespace character
+[[:alnum:]_]	one word character
+\.	a literal dot
+\d	a digit
+\d+	a number (1+ digits)
+\w+	a word
+\s+	whitespace
+\b	word boundary
+(?i)	ignore case from here
+(?:	group without capturing
+.*?	anything, as little as possible (lazy)
+(?=	lookahead: followed by…
+(?!	negative lookahead: not followed by…
+(?<=	lookbehind: preceded by…
+(?<!	negative lookbehind
+\K	keep only what follows
+=== ['string'] "'"
+\b(?:\d{1,3}\.){3}\d{1,3}\b	recipe: IPv4 address
+[\w.%+-]+@[\w.-]+\.[A-Za-z]{2,}	recipe: email address
+https?://[^\s\"'<>]+	recipe: URL
+\b\d{4}-\d{2}-\d{2}\b	recipe: ISO date 2026-10-30
+\b[0-2]\d:[0-5]\d(?::[0-5]\d)?\b	recipe: time 23:59(:59)
+\b[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}\b	recipe: UUID
+#[0-9a-fA-F]{6}\b	recipe: hex colour #ff8800
+\b(?:[0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}\b	recipe: MAC address
+\bv?\d+\.\d+\.\d+(?:-[\w.]+)?\b	recipe: semver 1.2.3
+\b(?:TODO|FIXME|XXX|HACK)\b	recipe: TODO / FIXME / XXX
+\s+$	recipe: trailing whitespace
+^\s*$	recipe: blank line
+^\s*#	recipe: comment line (#)
+-?\d+(?:\.\d+)?	recipe: number (int or decimal)
+\b0x[0-9a-fA-F]+\b	recipe: hex number 0x1f
+\"(?:[^\"\\]|\\.)*\"	recipe: double-quoted string
+^\s*(?:def|function|fn|func)\s+\w+	recipe: function definition
+\bWORD\b	recipe: whole word (edit WORD)
+^WORD	recipe: line starting with WORD
+.	any single character
+.*	anything (0 or more of any char)
+^	start of line
+$	end of line
+*	previous item 0+ times
++	previous item 1+ times
+?	previous item optional
+{2}	previous item exactly 2 times
+{2,5}	previous item 2 to 5 times
+{3,}	previous item 3 or more times
+(	start a group  (close with ))
+)	end a group
+|	OR: this or that
+[0-9]	one digit
+[a-z]	one lowercase letter
+[A-Za-z]	one letter
+[^ ]	one non-space character
+[[:space:]]	one whitespace character
+[[:alnum:]_]	one word character
+\.	a literal dot
+\d	a digit
+\d+	a number (1+ digits)
+\w+	a word
+\s+	whitespace
+\b	word boundary
+(?i)	ignore case from here
+(?:	group without capturing
+.*?	anything, as little as possible (lazy)
+(?=	lookahead: followed by…
+(?!	negative lookahead: not followed by…
+(?<=	lookbehind: preceded by…
+(?<!	negative lookbehind
+\K	keep only what follows
+=== ['string'] "'err"
+err.	any single character
+err.*	anything (0 or more of any char)
+err$	end of line
+err*	previous item 0+ times
+err+	previous item 1+ times
+err?	previous item optional
+err{2}	previous item exactly 2 times
+err{2,5}	previous item 2 to 5 times
+err{3,}	previous item 3 or more times
+err(	start a group  (close with ))
+err)	end a group
+err|	OR: this or that
+err[0-9]	one digit
+err[a-z]	one lowercase letter
+err[A-Za-z]	one letter
+err[^ ]	one non-space character
+err[[:space:]]	one whitespace character
+err[[:alnum:]_]	one word character
+err\.	a literal dot
+err\d	a digit
+err\d+	a number (1+ digits)
+err\w+	a word
+err\s+	whitespace
+err\b	word boundary
+err(?i)	ignore case from here
+err(?:	group without capturing
+err.*?	anything, as little as possible (lazy)
+err(?=	lookahead: followed by…
+err(?!	negative lookahead: not followed by…
+err(?<=	lookbehind: preceded by…
+err(?<!	negative lookbehind
+err\K	keep only what follows
+=== ['string'] '"ab\\'
+ab\.	a literal dot
+ab\d	a digit
+ab\d+	a number (1+ digits)
+ab\w+	a word
+ab\s+	whitespace
+ab\b	word boundary
+ab\K	keep only what follows
+ab\.	a literal '.'
+ab\*	a literal '*'
+ab\+	a literal '+'
+ab\?	a literal '?'
+ab\(	a literal '('
+ab\)	a literal ')'
+ab\[	a literal '['
+ab\]	a literal ']'
+ab\{	a literal '{'
+ab\}	a literal '}'
+ab\|	a literal '|'
+ab\^	a literal '^'
+ab\$	a literal '$'
+ab\/	a literal '/'
+=== ['string'] 'x'
+x.	any single character
+x.*	anything (0 or more of any char)
+x$	end of line
+x*	previous item 0+ times
+x+	previous item 1+ times
+x?	previous item optional
+x{2}	previous item exactly 2 times
+x{2,5}	previous item 2 to 5 times
+x{3,}	previous item 3 or more times
+x(	start a group  (close with ))
+x)	end a group
+x|	OR: this or that
+x[0-9]	one digit
+x[a-z]	one lowercase letter
+x[A-Za-z]	one letter
+x[^ ]	one non-space character
+x[[:space:]]	one whitespace character
+x[[:alnum:]_]	one word character
+x\.	a literal dot
+x\d	a digit
+x\d+	a number (1+ digits)
+x\w+	a word
+x\s+	whitespace
+x\b	word boundary
+x(?i)	ignore case from here
+x(?:	group without capturing
+x.*?	anything, as little as possible (lazy)
+x(?=	lookahead: followed by…
+x(?!	negative lookahead: not followed by…
+x(?<=	lookbehind: preceded by…
+x(?<!	negative lookbehind
+x\K	keep only what follows

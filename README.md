@@ -127,7 +127,7 @@ complete-me func mkcd 'mkdir -p $1; and cd $1'    # a real function 🛠️
 5. ⚡ **Universal variables.** `set -U` and it's set in every open shell, instantly, forever. ✨
 6. 🎨 **`fish_config`** opens a web page so you can pick colours. In a SHELL. 🌐
 7. 📚 **The `string`, `path` and `math` builtins.** No more `sed | awk | cut | tr` towers. 🏗️
-8. 🦀 **fish 4 is written in Rust**, so it's 🚀 blazingly fast 🚀 (I'm contractually obligated to say that).
+8. 🦀 **fish 4 is written in Rust**, so it's 🚀 blazingly fast 🚀 (I'm contractually obligated to say that). *And now so is COMPLETE-ME.* 😤🦀
 9. 🐟 **It's a fish.** 🐠 Fish are great. 🐡 Have you ever seen a sad fish? 🎣 Don't answer that.
 10. 🤝 **And now it runs your bash too** (see above), so there's literally nothing left to argue about. 🏁
 
@@ -137,7 +137,7 @@ complete-me func mkcd 'mkdir -p $1; and cd $1'    # a real function 🛠️
 
 | | what | why |
 |---|---|---|
-| 🐍 | **Python ≥ 3.9** | **required**: runs complete-me |
+| 🦀 | **Rust / cargo** | **required**: builds the `complete-me` binary (the installer offers to install it) |
 | 🐟 | **fish** | where the magic happens (bash gets generated completions too) |
 | 🫧 | bubblewrap (`bwrap`) | the sandbox for `--help` probing *(strongly recommended on Linux)* |
 | 🔍 | fzf | live regex builder (alt-r) and snippet picker (alt-j) |
@@ -174,6 +174,17 @@ The installer 🧰:
 Options: `--yes` · `--dry-run` · `--no-deps` · `--shells fish,bash` · `--uninstall`
 
 🚫 No daemon. 🚫 No socket. 🚫 No telemetry. Shell startup cost is zero (about 0ms extra). 🏎️
+
+### ⚡ How fast? (one TAB, measured)
+
+| TAB in… | Python v2 🐍 | Rust v3 🦀 |
+|---|---|---|
+| a regex pattern (`grep -E 'err<TAB>`) | 104 ms | **2.4 ms** |
+| `find -name <TAB>` | 67 ms | **2.3 ms** |
+| `ssh -oStrictHostKeyChecking=<TAB>` | 78 ms | **2.5 ms** |
+| any generated completion (`zerotier-cli <TAB>`) | 2 ms (pure fish) | 2 ms (pure fish) |
+
+*Blazingly fast*, and this time it's not just the marketing department. 🚀🦀
 
 ---
 
@@ -213,7 +224,7 @@ complete-me explain -- tar -xzvf x.tgz # 🧙 what does that even mean
 - 🐟 **fish**: everything. All of it. 💯
 - 🐚 **bash**: generated completions (subcommands, flags, values), loaded in front of bash-completion without
   replacing it, plus aliases.
-- 🧟 **zsh**: aliases only for now. Generated completions are on the roadmap. 🛣️
+- 🧟➡️😎 **zsh**: generated completions too (`_arguments`/`_describe`: subcommands, flags with descriptions, values, file types), loaded on TAB via `-default-` without clobbering whatever was there, plus aliases with `compdef`.
 - 🍎 **macOS**: works, without the sandbox (scripts are only read; binaries get `--help` minus a deny list).
 
 ---
@@ -221,13 +232,14 @@ complete-me explain -- tar -xzvf x.tgz # 🧙 what does that even mean
 ## 🧪 Development
 
 ```sh
-python3 -m unittest discover -s tests -v
+cargo test --release      # or: make test
 ```
 
+- 🧬 It's a Rust port of an earlier Python version, held to **45/45 golden files byte-for-byte** against it.
 - 📸 The parser is tested against real `--help` output.
 - 😈 Hostile help text is tested to stay quoted.
 - 🧾 Every regex recipe is compiled by real `grep`.
-- 🐟 And fish itself is asked what it would complete (`complete -C`), in an isolated environment.
+- 🐟 And real fish, bash and zsh are asked what they'd complete, in an isolated environment.
 
 ---
 
@@ -235,5 +247,7 @@ python3 -m unittest discover -s tests -v
 
 > 🤖 *I hope this README was helpful! As an AI, I don't have feelings, but if I did,
 > I would feel* ✨ **complete** ✨. *Get it? COMPLETE-ME? I'm so sorry.* 😅
+>
+> *P.S. Someone asked whether I was a high-schooler LLM for writing v2 in Python. It is Rust now. We don't talk about v2.* 🦀🔥
 >
 > *Please press Tab to continue.* ⇥

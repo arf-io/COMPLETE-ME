@@ -1,0 +1,8 @@
+git switch	git switch	git switch	git switch
+journalctl -u $1 -f	journalctl -u $argv[1] -f	journalctl -u "$1" -f	journalctl -u
+ls -la	ls -la	ls -la	ls -la
+mkdir -p $1; and cd $1	mkdir -p $argv[1]; and cd $argv[1]	mkdir -p "$1" && cd "$1"	mkdir -p
+echo $@ done	echo $argv done	echo $@ done	echo
+cmd $argv[2] x	cmd $argv[2] x	cmd "$2" x	cmd
+git commit -m "$1"	git commit -m "$argv[1]"	git commit -m "$1"	git commit -m
+command ls	command ls	command ls	ls

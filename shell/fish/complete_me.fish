@@ -397,9 +397,9 @@ function __complete_me_snippet -d 'complete-me: insert a snippet'
 end
 
 if not set -q complete_me_no_abbrs
-    # Cached so shell startup never waits on python; rebuilt when snippets.py changes.
+    # Cached so shell startup never runs anything; rebuilt when the complete-me binary changes.
     set -l abbrs $__complete_me_cache/abbrs.fish
-    set -l src (path resolve (status dirname)/../../complete_me/snippets.py)
+    set -l src (path resolve (command -s complete-me))
     if not test -f $abbrs; or test (path mtime -- $src) -gt (path mtime -- $abbrs)
         complete-me snippets fish-abbrs >$abbrs.tmp; and mv $abbrs.tmp $abbrs
     end

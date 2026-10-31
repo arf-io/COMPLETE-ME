@@ -1,0 +1,1053 @@
+=== '^\\d{3}-[A-Za-z_]+(foo|bar)?$' bre
+basic regex (grep / sed default)
+
+^          start of the line
+\d         a digit 0-9
+           ⚠ not supported in basic regex (grep / sed default); use [0-9] or [[:digit:]], or switch to grep -P
+{          a literal '{'
+           ⚠ in basic regex (grep / sed default) a bare { is literal; write \{ or use -E
+3          the literal text '3'
+}          a literal '}'
+           ⚠ in basic regex (grep / sed default) a bare } is literal; write \} or use -E
+-          the literal text '-'
+[A-Za-z_]  any ONE of: A-Z, a-z, '_'
++          a literal '+'
+           ⚠ in basic regex (grep / sed default) a bare + is literal; write \+ or use -E
+(          a literal '('
+           ⚠ in basic regex (grep / sed default) a bare ( is literal; write \( or use -E
+foo        the literal text 'foo'
+|          a literal '|'
+           ⚠ in basic regex (grep / sed default) a bare | is literal; write \| or use -E
+bar        the literal text 'bar'
+)          a literal ')'
+           ⚠ in basic regex (grep / sed default) a bare ) is literal; write \) or use -E
+?          a literal '?'
+           ⚠ in basic regex (grep / sed default) a bare ? is literal; write \? or use -E
+$          end of the line
+=== '^\\d{3}-[A-Za-z_]+(foo|bar)?$' ere
+extended regex (grep -E, sed -E, awk)
+
+^          start of the line
+\d         a digit 0-9
+           ⚠ not supported in extended regex (grep -E, sed -E, awk); use [0-9] or [[:digit:]], or switch to grep -P
+{3}        the previous item exactly 3 times (as many as possible)
+-          the literal text '-'
+[A-Za-z_]  any ONE of: A-Z, a-z, '_'
++          the previous item, 1 or more times (as many as possible)
+(          start capture group #1
+  foo        the literal text 'foo'
+  |          OR: either the part before or the part after
+  bar        the literal text 'bar'
+)          end of group
+?          the previous item is optional (0 or 1 time) (as many as possible)
+$          end of the line
+=== '^\\d{3}-[A-Za-z_]+(foo|bar)?$' pcre
+PCRE (grep -P, rg -P, fish string -r)
+
+^          start of the line
+\d         a digit 0-9
+{3}        the previous item exactly 3 times (as many as possible)
+-          the literal text '-'
+[A-Za-z_]  any ONE of: A-Z, a-z, '_'
++          the previous item, 1 or more times (as many as possible)
+(          start capture group #1
+  foo        the literal text 'foo'
+  |          OR: either the part before or the part after
+  bar        the literal text 'bar'
+)          end of group
+?          the previous item is optional (0 or 1 time) (as many as possible)
+$          end of the line
+=== '^\\d{3}-[A-Za-z_]+(foo|bar)?$' rust
+Rust regex (rg default)
+
+^          start of the line
+\d         a digit 0-9
+{3}        the previous item exactly 3 times (as many as possible)
+-          the literal text '-'
+[A-Za-z_]  any ONE of: A-Z, a-z, '_'
++          the previous item, 1 or more times (as many as possible)
+(          start capture group #1
+  foo        the literal text 'foo'
+  |          OR: either the part before or the part after
+  bar        the literal text 'bar'
+)          end of group
+?          the previous item is optional (0 or 1 time) (as many as possible)
+$          end of the line
+=== '^\\d{3}-[A-Za-z_]+(foo|bar)?$' emacs
+Emacs regex (find -regex default)
+
+^          start of the line
+\d         a digit 0-9
+           ⚠ not supported in Emacs regex (find -regex default); use [0-9] or [[:digit:]], or switch to grep -P
+{          a literal '{'
+           ⚠ in Emacs regex (find -regex default) a bare { is literal; write \{ or use -E
+3          the literal text '3'
+}          a literal '}'
+           ⚠ in Emacs regex (find -regex default) a bare } is literal; write \} or use -E
+-          the literal text '-'
+[A-Za-z_]  any ONE of: A-Z, a-z, '_'
++          the previous item, 1 or more times (as many as possible)
+(          a literal '('
+           ⚠ in Emacs regex (find -regex default) a bare ( is literal; write \( or use -E
+foo        the literal text 'foo'
+|          a literal '|'
+           ⚠ in Emacs regex (find -regex default) a bare | is literal; write \| or use -E
+bar        the literal text 'bar'
+)          a literal ')'
+           ⚠ in Emacs regex (find -regex default) a bare ) is literal; write \) or use -E
+?          the previous item is optional (0 or 1 time) (as many as possible)
+$          end of the line
+=== '^\\d{3}-[A-Za-z_]+(foo|bar)?$' python
+Python re
+
+^          start of the line
+\d         a digit 0-9
+{3}        the previous item exactly 3 times (as many as possible)
+-          the literal text '-'
+[A-Za-z_]  any ONE of: A-Z, a-z, '_'
++          the previous item, 1 or more times (as many as possible)
+(          start capture group #1
+  foo        the literal text 'foo'
+  |          OR: either the part before or the part after
+  bar        the literal text 'bar'
+)          end of group
+?          the previous item is optional (0 or 1 time) (as many as possible)
+$          end of the line
+=== '^\\d{3}-[A-Za-z_]+(foo|bar)?$' fixed
+fixed string (no regex)
+
+^\d{3}-[A-Za-z_]+(foo|bar)?$ matched literally: this tool is in fixed-string mode (-F)
+=== 'error\\(s\\)\\{2,\\}\\|warn+' bre
+basic regex (grep / sed default)
+
+error      the literal text 'error'
+\(         start capture group #1
+  s          the literal text 's'
+\)         end of group
+{2,}       the previous item 2 or more times (as many as possible)
+\|         OR: either the part before or the part after
+warn       the literal text 'warn'
++          a literal '+'
+           ⚠ in basic regex (grep / sed default) a bare + is literal; write \+ or use -E
+=== 'error\\(s\\)\\{2,\\}\\|warn+' ere
+extended regex (grep -E, sed -E, awk)
+
+error      the literal text 'error'
+\(         a literal '(' (escaped)
+s          the literal text 's'
+\)         a literal ')' (escaped)
+\{         a literal '{' (escaped)
+2,         the literal text '2,'
+\}         a literal '}' (escaped)
+\|         a literal '|' (escaped)
+warn       the literal text 'warn'
++          the previous item, 1 or more times (as many as possible)
+=== 'error\\(s\\)\\{2,\\}\\|warn+' pcre
+PCRE (grep -P, rg -P, fish string -r)
+
+error      the literal text 'error'
+\(         a literal '(' (escaped)
+s          the literal text 's'
+\)         a literal ')' (escaped)
+\{         a literal '{' (escaped)
+2,         the literal text '2,'
+\}         a literal '}' (escaped)
+\|         a literal '|' (escaped)
+warn       the literal text 'warn'
++          the previous item, 1 or more times (as many as possible)
+=== 'error\\(s\\)\\{2,\\}\\|warn+' rust
+Rust regex (rg default)
+
+error      the literal text 'error'
+\(         a literal '(' (escaped)
+s          the literal text 's'
+\)         a literal ')' (escaped)
+\{         a literal '{' (escaped)
+2,         the literal text '2,'
+\}         a literal '}' (escaped)
+\|         a literal '|' (escaped)
+warn       the literal text 'warn'
++          the previous item, 1 or more times (as many as possible)
+=== 'error\\(s\\)\\{2,\\}\\|warn+' emacs
+Emacs regex (find -regex default)
+
+error      the literal text 'error'
+(          start capture group #1
+  s          the literal text 's'
+)          end of group
+{2,}       the literal text '{2,}'
+|          OR: either the part before or the part after
+warn       the literal text 'warn'
++          the previous item, 1 or more times (as many as possible)
+=== 'error\\(s\\)\\{2,\\}\\|warn+' python
+Python re
+
+error      the literal text 'error'
+\(         a literal '(' (escaped)
+s          the literal text 's'
+\)         a literal ')' (escaped)
+\{         a literal '{' (escaped)
+2,         the literal text '2,'
+\}         a literal '}' (escaped)
+\|         a literal '|' (escaped)
+warn       the literal text 'warn'
++          the previous item, 1 or more times (as many as possible)
+=== 'error\\(s\\)\\{2,\\}\\|warn+' fixed
+fixed string (no regex)
+
+error\(s\)\{2,\}\|warn+ matched literally: this tool is in fixed-string mode (-F)
+=== '(?<=id=)\\w+?\\b' bre
+basic regex (grep / sed default)
+
+(          a literal '('
+           ⚠ in basic regex (grep / sed default) a bare ( is literal; write \( or use -E
+?          a literal '?'
+           ⚠ in basic regex (grep / sed default) a bare ? is literal; write \? or use -E
+<=id=      the literal text '<=id='
+)          a literal ')'
+           ⚠ in basic regex (grep / sed default) a bare ) is literal; write \) or use -E
+\w         a word character: letter, digit or _
++          a literal '+'
+           ⚠ in basic regex (grep / sed default) a bare + is literal; write \+ or use -E
+?          a literal '?'
+           ⚠ in basic regex (grep / sed default) a bare ? is literal; write \? or use -E
+\b         word boundary (edge between \w and \W), matches no characters
+=== '(?<=id=)\\w+?\\b' ere
+extended regex (grep -E, sed -E, awk)
+
+(?<=       special group syntax
+           ⚠ (?…) groups are not supported in extended regex (grep -E, sed -E, awk)
+  id=        the literal text 'id='
+)          end of group
+\w         a word character: letter, digit or _
++          the previous item, 1 or more times (as many as possible)
+           ⚠ lazy quantifiers (*?, +?) need PCRE: grep -P / rg
+?          the previous item is optional (0 or 1 time) (as many as possible)
+\b         word boundary (edge between \w and \W), matches no characters
+=== '(?<=id=)\\w+?\\b' pcre
+PCRE (grep -P, rg -P, fish string -r)
+
+(?<=       LOOKBEHIND: must be preceded by …
+  id=        the literal text 'id='
+)          end of group
+\w         a word character: letter, digit or _
++?         the previous item, 1 or more times — as FEW as possible (lazy)
+\b         word boundary (edge between \w and \W), matches no characters
+=== '(?<=id=)\\w+?\\b' rust
+Rust regex (rg default)
+
+(?<=       LOOKBEHIND: must be preceded by …
+           ⚠ look-around needs rg -P (PCRE2)
+  id=        the literal text 'id='
+)          end of group
+\w         a word character: letter, digit or _
++?         the previous item, 1 or more times — as FEW as possible (lazy)
+\b         word boundary (edge between \w and \W), matches no characters
+=== '(?<=id=)\\w+?\\b' emacs
+Emacs regex (find -regex default)
+
+(          a literal '('
+           ⚠ in Emacs regex (find -regex default) a bare ( is literal; write \( or use -E
+?          the previous item is optional (0 or 1 time) (as many as possible)
+<=id=      the literal text '<=id='
+)          a literal ')'
+           ⚠ in Emacs regex (find -regex default) a bare ) is literal; write \) or use -E
+\w         a word character: letter, digit or _
++          the previous item, 1 or more times (as many as possible)
+           ⚠ lazy quantifiers (*?, +?) need PCRE: grep -P / rg
+?          the previous item is optional (0 or 1 time) (as many as possible)
+\b         word boundary (edge between \w and \W), matches no characters
+=== '(?<=id=)\\w+?\\b' python
+Python re
+
+(?<=       LOOKBEHIND: must be preceded by …
+  id=        the literal text 'id='
+)          end of group
+\w         a word character: letter, digit or _
++?         the previous item, 1 or more times — as FEW as possible (lazy)
+\b         word boundary (edge between \w and \W), matches no characters
+=== '(?<=id=)\\w+?\\b' fixed
+fixed string (no regex)
+
+(?<=id=)\w+?\b matched literally: this tool is in fixed-string mode (-F)
+=== '\\bTODO\\b.*\\.py' bre
+basic regex (grep / sed default)
+
+\b         word boundary (edge between \w and \W), matches no characters
+TODO       the literal text 'TODO'
+\b         word boundary (edge between \w and \W), matches no characters
+.          any single character (except newline)
+*          the previous item, 0 or more times (as many as possible)
+\.         a literal '.' (escaped)
+py         the literal text 'py'
+=== '\\bTODO\\b.*\\.py' ere
+extended regex (grep -E, sed -E, awk)
+
+\b         word boundary (edge between \w and \W), matches no characters
+TODO       the literal text 'TODO'
+\b         word boundary (edge between \w and \W), matches no characters
+.          any single character (except newline)
+*          the previous item, 0 or more times (as many as possible)
+\.         a literal '.' (escaped)
+py         the literal text 'py'
+=== '\\bTODO\\b.*\\.py' pcre
+PCRE (grep -P, rg -P, fish string -r)
+
+\b         word boundary (edge between \w and \W), matches no characters
+TODO       the literal text 'TODO'
+\b         word boundary (edge between \w and \W), matches no characters
+.          any single character (except newline)
+*          the previous item, 0 or more times (as many as possible)
+\.         a literal '.' (escaped)
+py         the literal text 'py'
+=== '\\bTODO\\b.*\\.py' rust
+Rust regex (rg default)
+
+\b         word boundary (edge between \w and \W), matches no characters
+TODO       the literal text 'TODO'
+\b         word boundary (edge between \w and \W), matches no characters
+.          any single character (except newline)
+*          the previous item, 0 or more times (as many as possible)
+\.         a literal '.' (escaped)
+py         the literal text 'py'
+=== '\\bTODO\\b.*\\.py' emacs
+Emacs regex (find -regex default)
+
+\b         word boundary (edge between \w and \W), matches no characters
+TODO       the literal text 'TODO'
+\b         word boundary (edge between \w and \W), matches no characters
+.          any single character (except newline)
+*          the previous item, 0 or more times (as many as possible)
+\.         a literal '.' (escaped)
+py         the literal text 'py'
+=== '\\bTODO\\b.*\\.py' python
+Python re
+
+\b         word boundary (edge between \w and \W), matches no characters
+TODO       the literal text 'TODO'
+\b         word boundary (edge between \w and \W), matches no characters
+.          any single character (except newline)
+*          the previous item, 0 or more times (as many as possible)
+\.         a literal '.' (escaped)
+py         the literal text 'py'
+=== '\\bTODO\\b.*\\.py' fixed
+fixed string (no regex)
+
+\bTODO\b.*\.py matched literally: this tool is in fixed-string mode (-F)
+=== '[^[:space:]]+@x\\.com' bre
+basic regex (grep / sed default)
+
+[^[:space:]] any ONE character EXCEPT: whitespace
++          a literal '+'
+           ⚠ in basic regex (grep / sed default) a bare + is literal; write \+ or use -E
+@x         the literal text '@x'
+\.         a literal '.' (escaped)
+com        the literal text 'com'
+=== '[^[:space:]]+@x\\.com' ere
+extended regex (grep -E, sed -E, awk)
+
+[^[:space:]] any ONE character EXCEPT: whitespace
++          the previous item, 1 or more times (as many as possible)
+@x         the literal text '@x'
+\.         a literal '.' (escaped)
+com        the literal text 'com'
+=== '[^[:space:]]+@x\\.com' pcre
+PCRE (grep -P, rg -P, fish string -r)
+
+[^[:space:]] any ONE character EXCEPT: whitespace
++          the previous item, 1 or more times (as many as possible)
+@x         the literal text '@x'
+\.         a literal '.' (escaped)
+com        the literal text 'com'
+=== '[^[:space:]]+@x\\.com' rust
+Rust regex (rg default)
+
+[^[:space:]] any ONE character EXCEPT: whitespace
++          the previous item, 1 or more times (as many as possible)
+@x         the literal text '@x'
+\.         a literal '.' (escaped)
+com        the literal text 'com'
+=== '[^[:space:]]+@x\\.com' emacs
+Emacs regex (find -regex default)
+
+[^[:space:]] any ONE character EXCEPT: whitespace
++          the previous item, 1 or more times (as many as possible)
+@x         the literal text '@x'
+\.         a literal '.' (escaped)
+com        the literal text 'com'
+=== '[^[:space:]]+@x\\.com' python
+Python re
+
+[^[:space:]] any ONE character EXCEPT: whitespace
++          the previous item, 1 or more times (as many as possible)
+@x         the literal text '@x'
+\.         a literal '.' (escaped)
+com        the literal text 'com'
+=== '[^[:space:]]+@x\\.com' fixed
+fixed string (no regex)
+
+[^[:space:]]+@x\.com matched literally: this tool is in fixed-string mode (-F)
+=== 'a{2,5}' bre
+basic regex (grep / sed default)
+
+a          the literal text 'a'
+{          a literal '{'
+           ⚠ in basic regex (grep / sed default) a bare { is literal; write \{ or use -E
+2,5        the literal text '2,5'
+}          a literal '}'
+           ⚠ in basic regex (grep / sed default) a bare } is literal; write \} or use -E
+=== 'a{2,5}' ere
+extended regex (grep -E, sed -E, awk)
+
+a          the literal text 'a'
+{2,5}      the previous item 2 to 5 times (as many as possible)
+=== 'a{2,5}' pcre
+PCRE (grep -P, rg -P, fish string -r)
+
+a          the literal text 'a'
+{2,5}      the previous item 2 to 5 times (as many as possible)
+=== 'a{2,5}' rust
+Rust regex (rg default)
+
+a          the literal text 'a'
+{2,5}      the previous item 2 to 5 times (as many as possible)
+=== 'a{2,5}' emacs
+Emacs regex (find -regex default)
+
+a          the literal text 'a'
+{          a literal '{'
+           ⚠ in Emacs regex (find -regex default) a bare { is literal; write \{ or use -E
+2,5        the literal text '2,5'
+}          a literal '}'
+           ⚠ in Emacs regex (find -regex default) a bare } is literal; write \} or use -E
+=== 'a{2,5}' python
+Python re
+
+a          the literal text 'a'
+{2,5}      the previous item 2 to 5 times (as many as possible)
+=== 'a{2,5}' fixed
+fixed string (no regex)
+
+a{2,5}     matched literally: this tool is in fixed-string mode (-F)
+=== 'a{x' bre
+basic regex (grep / sed default)
+
+a          the literal text 'a'
+{          a literal '{'
+           ⚠ in basic regex (grep / sed default) a bare { is literal; write \{ or use -E
+x          the literal text 'x'
+=== 'a{x' ere
+extended regex (grep -E, sed -E, awk)
+
+a{x        the literal text 'a{x'
+=== 'a{x' pcre
+PCRE (grep -P, rg -P, fish string -r)
+
+a{x        the literal text 'a{x'
+=== 'a{x' rust
+Rust regex (rg default)
+
+a{x        the literal text 'a{x'
+=== 'a{x' emacs
+Emacs regex (find -regex default)
+
+a          the literal text 'a'
+{          a literal '{'
+           ⚠ in Emacs regex (find -regex default) a bare { is literal; write \{ or use -E
+x          the literal text 'x'
+=== 'a{x' python
+Python re
+
+a{x        the literal text 'a{x'
+=== 'a{x' fixed
+fixed string (no regex)
+
+a{x        matched literally: this tool is in fixed-string mode (-F)
+=== '(ab' bre
+basic regex (grep / sed default)
+
+(          a literal '('
+           ⚠ in basic regex (grep / sed default) a bare ( is literal; write \( or use -E
+ab         the literal text 'ab'
+=== '(ab' ere
+extended regex (grep -E, sed -E, awk)
+
+(          start capture group #1
+  ab         the literal text 'ab'
+           ⚠ 1 group(s) not closed
+=== '(ab' pcre
+PCRE (grep -P, rg -P, fish string -r)
+
+(          start capture group #1
+  ab         the literal text 'ab'
+           ⚠ 1 group(s) not closed
+=== '(ab' rust
+Rust regex (rg default)
+
+(          start capture group #1
+  ab         the literal text 'ab'
+           ⚠ 1 group(s) not closed
+=== '(ab' emacs
+Emacs regex (find -regex default)
+
+(          a literal '('
+           ⚠ in Emacs regex (find -regex default) a bare ( is literal; write \( or use -E
+ab         the literal text 'ab'
+=== '(ab' python
+Python re
+
+(          start capture group #1
+  ab         the literal text 'ab'
+           ⚠ 1 group(s) not closed
+=== '(ab' fixed
+fixed string (no regex)
+
+(ab        matched literally: this tool is in fixed-string mode (-F)
+=== 'a\\(b\\)\\{2\\}c+' bre
+basic regex (grep / sed default)
+
+a          the literal text 'a'
+\(         start capture group #1
+  b          the literal text 'b'
+\)         end of group
+{2}        the previous item exactly 2 times (as many as possible)
+c          the literal text 'c'
++          a literal '+'
+           ⚠ in basic regex (grep / sed default) a bare + is literal; write \+ or use -E
+=== 'a\\(b\\)\\{2\\}c+' ere
+extended regex (grep -E, sed -E, awk)
+
+a          the literal text 'a'
+\(         a literal '(' (escaped)
+b          the literal text 'b'
+\)         a literal ')' (escaped)
+\{         a literal '{' (escaped)
+2          the literal text '2'
+\}         a literal '}' (escaped)
+c          the literal text 'c'
++          the previous item, 1 or more times (as many as possible)
+=== 'a\\(b\\)\\{2\\}c+' pcre
+PCRE (grep -P, rg -P, fish string -r)
+
+a          the literal text 'a'
+\(         a literal '(' (escaped)
+b          the literal text 'b'
+\)         a literal ')' (escaped)
+\{         a literal '{' (escaped)
+2          the literal text '2'
+\}         a literal '}' (escaped)
+c          the literal text 'c'
++          the previous item, 1 or more times (as many as possible)
+=== 'a\\(b\\)\\{2\\}c+' rust
+Rust regex (rg default)
+
+a          the literal text 'a'
+\(         a literal '(' (escaped)
+b          the literal text 'b'
+\)         a literal ')' (escaped)
+\{         a literal '{' (escaped)
+2          the literal text '2'
+\}         a literal '}' (escaped)
+c          the literal text 'c'
++          the previous item, 1 or more times (as many as possible)
+=== 'a\\(b\\)\\{2\\}c+' emacs
+Emacs regex (find -regex default)
+
+a          the literal text 'a'
+(          start capture group #1
+  b          the literal text 'b'
+)          end of group
+{2}c       the literal text '{2}c'
++          the previous item, 1 or more times (as many as possible)
+=== 'a\\(b\\)\\{2\\}c+' python
+Python re
+
+a          the literal text 'a'
+\(         a literal '(' (escaped)
+b          the literal text 'b'
+\)         a literal ')' (escaped)
+\{         a literal '{' (escaped)
+2          the literal text '2'
+\}         a literal '}' (escaped)
+c          the literal text 'c'
++          the previous item, 1 or more times (as many as possible)
+=== 'a\\(b\\)\\{2\\}c+' fixed
+fixed string (no regex)
+
+a\(b\)\{2\}c+ matched literally: this tool is in fixed-string mode (-F)
+=== '(?i)foo(?:bar)+' bre
+basic regex (grep / sed default)
+
+(          a literal '('
+           ⚠ in basic regex (grep / sed default) a bare ( is literal; write \( or use -E
+?          a literal '?'
+           ⚠ in basic regex (grep / sed default) a bare ? is literal; write \? or use -E
+i          the literal text 'i'
+)          a literal ')'
+           ⚠ in basic regex (grep / sed default) a bare ) is literal; write \) or use -E
+foo        the literal text 'foo'
+(          a literal '('
+           ⚠ in basic regex (grep / sed default) a bare ( is literal; write \( or use -E
+?          a literal '?'
+           ⚠ in basic regex (grep / sed default) a bare ? is literal; write \? or use -E
+:bar       the literal text ':bar'
+)          a literal ')'
+           ⚠ in basic regex (grep / sed default) a bare ) is literal; write \) or use -E
++          a literal '+'
+           ⚠ in basic regex (grep / sed default) a bare + is literal; write \+ or use -E
+=== '(?i)foo(?:bar)+' ere
+extended regex (grep -E, sed -E, awk)
+
+(?i)       special group syntax
+           ⚠ (?…) groups are not supported in extended regex (grep -E, sed -E, awk)
+  foo        the literal text 'foo'
+  (?:        special group syntax
+             ⚠ (?…) groups are not supported in extended regex (grep -E, sed -E, awk)
+    bar        the literal text 'bar'
+  )          end of group
+  +          the previous item, 1 or more times (as many as possible)
+           ⚠ 1 group(s) not closed
+=== '(?i)foo(?:bar)+' pcre
+PCRE (grep -P, rg -P, fish string -r)
+
+(?i)       turn on flags i from here (i = ignore case, s = . matches newline, m = ^/$ per line, x = verbose)
+foo        the literal text 'foo'
+(?:        group (not captured)
+  bar        the literal text 'bar'
+)          end of group
++          the previous item, 1 or more times (as many as possible)
+=== '(?i)foo(?:bar)+' rust
+Rust regex (rg default)
+
+(?i)       turn on flags i from here (i = ignore case, s = . matches newline, m = ^/$ per line, x = verbose)
+foo        the literal text 'foo'
+(?:        group (not captured)
+  bar        the literal text 'bar'
+)          end of group
++          the previous item, 1 or more times (as many as possible)
+=== '(?i)foo(?:bar)+' emacs
+Emacs regex (find -regex default)
+
+(          a literal '('
+           ⚠ in Emacs regex (find -regex default) a bare ( is literal; write \( or use -E
+?          the previous item is optional (0 or 1 time) (as many as possible)
+i          the literal text 'i'
+)          a literal ')'
+           ⚠ in Emacs regex (find -regex default) a bare ) is literal; write \) or use -E
+foo        the literal text 'foo'
+(          a literal '('
+           ⚠ in Emacs regex (find -regex default) a bare ( is literal; write \( or use -E
+?          the previous item is optional (0 or 1 time) (as many as possible)
+:bar       the literal text ':bar'
+)          a literal ')'
+           ⚠ in Emacs regex (find -regex default) a bare ) is literal; write \) or use -E
++          the previous item, 1 or more times (as many as possible)
+=== '(?i)foo(?:bar)+' python
+Python re
+
+(?i)       turn on flags i from here (i = ignore case, s = . matches newline, m = ^/$ per line, x = verbose)
+foo        the literal text 'foo'
+(?:        group (not captured)
+  bar        the literal text 'bar'
+)          end of group
++          the previous item, 1 or more times (as many as possible)
+=== '(?i)foo(?:bar)+' fixed
+fixed string (no regex)
+
+(?i)foo(?:bar)+ matched literally: this tool is in fixed-string mode (-F)
+=== 'x*?y+?' bre
+basic regex (grep / sed default)
+
+x          the literal text 'x'
+*          the previous item, 0 or more times (as many as possible)
+           ⚠ lazy quantifiers (*?, +?) need PCRE: grep -P / rg
+?          a literal '?'
+           ⚠ in basic regex (grep / sed default) a bare ? is literal; write \? or use -E
+y          the literal text 'y'
++          a literal '+'
+           ⚠ in basic regex (grep / sed default) a bare + is literal; write \+ or use -E
+?          a literal '?'
+           ⚠ in basic regex (grep / sed default) a bare ? is literal; write \? or use -E
+=== 'x*?y+?' ere
+extended regex (grep -E, sed -E, awk)
+
+x          the literal text 'x'
+*          the previous item, 0 or more times (as many as possible)
+           ⚠ lazy quantifiers (*?, +?) need PCRE: grep -P / rg
+?          the previous item is optional (0 or 1 time) (as many as possible)
+y          the literal text 'y'
++          the previous item, 1 or more times (as many as possible)
+           ⚠ lazy quantifiers (*?, +?) need PCRE: grep -P / rg
+?          the previous item is optional (0 or 1 time) (as many as possible)
+=== 'x*?y+?' pcre
+PCRE (grep -P, rg -P, fish string -r)
+
+x          the literal text 'x'
+*?         the previous item, 0 or more times — as FEW as possible (lazy)
+y          the literal text 'y'
++?         the previous item, 1 or more times — as FEW as possible (lazy)
+=== 'x*?y+?' rust
+Rust regex (rg default)
+
+x          the literal text 'x'
+*?         the previous item, 0 or more times — as FEW as possible (lazy)
+y          the literal text 'y'
++?         the previous item, 1 or more times — as FEW as possible (lazy)
+=== 'x*?y+?' emacs
+Emacs regex (find -regex default)
+
+x          the literal text 'x'
+*          the previous item, 0 or more times (as many as possible)
+           ⚠ lazy quantifiers (*?, +?) need PCRE: grep -P / rg
+?          the previous item is optional (0 or 1 time) (as many as possible)
+y          the literal text 'y'
++          the previous item, 1 or more times (as many as possible)
+           ⚠ lazy quantifiers (*?, +?) need PCRE: grep -P / rg
+?          the previous item is optional (0 or 1 time) (as many as possible)
+=== 'x*?y+?' python
+Python re
+
+x          the literal text 'x'
+*?         the previous item, 0 or more times — as FEW as possible (lazy)
+y          the literal text 'y'
++?         the previous item, 1 or more times — as FEW as possible (lazy)
+=== 'x*?y+?' fixed
+fixed string (no regex)
+
+x*?y+?     matched literally: this tool is in fixed-string mode (-F)
+=== '\\1(a)' bre
+basic regex (grep / sed default)
+
+\1         the same text that group 1 matched (back-reference)
+(          a literal '('
+           ⚠ in basic regex (grep / sed default) a bare ( is literal; write \( or use -E
+a          the literal text 'a'
+)          a literal ')'
+           ⚠ in basic regex (grep / sed default) a bare ) is literal; write \) or use -E
+=== '\\1(a)' ere
+extended regex (grep -E, sed -E, awk)
+
+\1         the same text that group 1 matched (back-reference)
+(          start capture group #1
+  a          the literal text 'a'
+)          end of group
+=== '\\1(a)' pcre
+PCRE (grep -P, rg -P, fish string -r)
+
+\1         the same text that group 1 matched (back-reference)
+(          start capture group #1
+  a          the literal text 'a'
+)          end of group
+=== '\\1(a)' rust
+Rust regex (rg default)
+
+\1         the same text that group 1 matched (back-reference)
+           ⚠ back-references need rg -P
+(          start capture group #1
+  a          the literal text 'a'
+)          end of group
+=== '\\1(a)' emacs
+Emacs regex (find -regex default)
+
+\1         the same text that group 1 matched (back-reference)
+(          a literal '('
+           ⚠ in Emacs regex (find -regex default) a bare ( is literal; write \( or use -E
+a          the literal text 'a'
+)          a literal ')'
+           ⚠ in Emacs regex (find -regex default) a bare ) is literal; write \) or use -E
+=== '\\1(a)' python
+Python re
+
+\1         the same text that group 1 matched (back-reference)
+(          start capture group #1
+  a          the literal text 'a'
+)          end of group
+=== '\\1(a)' fixed
+fixed string (no regex)
+
+\1(a)      matched literally: this tool is in fixed-string mode (-F)
+=== '[]a-]' bre
+basic regex (grep / sed default)
+
+[]a-]      any ONE of: ']', 'a', '-'
+=== '[]a-]' ere
+extended regex (grep -E, sed -E, awk)
+
+[]a-]      any ONE of: ']', 'a', '-'
+=== '[]a-]' pcre
+PCRE (grep -P, rg -P, fish string -r)
+
+[]a-]      any ONE of: ']', 'a', '-'
+=== '[]a-]' rust
+Rust regex (rg default)
+
+[]a-]      any ONE of: ']', 'a', '-'
+=== '[]a-]' emacs
+Emacs regex (find -regex default)
+
+[]a-]      any ONE of: ']', 'a', '-'
+=== '[]a-]' python
+Python re
+
+[]a-]      any ONE of: ']', 'a', '-'
+=== '[]a-]' fixed
+fixed string (no regex)
+
+[]a-]      matched literally: this tool is in fixed-string mode (-F)
+=== '\\p{L}+\\x41' bre
+basic regex (grep / sed default)
+
+p          the literal text 'p'
+{          a literal '{'
+           ⚠ in basic regex (grep / sed default) a bare { is literal; write \{ or use -E
+L          the literal text 'L'
+}          a literal '}'
+           ⚠ in basic regex (grep / sed default) a bare } is literal; write \} or use -E
++          a literal '+'
+           ⚠ in basic regex (grep / sed default) a bare + is literal; write \+ or use -E
+x41        the literal text 'x41'
+=== '\\p{L}+\\x41' ere
+extended regex (grep -E, sed -E, awk)
+
+p{L}       the literal text 'p{L}'
++          the previous item, 1 or more times (as many as possible)
+x41        the literal text 'x41'
+=== '\\p{L}+\\x41' pcre
+PCRE (grep -P, rg -P, fish string -r)
+
+\p{L}      a character in Unicode class L
++          the previous item, 1 or more times (as many as possible)
+\x41       the character with hex code 41
+=== '\\p{L}+\\x41' rust
+Rust regex (rg default)
+
+\p{L}      a character in Unicode class L
++          the previous item, 1 or more times (as many as possible)
+\x41       the character with hex code 41
+=== '\\p{L}+\\x41' emacs
+Emacs regex (find -regex default)
+
+p          the literal text 'p'
+{          a literal '{'
+           ⚠ in Emacs regex (find -regex default) a bare { is literal; write \{ or use -E
+L          the literal text 'L'
+}          a literal '}'
+           ⚠ in Emacs regex (find -regex default) a bare } is literal; write \} or use -E
++          the previous item, 1 or more times (as many as possible)
+x41        the literal text 'x41'
+=== '\\p{L}+\\x41' python
+Python re
+
+\p{L}      a character in Unicode class L
++          the previous item, 1 or more times (as many as possible)
+\x41       the character with hex code 41
+=== '\\p{L}+\\x41' fixed
+fixed string (no regex)
+
+\p{L}+\x41 matched literally: this tool is in fixed-string mode (-F)
+=== 'plain' bre
+basic regex (grep / sed default)
+
+plain      the literal text 'plain'
+=== 'plain' ere
+extended regex (grep -E, sed -E, awk)
+
+plain      the literal text 'plain'
+=== 'plain' pcre
+PCRE (grep -P, rg -P, fish string -r)
+
+plain      the literal text 'plain'
+=== 'plain' rust
+Rust regex (rg default)
+
+plain      the literal text 'plain'
+=== 'plain' emacs
+Emacs regex (find -regex default)
+
+plain      the literal text 'plain'
+=== 'plain' python
+Python re
+
+plain      the literal text 'plain'
+=== 'plain' fixed
+fixed string (no regex)
+
+plain      matched literally: this tool is in fixed-string mode (-F)
+=== '' bre
+basic regex (grep / sed default)
+
+type a pattern…  TAB in the pattern slot shows every piece with its meaning
+=== '' ere
+extended regex (grep -E, sed -E, awk)
+
+type a pattern…  TAB in the pattern slot shows every piece with its meaning
+=== '' pcre
+PCRE (grep -P, rg -P, fish string -r)
+
+type a pattern…  TAB in the pattern slot shows every piece with its meaning
+=== '' rust
+Rust regex (rg default)
+
+type a pattern…  TAB in the pattern slot shows every piece with its meaning
+=== '' emacs
+Emacs regex (find -regex default)
+
+type a pattern…  TAB in the pattern slot shows every piece with its meaning
+=== '' python
+Python re
+
+type a pattern…  TAB in the pattern slot shows every piece with its meaning
+=== '' fixed
+fixed string (no regex)
+
+type a pattern…  TAB in the pattern slot shows every piece with its meaning
+=== '(?P<year>\\d{4})-(?!00)' bre
+basic regex (grep / sed default)
+
+(          a literal '('
+           ⚠ in basic regex (grep / sed default) a bare ( is literal; write \( or use -E
+?          a literal '?'
+           ⚠ in basic regex (grep / sed default) a bare ? is literal; write \? or use -E
+P<year>    the literal text 'P<year>'
+\d         a digit 0-9
+           ⚠ not supported in basic regex (grep / sed default); use [0-9] or [[:digit:]], or switch to grep -P
+{          a literal '{'
+           ⚠ in basic regex (grep / sed default) a bare { is literal; write \{ or use -E
+4          the literal text '4'
+}          a literal '}'
+           ⚠ in basic regex (grep / sed default) a bare } is literal; write \} or use -E
+)          a literal ')'
+           ⚠ in basic regex (grep / sed default) a bare ) is literal; write \) or use -E
+-          the literal text '-'
+(          a literal '('
+           ⚠ in basic regex (grep / sed default) a bare ( is literal; write \( or use -E
+?          a literal '?'
+           ⚠ in basic regex (grep / sed default) a bare ? is literal; write \? or use -E
+!00        the literal text '!00'
+)          a literal ')'
+           ⚠ in basic regex (grep / sed default) a bare ) is literal; write \) or use -E
+=== '(?P<year>\\d{4})-(?!00)' ere
+extended regex (grep -E, sed -E, awk)
+
+(?P<year>  special group syntax
+           ⚠ (?…) groups are not supported in extended regex (grep -E, sed -E, awk)
+  \d         a digit 0-9
+             ⚠ not supported in extended regex (grep -E, sed -E, awk); use [0-9] or [[:digit:]], or switch to grep -P
+  {4}        the previous item exactly 4 times (as many as possible)
+)          end of group
+-          the literal text '-'
+(?!        special group syntax
+           ⚠ (?…) groups are not supported in extended regex (grep -E, sed -E, awk)
+  00         the literal text '00'
+)          end of group
+=== '(?P<year>\\d{4})-(?!00)' pcre
+PCRE (grep -P, rg -P, fish string -r)
+
+(?P<year>  named capture group 'year' (#1)
+  \d         a digit 0-9
+  {4}        the previous item exactly 4 times (as many as possible)
+)          end of group
+-          the literal text '-'
+(?!        NEGATIVE LOOKAHEAD: must NOT be followed by …
+  00         the literal text '00'
+)          end of group
+=== '(?P<year>\\d{4})-(?!00)' rust
+Rust regex (rg default)
+
+(?P<year>  named capture group 'year' (#1)
+  \d         a digit 0-9
+  {4}        the previous item exactly 4 times (as many as possible)
+)          end of group
+-          the literal text '-'
+(?!        NEGATIVE LOOKAHEAD: must NOT be followed by …
+           ⚠ look-around needs rg -P (PCRE2)
+  00         the literal text '00'
+)          end of group
+=== '(?P<year>\\d{4})-(?!00)' emacs
+Emacs regex (find -regex default)
+
+(          a literal '('
+           ⚠ in Emacs regex (find -regex default) a bare ( is literal; write \( or use -E
+?          the previous item is optional (0 or 1 time) (as many as possible)
+P<year>    the literal text 'P<year>'
+\d         a digit 0-9
+           ⚠ not supported in Emacs regex (find -regex default); use [0-9] or [[:digit:]], or switch to grep -P
+{          a literal '{'
+           ⚠ in Emacs regex (find -regex default) a bare { is literal; write \{ or use -E
+4          the literal text '4'
+}          a literal '}'
+           ⚠ in Emacs regex (find -regex default) a bare } is literal; write \} or use -E
+)          a literal ')'
+           ⚠ in Emacs regex (find -regex default) a bare ) is literal; write \) or use -E
+-          the literal text '-'
+(          a literal '('
+           ⚠ in Emacs regex (find -regex default) a bare ( is literal; write \( or use -E
+?          the previous item is optional (0 or 1 time) (as many as possible)
+!00        the literal text '!00'
+)          a literal ')'
+           ⚠ in Emacs regex (find -regex default) a bare ) is literal; write \) or use -E
+=== '(?P<year>\\d{4})-(?!00)' python
+Python re
+
+(?P<year>  named capture group 'year' (#1)
+  \d         a digit 0-9
+  {4}        the previous item exactly 4 times (as many as possible)
+)          end of group
+-          the literal text '-'
+(?!        NEGATIVE LOOKAHEAD: must NOT be followed by …
+  00         the literal text '00'
+)          end of group
+=== '(?P<year>\\d{4})-(?!00)' fixed
+fixed string (no regex)
+
+(?P<year>\d{4})-(?!00) matched literally: this tool is in fixed-string mode (-F)
+=== '\\Kx\\h' bre
+basic regex (grep / sed default)
+
+\K         forget everything matched so far: the match 'starts' here
+           ⚠ not supported in basic regex (grep / sed default); only PCRE has \K: grep -P or rg -P
+x          the literal text 'x'
+\h         horizontal whitespace (space or tab)
+           ⚠ not supported in basic regex (grep / sed default)
+=== '\\Kx\\h' ere
+extended regex (grep -E, sed -E, awk)
+
+\K         forget everything matched so far: the match 'starts' here
+           ⚠ not supported in extended regex (grep -E, sed -E, awk); only PCRE has \K: grep -P or rg -P
+x          the literal text 'x'
+\h         horizontal whitespace (space or tab)
+           ⚠ not supported in extended regex (grep -E, sed -E, awk)
+=== '\\Kx\\h' pcre
+PCRE (grep -P, rg -P, fish string -r)
+
+\K         forget everything matched so far: the match 'starts' here
+x          the literal text 'x'
+\h         horizontal whitespace (space or tab)
+=== '\\Kx\\h' rust
+Rust regex (rg default)
+
+\K         forget everything matched so far: the match 'starts' here
+           ⚠ not supported in Rust regex (rg default); only PCRE has \K: grep -P or rg -P
+x          the literal text 'x'
+\h         horizontal whitespace (space or tab)
+           ⚠ not supported in Rust regex (rg default)
+=== '\\Kx\\h' emacs
+Emacs regex (find -regex default)
+
+\K         forget everything matched so far: the match 'starts' here
+           ⚠ not supported in Emacs regex (find -regex default); only PCRE has \K: grep -P or rg -P
+x          the literal text 'x'
+\h         horizontal whitespace (space or tab)
+           ⚠ not supported in Emacs regex (find -regex default)
+=== '\\Kx\\h' python
+Python re
+
+\K         forget everything matched so far: the match 'starts' here
+           ⚠ not supported in Python re; only PCRE has \K: grep -P or rg -P
+x          the literal text 'x'
+\h         horizontal whitespace (space or tab)
+           ⚠ not supported in Python re
+=== '\\Kx\\h' fixed
+fixed string (no regex)
+
+\Kx\h      matched literally: this tool is in fixed-string mode (-F)
