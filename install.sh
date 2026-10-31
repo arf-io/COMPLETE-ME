@@ -7,15 +7,18 @@
 #   ./install.sh --no-deps        don't install packages; just link and hook up
 #   ./install.sh --shells fish    only these shells (space or comma separated: fish bash zsh)
 #   ./install.sh --dry-run        print what would happen, change nothing
+#   ./install.sh --with-blesh     bash: also install ble.sh (fish-style suggestions + highlighting for bash)
 #   ./install.sh --uninstall      remove everything this script added (generated caches are kept)
 #
 #   curl -fsSL <raw url>/install.sh | bash     clones into ~/.local/share/complete-me, then installs
 #
 # What it changes, and nothing else:
-#   packages (only with your OK)                   rust/cargo (to build), bubblewrap, fzf, babelfish, a clipboard reader
+#   packages (only with your OK)                   rust/cargo (to build), bubblewrap, fzf, babelfish, a clipboard reader,
+#                                                  bash-completion (bash), zsh-autosuggestions + zsh-syntax-highlighting (zsh)
 #   ~/.local/bin/complete-me                       the compiled binary (cargo install --root ~/.local)
 #   ~/.config/fish/conf.d/complete_me.fish         one guarded `source` line
 #   ~/.bashrc, ~/.zshrc                            one marked line each, only if the file exists, with your OK
+#                                                  (--with-blesh: two more marked lines in ~/.bashrc, ble.sh in ~/.local/share/blesh)
 set -euo pipefail
 
 REPO_URL="${COMPLETE_ME_REPO:-https://github.com/arf-io/COMPLETE-ME.git}"
@@ -24,7 +27,7 @@ CONF="${XDG_CONFIG_HOME:-$HOME/.config}"
 FISH_CONF="$CONF/fish/conf.d/complete_me.fish"
 MARK="# complete-me"
 
-YES=0 DEPS=1 DRY=0 SHELLS="fish bash zsh" UNINSTALL=0
+YES=0 DEPS=1 DRY=0 SHELLS="fish bash zsh" UNINSTALL=0 BLESH=0
 while [ $# -gt 0 ]; do
     case "$1" in
         -y|--yes) YES=1 ;;
@@ -32,7 +35,8 @@ while [ $# -gt 0 ]; do
         --dry-run) DRY=1 ;;
         --shells) SHELLS="${2//,/ }"; shift ;;
         --uninstall) UNINSTALL=1 ;;
-        -h|--help) sed -n '2,20p' "$0" 2>/dev/null | sed 's/^# \{0,1\}//'; exit 0 ;;
+        --with-blesh) BLESH=1 ;;
+        -h|--help) sed -n '2,22p' "$0" 2>/dev/null | sed 's/^# \{0,1\}//'; exit 0 ;;
         *) echo "unknown option: $1 (see --help)" >&2; exit 2 ;;
     esac
     shift
@@ -108,6 +112,7 @@ pkg_name() {
     case "$PM:$1" in
         pacman:cargo|brew:cargo|dnf:cargo|zypper:cargo|apk:cargo|xbps-install:cargo) [ "$PM" = pacman ] || [ "$PM" = brew ] && echo rust || echo cargo ;;
         apt-get:cargo) echo cargo ;;
+        brew:bash-completion) echo bash-completion@2 ;;
         *:bwrap) echo bubblewrap ;;
         *:wl-paste) echo wl-clipboard ;;
         *) echo "$1" ;;
@@ -143,19 +148,48 @@ if [ "$OS" != Darwin ]; then
     if [ -n "${WAYLAND_DISPLAY:-}" ]; then dep wl-paste "clipboard-aware completion" 0
     elif [ -n "${DISPLAY:-}" ] && ! have xsel; then dep xclip "clipboard-aware completion" 0; fi
 fi
-have fish || warn "fish not found — complete-me shines in fish (bash still gets generated completions)"
+have fish || warn "fish not found — bash and zsh get the same extras (history, clipboard, regex, find, ssh, alt-keys)"
+# bash: bash-completion is what most completions live in; complete-me layers on top of it.
+bash_completion_file() {
+    for f in /usr/share/bash-completion/bash_completion /usr/local/share/bash-completion/bash_completion \
+        /opt/homebrew/share/bash-completion/bash_completion /home/linuxbrew/.linuxbrew/share/bash-completion/bash_completion; do
+        [ -r "$f" ] && { echo "$f"; return 0; }
+    done
+    return 1
+}
+if want_shell bash && [ -f "$HOME/.bashrc" ]; then
+    if bash_completion_file >/dev/null; then ok "bash-completion — completions for git, ssh, … (complete-me adds its extras on top)"
+    else warn "bash-completion missing — git/ssh/… completions for bash"; sys_need+=(bash-completion); fi
+fi
+# zsh: fish-style gray suggestions from history (→ accepts) and command colouring.
+zsh_plugin() {
+    for d in /usr/share/zsh/plugins /usr/share /usr/local/share /opt/homebrew/share /home/linuxbrew/.linuxbrew/share \
+        "${XDG_DATA_HOME:-$HOME/.local/share}/zsh/plugins"; do
+        [ -r "$d/$1/$1.zsh" ] && return 0
+    done
+    return 1
+}
+if want_shell zsh && have zsh && [ -f "$HOME/.zshrc" ]; then
+    for p in zsh-autosuggestions zsh-syntax-highlighting; do
+        if zsh_plugin "$p"; then ok "$p — the fish feel in zsh (complete-me loads it)"
+        else warn "$p missing — the fish feel in zsh: $([ $p = zsh-autosuggestions ] && echo 'gray suggestions from history' || echo 'command colouring')"; sys_need+=("$p"); fi
+    done
+fi
 
 if [ "$DEPS" = 1 ] && [ "${#sys_need[@]}" -gt 0 ]; then
     if [ -n "$PM" ] && root_ok && ask "Install ${sys_need[*]} with $PM?"; then
         sys_install "${sys_need[@]}" && ok "installed ${sys_need[*]}" || warn "$PM failed; continuing"
     else
-        # No root here: Homebrew can still provide fzf without sudo.
-        rest=()
+        # No root here: Homebrew can still provide these without sudo.
+        rest=() brewable=()
         for p in "${sys_need[@]}"; do
-            if [ "$p" = fzf ] && [ -n "$BREW" ] && ask "No sudo available — install fzf with Homebrew instead?"; then
-                run "$BREW" install fzf && ok "fzf installed via Homebrew"
-            else rest+=("$p"); fi
+            case "$p" in fzf|zsh-autosuggestions|zsh-syntax-highlighting) [ -n "$BREW" ] && brewable+=("$p") || rest+=("$p") ;;
+                bash-completion) [ -n "$BREW" ] && brewable+=(bash-completion@2) || rest+=("$p") ;;
+                *) rest+=("$p") ;; esac
         done
+        if [ "${#brewable[@]}" -gt 0 ] && ask "No sudo available — install ${brewable[*]} with Homebrew instead?"; then
+            run "$BREW" install "${brewable[@]}" && ok "installed via Homebrew: ${brewable[*]}" || rest+=("${brewable[@]}")
+        elif [ "${#brewable[@]}" -gt 0 ]; then rest+=("${brewable[@]}"); fi
         [ "${#rest[@]}" -gt 0 ] && warn "install these yourself when you can:  ${SUDO:+$SUDO }${PM:-<package manager>} install ${rest[*]}"
     fi
 fi
@@ -220,6 +254,31 @@ for shell in bash zsh; do
         ok "$shell: $rc"; hooked+=("$shell")
     fi
 done
+# bash: ble.sh gives bash fish-style suggestions and highlighting. It must load first in ~/.bashrc
+# and attach last, so it gets two marked lines: one at the very top, one at the very bottom.
+if [ "$BLESH" = 1 ] && want_shell bash && [ -f "$HOME/.bashrc" ]; then
+    blesh="$HOME/.local/share/blesh/ble.sh"
+    if [ ! -f "$blesh" ]; then
+        if have git && have make && ask "Fetch and build ble.sh (github.com/akinomyoga/ble.sh) into ~/.local/share/blesh?"; then
+            tmp="$(mktemp -d)"
+            run git clone --recursive --depth 1 --shallow-submodules https://github.com/akinomyoga/ble.sh.git "$tmp/ble.sh" &&
+                run make -C "$tmp/ble.sh" install PREFIX="$HOME/.local" >/dev/null && ok "ble.sh installed" || warn "ble.sh build failed"
+            rm -rf "$tmp"
+        else
+            warn "ble.sh needs git and make"
+        fi
+    fi
+    if [ -f "$blesh" ] || [ "$DRY" = 1 ]; then
+        if grep -q "ble.sh --noattach.*$MARK\$" "$HOME/.bashrc" 2>/dev/null; then ok "bash: ble.sh already hooked"
+        elif [ "$DRY" = 1 ]; then echo "  [dry-run] add ble.sh lines to the top and bottom of ~/.bashrc"
+        else
+            { printf '%s\n' "[[ \$- == *i* ]] && source '$blesh' --noattach  $MARK"; cat "$HOME/.bashrc"
+              printf '\n%s\n' "[[ \${BLE_VERSION-} ]] && ble-attach  $MARK"; } > "$HOME/.bashrc.cm.tmp" &&
+                cp "$HOME/.bashrc" "$HOME/.bashrc.bak" && mv "$HOME/.bashrc.cm.tmp" "$HOME/.bashrc"
+            ok "bash: ble.sh hooked in ~/.bashrc (backup: ~/.bashrc.bak)"
+        fi
+    fi
+fi
 [ "${#hooked[@]}" -eq 0 ] && warn "no shell hooked up (fish not installed and no ~/.bashrc / ~/.zshrc?)"
 
 # ------------------------------------------------------------------ self-test
@@ -250,6 +309,10 @@ cat <<EOF
   ${B}for i in {1..3}; do echo \$i; done${X}   bash typed into fish is translated, checked, and run
   ${B}find . -exec rm <TAB>${X}         {}  then  \\;  or  +
   ${B}complete-me alias gsw git switch${X}   aliases that keep their completions
+
+  bash and zsh get the same TAB extras, alt-keys and ,snippets (in their own syntax). zsh also
+  gets gray suggestions from history (→ accepts) via zsh-autosuggestions; for bash, re-run with
+  ${B}--with-blesh${X}.
 
   Uninstall any time:  $REPO/install.sh --uninstall
 EOF

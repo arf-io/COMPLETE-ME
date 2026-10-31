@@ -36,7 +36,7 @@ fn misc_goldens() {
     compare("bashfish.txt", &(got.join("\n") + "\n"), &mut fails);
 
     compare("snippets.abbrs.fish", &(snippets::fish_abbrs() + "\n"), &mut fails);
-    compare("snippets.list.txt", &(snippets::list() + "\n"), &mut fails);
+    compare("snippets.list.txt", &(snippets::list("fish") + "\n"), &mut fails);
     compare("snippets.phrasebook.txt", &(snippets::phrasebook() + "\n"), &mut fails);
 
     let bodies = ["git switch", "journalctl -u $1 -f", "ls -la", "mkdir -p $1; and cd $1", "echo $@ done", "cmd $argv[2] x",

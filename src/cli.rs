@@ -16,6 +16,7 @@ usage: complete-me <command> [args]
   alias / func        aliases and functions that keep their completions
   snippets …          list | phrasebook | fish-abbrs | pick
   bash2fish [CODE]    translate bash to fish with a safety check
+  extras --shell S -- LINE   bash/zsh: regex, find, ssh, clipboard and history candidates
   --version
 ";
 
@@ -46,6 +47,7 @@ pub fn main(args: &[String]) -> i32 {
         "func" => aliases::run(rest, false),
         "snippets" => snippets::run(rest),
         "bash2fish" => bashfish::run(rest),
+        "extras" => extras::run(rest),
         other => {
             eprintln!("complete-me: unknown command {other:?}\n\n{USAGE}");
             2
@@ -258,6 +260,15 @@ pub fn pattern_of(tokens: &[String]) -> Option<String> {
 
 pub fn cmd_explain(args: &[String]) -> i32 {
     let toks: Vec<String> = match args.iter().position(|a| a == "--") {
+        // bash/zsh pass the raw command line: `explain --line "$READLINE_LINE"`
+        _ if args.first().map(|s| s.as_str()) == Some("--line") => {
+            let l = extras::split_line(&args[1..].join(" "));
+            let mut w = l.words;
+            if !l.cur.is_empty() {
+                w.push(l.cur);
+            }
+            w
+        }
         Some(i) => args[i + 1..].to_vec(),
         None => args.to_vec(),
     };

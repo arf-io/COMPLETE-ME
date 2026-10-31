@@ -146,3 +146,134 @@ fn zsh_files_parse() {
     let rt = Path::new(env!("CARGO_MANIFEST_DIR")).join("shell/zsh/complete_me.zsh");
     assert!(e.cmd("zsh").args(["-n", rt.to_str().unwrap()]).status().unwrap().success());
 }
+
+// ---------------------------------------------------------------- bash and zsh: the extras
+
+fn harness(name: &str) -> String {
+    Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/harness").join(name).display().to_string()
+}
+
+impl Env {
+    fn with_history(&self, lines: &[&str]) -> PathBuf {
+        let h = self.tmp.join("histfile");
+        std::fs::write(&h, lines.iter().map(|l| format!("{l}\n")).collect::<String>()).unwrap();
+        let zork = self.tmp.join("bin/zork");
+        std::fs::write(&zork, "#!/bin/sh\n").unwrap();
+        std::fs::set_permissions(&zork, std::os::unix::fs::PermissionsExt::from_mode(0o755)).unwrap();
+        h
+    }
+    /// What bash offers, with or without bash-completion underneath.
+    fn bash(&self, line: &str, words: &[&str], clip: Option<&str>, bash_completion: bool) -> Vec<String> {
+        let rt = Path::new(env!("CARGO_MANIFEST_DIR")).join("shell/bash/complete_me.bash");
+        let mut c = self.cmd("bash");
+        c.args(["--norc", "--noprofile", &harness("bash_capture.bash"), rt.to_str().unwrap(), line]).args(words);
+        c.env("HISTFILE", self.tmp.join("histfile"));
+        if !bash_completion {
+            c.env("CM_NO_BASH_COMPLETION", "1");
+        }
+        c.env("COMPLETE_ME_CLIPBOARD", clip.unwrap_or(""));
+        let out = c.output().unwrap();
+        String::from_utf8_lossy(&out.stdout).lines().map(String::from).collect()
+    }
+    /// What zsh offers: (group, match) — group is cm-<extra> or "native".
+    fn zsh(&self, line: &str, clip: Option<&str>) -> Vec<(String, String)> {
+        let rt = Path::new(env!("CARGO_MANIFEST_DIR")).join("shell/zsh/complete_me.zsh");
+        let mut c = self.cmd("zsh");
+        c.args(["-f", &harness("zsh_capture.zsh"), rt.to_str().unwrap(), line]);
+        c.env("HISTFILE", self.tmp.join("histfile")).env("COMPLETE_ME_CLIPBOARD", clip.unwrap_or(""));
+        let out = c.output().unwrap();
+        String::from_utf8_lossy(&out.stdout)
+            .lines()
+            .filter_map(|l| l.split_once('\t').map(|(g, w)| (g.to_string(), w.to_string())))
+            .collect()
+    }
+}
+
+fn has_bash_completion() -> bool {
+    ["/usr/share/bash-completion/bash_completion", "/usr/local/share/bash-completion/bash_completion",
+        "/opt/homebrew/share/bash-completion/bash_completion", "/home/linuxbrew/.linuxbrew/share/bash-completion/bash_completion"]
+        .iter()
+        .any(|p| Path::new(p).exists())
+}
+
+#[test]
+fn bash_extras() {
+    if !have("bash") {
+        return;
+    }
+    let e = Env::new("bash-extras");
+    e.with_history(&["ssh -p 2222 beta.example", "zork frobnicate", "zork /tmp"]);
+    let modes: &[bool] = if has_bash_completion() { &[false, true] } else { &[false] };
+    for &bc in modes {
+        let ctx = if bc { "with bash-completion" } else { "plain bash" };
+        // regex building blocks, quoted, and nothing else in the pattern slot
+        let got = e.bash("grep -E '\\d", &[], None, bc);
+        assert!(got.contains(&"'\\d+'".to_string()), "{ctx}: {got:?}");
+        assert!(got.iter().all(|w| w.starts_with('\'')), "{ctx}: {got:?}");
+        // find values, -exec terminators
+        assert!(e.bash("find . -type ", &[], None, bc).contains(&"f".to_string()), "{ctx}");
+        let got = e.bash("find . -exec rm {} ", &[], None, bc);
+        assert!(got.contains(&r"\;".to_string()) && got.contains(&"+".to_string()), "{ctx}: {got:?}");
+        // the clipboard fits the slot or stays out
+        let url = "git@github.com:arf-io/COMPLETE-ME.git";
+        assert!(e.bash("git clone ", &[], Some(url), bc).contains(&url.to_string()), "{ctx}");
+        assert!(!e.bash("git clone ", &[], Some("hunter2"), bc).contains(&"hunter2".to_string()), "{ctx}");
+        // history: arguments used before, most recent first, for a command nothing else knows
+        let got = e.bash("zork ", &[], None, bc);
+        assert_eq!(got[..2], ["/tmp/", "frobnicate"], "{ctx}: {got:?}");
+        // ssh -oKey=Value: bash splits at '=', and readline replaces only what follows it
+        if !complete_me::probe::man_text("ssh_config").is_empty() {
+            let mut got = e.bash("ssh -oPasswordAuthentication=", &["ssh", "-oPasswordAuthentication", "="], None, bc);
+            got.sort();
+            assert_eq!(got, ["no", "yes"], "{ctx}");
+        }
+    }
+    // native completions stay intact underneath
+    if has_bash_completion() {
+        assert!(e.bash("ls --colo", &[], None, true).iter().any(|w| w.starts_with("--color")));
+    }
+}
+
+#[test]
+fn zsh_extras() {
+    if !have("zsh") {
+        return;
+    }
+    let e = Env::new("zsh-extras");
+    e.with_history(&["ssh -p 2222 beta.example", "zork frobnicate"]);
+    let words = |v: Vec<(String, String)>, g: &str| v.into_iter().filter(|(gg, _)| gg == g).map(|(_, w)| w).collect::<Vec<_>>();
+    // regex: only complete-me's group, bare inside the open quote
+    let got = e.zsh("grep -E '\\d", None);
+    assert!(got.iter().all(|(g, _)| g == "cm-regex"), "{got:?}");
+    assert!(words(got, "cm-regex").contains(&"\\d+".to_string()));
+    assert!(words(e.zsh("find . -type ", None), "cm-find").contains(&"f".to_string()));
+    // history is its own group, next to zsh's own host completion
+    let got = e.zsh("ssh ", None);
+    assert_eq!(words(got.clone(), "cm-hist"), ["beta.example"], "{got:?}");
+    assert!(got.iter().any(|(g, _)| g == "native"), "zsh's own completion should still run: {got:?}");
+    assert_eq!(words(e.zsh("zork ", None), "cm-hist"), ["frobnicate"]);
+    let url = "https://github.com/arf-io/COMPLETE-ME";
+    assert_eq!(words(e.zsh("git clone ", Some(url)), "cm-clip"), [url]);
+    if !complete_me::probe::man_text("ssh_config").is_empty() {
+        let mut got = words(e.zsh("ssh -oPasswordAuthentication=", None), "cm-ssh");
+        got.sort();
+        assert_eq!(got, ["-oPasswordAuthentication=no", "-oPasswordAuthentication=yes"]);
+    }
+}
+
+#[test]
+fn bash_and_zsh_snippets_are_valid_shell() {
+    for (shell, flag) in [("bash", "bash"), ("zsh", "zsh")] {
+        if !have(shell) {
+            continue;
+        }
+        for (name, _, body) in complete_me::snippets::for_shell(flag) {
+            // empty bodies are where you type; fill them so the structure can be checked
+            let code = body.replace("\n    \n", "\n    :\n").replace("\n    \n", "\n    :\n").replace("{\n    \n}", "{\n    :\n}").replace(") ;;", ") :;;").replace('%', "x");
+            // ",and" / ",or" end with an operator on purpose: the next command is yours
+            let code = if code.ends_with("&& ") || code.ends_with("|| ") { code + "true" } else { code }.replace("CMD", "echo").replace("FILE", "f").replace("HOST", "h").replace("PORT", "1");
+            let out = Command::new(shell).args(["-n", "-c", &code]).output().unwrap();
+            assert!(out.status.success(), "{shell} {name}: {code}\n{}", String::from_utf8_lossy(&out.stderr));
+        }
+    }
+}

@@ -138,11 +138,14 @@ complete-me func mkcd 'mkdir -p $1; and cd $1'    # a real function 🛠️
 | | what | why |
 |---|---|---|
 | 🦀 | **Rust / cargo** | **required**: builds the `complete-me` binary (the installer offers to install it) |
-| 🐟 | **fish** | where the magic happens (bash gets generated completions too) |
+| 🐟 | **fish**, 🐚 bash 4.2+, or 🧟 zsh | any of them. fish is still the best one (see above), but bash and zsh get the good stuff too |
 | 🫧 | bubblewrap (`bwrap`) | the sandbox for `--help` probing *(strongly recommended on Linux)* |
 | 🔍 | fzf | live regex builder (alt-r) and snippet picker (alt-j) |
 | 🐠 | babelfish | runs bash typed into fish |
 | 📋 | wl-clipboard / xclip / xsel / pbpaste | clipboard-aware completion |
+| 🐚 | bash-completion | bash: the completions complete-me layers its extras on top of |
+| 👻 | zsh-autosuggestions + zsh-syntax-highlighting | zsh: fish-style gray suggestions from history (→ accepts) and colours |
+| 💡 | ble.sh *(optional, `--with-blesh`)* | bash: fish-style suggestions and colours |
 
 Don't have them? 😱 **Don't panic.** The installer offers to install them for you. 💁
 
@@ -171,7 +174,7 @@ The installer 🧰:
 5. 🧪 runs the test suite and checks the sandbox
 6. 🗺️ gives you a little tour at the end, because you deserve nice things 🥹
 
-Options: `--yes` · `--dry-run` · `--no-deps` · `--shells fish,bash` · `--uninstall`
+Options: `--yes` · `--dry-run` · `--no-deps` · `--shells fish,bash` · `--with-blesh` · `--uninstall`
 
 🚫 No daemon. 🚫 No socket. 🚫 No telemetry. Shell startup cost is zero (about 0ms extra). 🏎️
 
@@ -222,9 +225,19 @@ complete-me explain -- tar -xzvf x.tgz # 🧙 what does that even mean
 ## 🐚 Shell support
 
 - 🐟 **fish**: everything. All of it. 💯
-- 🐚 **bash**: generated completions (subcommands, flags, values), loaded in front of bash-completion without
-  replacing it, plus aliases.
-- 🧟➡️😎 **zsh**: generated completions too (`_arguments`/`_describe`: subcommands, flags with descriptions, values, file types), loaded on TAB via `-default-` without clobbering whatever was there, plus aliases with `compdef`.
+- 🐚 **bash** and 🧟➡️😎 **zsh**: no longer the red-headed stepchildren. 🎉 They get the good stuff:
+  - generated completions on the first TAB, and pre-generated for commands you run;
+  - regex building blocks in the pattern slot, `find` values/operators/`-exec {} \;`, `ssh -oKey=Value`;
+  - the clipboard after `git clone` / `curl` / `cd` … (only when it fits);
+  - arguments you used at this position before, most recent first. zsh shows them as their own group 📚;
+  - **alt-r** live regex builder, **alt-x** explain, **alt-j** snippet picker;
+  - `,for` `,if` `,fn` `,heredoc` … then space: snippets **in their own syntax** (`complete-me snippets list --shell zsh`).
+  - zsh: fish-style gray suggestions from history (→ accepts) and colours, via zsh-autosuggestions and
+    zsh-syntax-highlighting (the installer offers them). For bash: `./install.sh --with-blesh`.
+
+  It all sits **on top of** what's already there: bash-completion's and zsh's own completions keep working.
+  Opt out of pieces with `COMPLETE_ME_NO_KEYS`, `_NO_ABBRS`, `_NO_HISTORY`, `_NO_CLIPBOARD`, `_NO_PREGEN`, `_NO_PLUGINS`.
+  The one thing that stays fish-only is "bash typed into fish", because bash is already bash. 🙃
 - 🍎 **macOS**: works, without the sandbox (scripts are only read; binaries get `--help` minus a deny list).
 
 ---
@@ -239,7 +252,10 @@ cargo test --release      # or: make test
 - 📸 The parser is tested against real `--help` output.
 - 😈 Hostile help text is tested to stay quoted.
 - 🧾 Every regex recipe is compiled by real `grep`.
-- 🐟 And real fish, bash and zsh are asked what they'd complete, in an isolated environment.
+- 🐟 And real fish, bash (with and without bash-completion) and zsh (driven through a pty) are asked what
+  they'd complete, in an isolated environment.
+- 🏗️ CI runs on our own Forgejo (`.forgejo/workflows/ci.yml`), because GitHub Actions minutes cost money
+  and we are a scrappy little operation. 💸
 
 ---
 

@@ -1,0 +1,56 @@
+# Forgejo Actions (git.arf.io). Runs on a host runner: no containers, native git checkout.
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Tests
+    runs-on: host
+    steps:
+      - name: Checkout (native git)
+        run: |
+          set -euo pipefail
+          work="$GITHUB_WORKSPACE"
+          cd /
+          rm -rf "$work"
+          mkdir -p "$work"
+          git -c http.extraheader="Authorization: token ${FORGEJO_TOKEN}" \
+              clone --depth 1 --branch "${GITHUB_REF_NAME}" \
+              "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}.git" "$work"
+          cd "$work" && git rev-parse HEAD
+        env:
+          FORGEJO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Toolchain and shells
+        run: |
+          set -euo pipefail
+          export PATH="$HOME/.cargo/bin:$PATH"
+          if ! command -v cargo >/dev/null; then
+            echo "cargo not on the runner: installing a minimal stable toolchain into the runner's home"
+            curl -fsSL https://sh.rustup.rs | sh -s -- -y --profile minimal --component clippy
+          fi
+          cargo --version
+          for s in fish bash zsh bwrap fzf; do printf '%-6s ' "$s"; command -v "$s" || echo "missing: its tests are skipped"; done
+
+      - name: Syntax checks
+        run: |
+          set -euo pipefail
+          cd "$GITHUB_WORKSPACE"
+          # one file per call: `bash -n a b` only checks a
+          for f in install.sh shell/bash/complete_me.bash tests/harness/bash_capture.bash; do bash -n "$f"; done
+          if command -v fish >/dev/null; then fish -n shell/fish/complete_me.fish; fi
+          if command -v zsh >/dev/null; then for f in shell/zsh/complete_me.zsh tests/harness/zsh_capture.zsh; do zsh -n "$f"; done; fi
+
+      - name: Tests (goldens + fish/bash/zsh end-to-end) and clippy
+        run: |
+          set -euo pipefail
+          cd "$GITHUB_WORKSPACE"
+          export PATH="$HOME/.cargo/bin:$PATH"
+          # fleet hosts build through arf-build (target dirs off NFS); anywhere else, plain cargo
+          if [ -f "$HOME/.local/bin/arf-build" ]; then build="bash $HOME/.local/bin/arf-build"; else build=cargo; fi
+          $build test --release --locked
+          $build clippy --release --locked --all-targets -- -D warnings

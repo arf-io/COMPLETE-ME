@@ -674,6 +674,14 @@ pub fn fish_quote(s: &str) -> String {
     out
 }
 
+/// Quote a pattern for the shell it is going back into.
+pub fn quote_for(shell: &str, s: &str) -> String {
+    match shell {
+        "bash" | "zsh" | "sh" => crate::util::sq(s),
+        _ => fish_quote(s),
+    }
+}
+
 // ------------------------------------------------------------ live builder
 
 pub fn search_command(tool: &str, flavor: &str, paths: &[String]) -> String {
@@ -694,13 +702,13 @@ pub fn search_command(tool: &str, flavor: &str, paths: &[String]) -> String {
     format!("grep -rnI --color=always {mode} -e {{q}} -- {qp} 2>&1 | head -2000")
 }
 
-pub fn build(tokens: &[String], initial: &str, paths: &[String]) -> i32 {
+pub fn build(tokens: &[String], initial: &str, paths: &[String], shell: &str) -> i32 {
     let (tool, mut flavor) = detect(tokens);
     if flavor == "fixed" {
         flavor = "ere".into();
     }
     if which("fzf").is_none() {
-        return fallback_builder(&flavor, initial);
+        return fallback_builder(&flavor, initial, shell);
     }
     let exe = std::env::current_exe().map(|p| p.to_string_lossy().into_owned()).unwrap_or_else(|_| "complete-me".into());
     let search = search_command(&tool, &flavor, paths);
@@ -727,11 +735,11 @@ pub fn build(tokens: &[String], initial: &str, paths: &[String]) -> i32 {
     if !(code == 0 || code == 1) || text.is_empty() {
         return 130;
     }
-    println!("{}", fish_quote(text.split('\n').next().unwrap_or("")));
+    println!("{}", quote_for(shell, text.split('\n').next().unwrap_or("")));
     0
 }
 
-fn fallback_builder(flavor: &str, initial: &str) -> i32 {
+fn fallback_builder(flavor: &str, initial: &str, shell: &str) -> i32 {
     use std::io::{BufRead, Write};
     let (Ok(tin), Ok(mut tout)) = (std::fs::File::open("/dev/tty"), std::fs::OpenOptions::new().write(true).open("/dev/tty")) else {
         eprintln!("complete-me: no terminal; install fzf for the live builder");
@@ -772,7 +780,7 @@ fn fallback_builder(flavor: &str, initial: &str) -> i32 {
     if cancelled {
         return 130;
     }
-    println!("{}", fish_quote(&pat));
+    println!("{}", quote_for(shell, &pat));
     0
 }
 
@@ -783,7 +791,7 @@ pub fn run(args: &[String]) -> i32 {
         eprintln!("usage: complete-me regex <explain|complete|build|flavor> …");
         return 2;
     };
-    let a = Args::parse(&args[1..], &["--flavor", "--tool", "--current", "--path"]);
+    let a = Args::parse(&args[1..], &["--flavor", "--tool", "--current", "--path", "--shell"]);
     match sub.as_str() {
         "explain" => {
             let pattern = a.rest.first().cloned().unwrap_or_default();
@@ -805,9 +813,14 @@ pub fn run(args: &[String]) -> i32 {
             println!("{}", lines.join("\n"));
             0
         }
+        "build" if a.has("--line") => {
+            // bash/zsh: `regex build --shell bash --line -- "$LEFT_OF_CURSOR"`
+            let l = crate::extras::split_line(&a.rest.join(" "));
+            build(&l.words, l.raw.trim_matches(|c| c == '\'' || c == '"'), &a.values("--path"), &a.value("--shell").unwrap_or_default())
+        }
         "build" => {
             let cur = a.value("--current").unwrap_or_default();
-            build(&a.rest, cur.trim_matches(|c| c == '\'' || c == '"'), &a.values("--path"))
+            build(&a.rest, cur.trim_matches(|c| c == '\'' || c == '"'), &a.values("--path"), &a.value("--shell").unwrap_or_default())
         }
         "flavor" => {
             let (t, f) = detect(&a.rest);

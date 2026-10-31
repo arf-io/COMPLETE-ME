@@ -12,5 +12,6 @@ pub mod sshopts;
 pub mod aliases;
 pub mod snippets;
 pub mod bashfish;
+pub mod extras;
 
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
