@@ -1,0 +1,7 @@
+NODE			files	
+OPT		--mode	MODE		enum	fast=;slow=	How fast
+OPT		-v --verbose					
+OPT		-o --output	FILE		file		Write here
+NODE	run	Run it	files	
+OPT	run	--dry-run					
+NODE	stop	Stop it	files	

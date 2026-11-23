@@ -1,0 +1,55 @@
+name: Test
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  workflow-lint:
+    name: Workflow lint
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Check GitHub Actions workflows
+        run: |
+          archive="$RUNNER_TEMP/actionlint_1.7.12_linux_amd64.tar.gz"
+          curl --fail --silent --show-error --location --retry 3 --output "$archive" \
+            https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz
+          printf '%s  %s\n' 8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8 "$archive" | sha256sum --check
+          tar --extract --gzip --file "$archive" --directory "$RUNNER_TEMP" actionlint
+          "$RUNNER_TEMP/actionlint" -color
+
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-latest]
+    runs-on: ${{ matrix.os }}
+    env:
+      COMPLETE_ME_REQUIRE_TEST_TOOLS: "1"
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Install Linux shell test tools
+        if: runner.os == 'Linux'
+        run: |
+          sudo add-apt-repository --yes ppa:fish-shell/release-4
+          sudo apt-get update
+          sudo apt-get install -y fish zsh tmux bash-completion python3 man-db openssh-client
+      - name: Install macOS shell test tools
+        if: runner.os == 'macOS'
+        run: |
+          brew install bash fish zsh tmux bash-completion@2
+          brew --prefix | sed 's|$|/bin|' >> "$GITHUB_PATH"
+      - name: Shell syntax and full test suite
+        run: |
+          make check
+          cargo test --locked --release
+      - name: Clippy
+        run: cargo clippy --locked --release --all-targets -- -D warnings

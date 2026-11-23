@@ -1,0 +1,47 @@
+name: Browser demo
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: &browser_paths
+      - '.github/workflows/browser-demo.yml'
+      - 'site/**'
+  pull_request:
+    paths: *browser_paths
+
+permissions:
+  contents: read
+
+jobs:
+  browser-demo:
+    name: Recorded shell comparison
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Install Chromium for the browser test
+        run: |
+          npm install --prefix target/site-qa --no-audit --no-fund playwright-core@1.65.1
+          node target/site-qa/node_modules/playwright-core/cli.js install --with-deps chromium
+      - name: Test the static site and synchronized playback
+        env:
+          CM_DEMO_URL: http://127.0.0.1:8766/
+        run: |
+          python3 -m http.server 8766 --bind 127.0.0.1 --directory site/dist > "$RUNNER_TEMP/browser-demo-http.log" 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid"' EXIT
+          curl --fail --silent --show-error --retry 8 --retry-connrefused "$CM_DEMO_URL" --output /dev/null
+          node site/demo/browser-test.mjs
+      - name: Upload static server log on failure
+        if: failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: browser-demo-http-log
+          path: ${{ runner.temp }}/browser-demo-http.log
+          if-no-files-found: ignore

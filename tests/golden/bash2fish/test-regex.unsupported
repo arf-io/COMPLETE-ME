@@ -1,0 +1,1 @@
+unsupported: &syntax.BinaryTest{OpPos:syntax.Pos{offs:0x10, lineCol:0x4011}, Op:0x70, X:(*syntax.Word)(0xc0000bd0b0), Y:(*syntax.Word)(0xc0000bd0d8)}

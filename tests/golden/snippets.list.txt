@@ -1,0 +1,42 @@
+,for       loop over values
+,forf      loop over files matching a glob
+,fori      count from 1 to N
+,forl      loop over the lines of a command's output
+,while     read a file line by line
+,if        if a test is true
+,ife       if / else
+,ifc       if a command succeeds
+,iff       if a file exists
+,ifd       if a directory exists
+,ifv       if a variable is set
+,sw        switch on a value
+,fn        define a function (passes all args)
+,fna       function with parsed options (argparse)
+,wrap      function that wraps a command and keeps its completions
+,ev        run a function when an event fires
+,onvar     run a function when a variable changes
+,set       export a variable
+,path      prepend to PATH (deduplicated)
+,sub       capture a command's output
+,st        check the last exit status
+,and       run the next command only if this succeeds
+,or        run the next command only if this fails
+,psub      pass command output as a file (bash <(…))
+,repl      string replace (regex)
+,split     split a string
+,match     regex match with capture groups
+,math      arithmetic
+,count     count items
+,ask       ask the user a yes/no question
+,trap      run cleanup when the shell exits
+,bg        run in the background and forget it
+,findx     find files and run a command on each
+,findb     find files and run one command on all of them
+,findn     find files changed in the last day
+,findbig   find big files
+,findgit   find, skipping .git and node_modules
+,xargs     safe find | xargs for odd file names
+,rgf       ripgrep: list files that match
+,rgr       ripgrep: search and preview a replacement
+,sedi      replace text in a file in place
+,tunnel    ssh local port forward

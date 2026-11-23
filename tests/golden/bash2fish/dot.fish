@@ -1,0 +1,1 @@
+babelfish < ./env.sh | source

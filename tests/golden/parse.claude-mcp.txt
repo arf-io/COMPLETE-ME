@@ -1,0 +1,13 @@
+NODE			nofiles	
+OPT		-h --help					Display help for command
+NODE	add	Add an MCP server to Claude Code	nofiles	
+NODE	add-from-claude-desktop	Import MCP servers from Claude Desktop	nofiles	
+NODE	add-json	Add an MCP server (stdio, SSE, HTTP, or	nofiles	
+NODE	get	Get details about an MCP server	nofiles	
+NODE	help	display help for command	nofiles	
+NODE	list	List configured MCP servers	files	
+NODE	login	Authenticate with an MCP server (HTTP,	nofiles	
+NODE	logout	Clear stored OAuth credentials for an	nofiles	
+NODE	remove	Remove an MCP server	nofiles	
+NODE	reset-project-choices	Reset all approved and rejected	files	
+NODE	serve	Start the Claude Code MCP server	nofiles	

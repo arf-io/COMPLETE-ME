@@ -1,0 +1,8 @@
+NODE			nofiles	
+OPT		-v					
+OPT		-f	ARG				
+OPT		-q					
+OPT		--quiet					
+NODE	push	upload a bundle	files	
+NODE	status	show what is live	nofiles	
+NODE	rollback	go back a release	files	

@@ -1,0 +1,29 @@
+export X=1                         →  set -gx X 1
+X=$(cmd)                           →  set X (cmd)
+$?                                 →  $status
+$@  /  $*                          →  $argv
+$1                                 →  $argv[1]
+$#                                 →  (count $argv)
+for i in {1..10}; do …; done       →  for i in (seq 10); …; end
+if [ -f x ]; then …; fi            →  if test -f x; …; end
+[[ $a == b* ]]                     →  string match -q 'b*' -- $a
+cmd1 && cmd2                       →  cmd1 && cmd2   (or: cmd1; and cmd2)
+cmd 2>&1 | less                    →  cmd &| less
+cmd > /dev/null 2>&1               →  cmd &>/dev/null
+diff <(a) <(b)                     →  diff (a | psub) (b | psub)
+${var:-default}                    →  set -q var; or set var default
+${#var}                            →  string length -- $var
+${var/foo/bar}                     →  string replace foo bar -- $var
+${var%.txt}                        →  path change-extension '' $var
+$(basename $f)                     →  path basename $f
+alias ll='ls -l'                   →  complete-me alias ll 'ls -l'   (or: abbr -a ll 'ls -l')
+source ~/.bashrc                   →  source ~/.config/fish/config.fish
+function f() { … }                 →  function f; …; end
+local x=1                          →  set -l x 1
+unset X                            →  set -e X
+echo $PATH | tr : '\n'             →  printf '%s\n' $PATH
+while read line; do …; done < f    →  while read -l line; …; end < f
+case $x in a) …;; esac             →  switch $x; case a; …; end
+trap 'cleanup' EXIT                →  function cleanup --on-event fish_exit; …; end
+cd -                               →  cd -   (also: prevd / nextd, alt-left / alt-right)
+!!                                 →  type it: complete-me installs !! and !$ abbreviations

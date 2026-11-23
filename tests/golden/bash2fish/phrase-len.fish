@@ -1,0 +1,1 @@
+echo (string length "$var")

@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Install COMPLETE-ME and learn its shell, live completion, and diagnostics features.">
+  <title>Guide — COMPLETE-ME</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a href="#main" class="skip">Skip to content</a>
+  <header class="mast wrap">
+    <a href="./" class="brand"><span aria-hidden="true">$</span> COMPLETE-ME</a>
+    <nav aria-label="Main"><a href="./">Demo</a><a href="guide.html" aria-current="page">Docs</a><a href="https://github.com/arf-io/COMPLETE-ME">GitHub</a></nav>
+  </header>
+  <main class="article wrap" id="main">
+    <h1>Completion guide</h1>
+    <p>Install COMPLETE-ME, try live values, and learn how to inspect what happens when you press Tab.</p>
+    <nav class="article-nav" aria-label="On this page"><a href="#install">Install</a><a href="#shells">Shells</a><a href="#generated">Generated completions</a><a href="#providers">Live providers</a><a href="#diagnostics">Diagnostics</a><a href="#fish">Fish tools</a><a href="#calculator">Calculator</a><a href="#testing">Testing</a></nav>
+    <section id="browser-terminal"><h2>Preview the recorded demo</h2>
+      <p>Serve the static files from the repository root.</p>
+      <pre tabindex="0"><code>python3 -m http.server 8766 --directory site/dist</code></pre>
+      <p>Open <a href="http://localhost:8766/">localhost:8766</a> to compare Bash, fish, and zsh.</p>
+    </section>
+    <section id="install"><h2>Install</h2>
+      <p>Build from a Git checkout with Cargo. The installer checks dependencies and hooks up your installed shells. Open a new terminal when the installer finishes.</p>
+      <pre tabindex="0"><code>git clone https://github.com/arf-io/COMPLETE-ME.git
+cd COMPLETE-ME
+./install.sh</code></pre>
+      <p>See the <a href="https://github.com/arf-io/COMPLETE-ME#install">README installation options</a> for unattended setup, prebuilt binaries, and removal.</p>
+    </section>
+    <section id="shells"><h2>Shells and keys</h2>
+      <p>COMPLETE-ME supports Bash 4.2 and later, zsh, and fish. Fish and zsh show descriptions alongside values. Bash’s standard Readline menu displays the values themselves.</p>
+      <ul>
+        <li><kbd>Tab</kbd> requests completions for the current token.</li>
+        <li><kbd>Alt</kbd>+<kbd>J</kbd> opens the snippet picker. The picker uses <code>fzf</code>.</li>
+        <li><kbd>Alt</kbd>+<kbd>X</kbd> explains the line. <kbd>Alt</kbd>+<kbd>R</kbd> opens the regex builder.</li>
+      </ul>
+      <p>See the current <a href="https://github.com/arf-io/COMPLETE-ME#shells">shell support and key bindings</a>.</p>
+    </section>
+    <section id="generated"><h2>Generated completions</h2>
+      <p>When a program lacks a completion, COMPLETE-ME can derive its command grammar from help, man pages, and supported shell or Python source. The grammar describes subcommands, aliases, options, and their arguments. Live providers fill specific values on top of that grammar.</p>
+      <p>With bubblewrap installed, the help probe can use an isolated network and a read-only filesystem. The fallback follows the project’s deny list. Read about <a href="https://github.com/arf-io/COMPLETE-ME/blob/main/docs/completion.md">completion sources and scope</a>.</p>
+    </section>
+    <section id="providers"><h2>Live providers</h2>
+      <ul>
+        <li><code>tmux a -t &lt;Tab&gt;</code> lists sessions. Use <code>work:&lt;Tab&gt;</code> to see windows in the selected session.</li>
+        <li><code>docker compose logs &lt;Tab&gt;</code> offers services from the selected Compose project. Containers and images have their own live slots in Docker and Podman.</li>
+        <li><code>ssh -oIdentityFile=~/.ssh/&lt;Tab&gt; dev@example.com</code> offers identity paths and preserves the destination argument.</li>
+        <li><code>git config set --global user.email &lt;Tab&gt;</code> offers the current value for editing.</li>
+        <li><code>proxmox lab --node pve02 qmrestore vault:&lt;Tab&gt;</code> browses VM archives from storage on a configured cluster node. <code>pct restore</code> offers container archives.</li>
+        <li><code>aws --profile work s3 cp s3://example-bucket/logs/&lt;Tab&gt; ./download</code> lists objects and prefixes in the selected AWS scope.</li>
+      </ul>
+      <p>For more integrations, run <code>complete-me live --coverage</code>. The <a href="https://github.com/arf-io/COMPLETE-ME/blob/main/docs/completion.md">provider reference</a> covers permissions, Proxmox SSH mappings, Kubernetes namespaces, and offline mode.</p>
+    </section>
+    <section id="diagnostics"><h2>Diagnostics</h2>
+      <p>Use <code>doctor</code> to inspect shell integration and use <code>explain --completion</code> for a specific slot. The report shows the lookup source, effective scope, result, and elapsed time.</p>
+      <pre tabindex="0"><code>complete-me doctor --line 'docker compose logs '
+complete-me explain --completion --line 'tmux a -t work:'
+COMPLETE_ME_NO_REMOTE=1 complete-me live --line 'aws s3 ls s3://example-bucket/logs/'</code></pre>
+      <p>Offline mode applies to COMPLETE-ME’s providers. Native shell completions can have their own network behavior.</p>
+    </section>
+    <section id="fish"><h2>Fish tools</h2>
+      <p>List aliases, trace commands on your PATH, save functions, and translate Bash exports to fish syntax. Start with these commands in a configured shell.</p>
+      <pre tabindex="0"><code>cm-alias list
+cm-func list
+path-why git
+cm-bash2fish 'export EDITOR=nvim'</code></pre>
+      <p>See the <a href="https://github.com/arf-io/COMPLETE-ME/blob/main/docs/completion.md">fish, environment, and recipe examples</a>.</p>
+    </section>
+    <section id="calculator"><h2>Calculator</h2>
+      <p>Type <code>2*34=</code> and press Tab. The answer appears in the editor. On the next line, <code>ans/4=</code> followed by Tab uses that answer again.</p>
+      <p>Use <code>complete-me calc 'sqrt(144) + log(1000, 10)'</code> when you want a calculation as a command. Trigonometric functions take radians. Use <code>rad(90)</code> to convert degrees.</p>
+      <p>See <a href="https://github.com/arf-io/COMPLETE-ME/blob/main/docs/completion.md#calculator">calculator syntax and chaining</a>.</p>
+    </section>
+    <section id="testing"><h2>Testing and review</h2>
+      <p>The project runs Bash, zsh, and fish tests on Linux and macOS. Linux integration checks also exercise disposable Docker, Podman, Kubernetes, and help-probe sandbox environments.</p>
+      <p>Read the <a href="https://github.com/arf-io/COMPLETE-ME/blob/main/docs/verification.md">verification matrix</a> and <a href="https://github.com/arf-io/COMPLETE-ME/blob/main/docs/security-review.md">scoped independent security review</a> for the evidence and remaining live Proxmox and AWS checks.</p>
+    </section>
+  </main>
+  <footer class="footer wrap"><a href="./" class="brand"><span aria-hidden="true">$</span> COMPLETE-ME</a><nav aria-label="Footer"><a href="press.html">Press kit</a><a href="https://github.com/arf-io/COMPLETE-ME">Source</a></nav></footer>
+</body>
+</html>

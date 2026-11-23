@@ -1,0 +1,1 @@
+unsupported: &syntax.Stmt{Comments:[]syntax.Comment(nil), Cmd:(*syntax.CallExpr)(0xc0000cea88), Position:syntax.Pos{offs:0x0, lineCol:0x4001}, Semicolon:syntax.Pos{offs:0x8, lineCol:0x4009}, Negated:false, Background:true, Coprocess:false, Redirs:[]*syntax.Redirect(nil)}

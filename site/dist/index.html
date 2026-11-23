@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Compare Bash, fish, and zsh completions with and without COMPLETE-ME.">
+  <meta name="theme-color" content="#171a1b">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'">
+  <title>COMPLETE-ME — Compare shell completions</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="recordings.js"></script>
+  <script defer src="replay.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="mast wrap">
+    <a href="./" class="brand" aria-label="Complete Me home"><span aria-hidden="true">$</span> COMPLETE-ME</a>
+    <nav aria-label="Main"><a href="#why">Why it helps</a><a href="guide.html">Docs</a><a href="https://github.com/arf-io/COMPLETE-ME">GitHub</a></nav>
+  </header>
+  <main id="main" class="wrap">
+    <section class="intro" aria-labelledby="title">
+      <h1 id="title">Give it something to finish<span>.</span></h1>
+      <p>See what happens when you press Tab in Bash, fish, and zsh, with and without COMPLETE-ME.</p>
+    </section>
+    <section class="lab" aria-label="Recorded shell comparison">
+      <p class="lab-foot" id="replay-fallback">See the <a href="guide.html">completion guide</a> for shell examples.</p>
+      <div id="replay-demo" hidden>
+        <div class="lab-bar">
+          <div class="examples" id="examples" role="group" aria-label="Choose a completion example"></div>
+          <button type="button" class="replay-button" id="replay">Replay keys</button>
+        </div>
+        <div class="command-strip">
+          <div class="recorded-input"><code id="recorded-command"></code><span id="recorded-keys"></span></div>
+          <p id="example-hint"></p>
+        </div>
+        <div class="shell-grid" id="shell-grid"></div>
+        <p class="lab-foot" id="recording-note"></p>
+        <p class="visually-hidden" id="replay-status" role="status"></p>
+      </div>
+    </section>
+    <section class="why" id="why" aria-labelledby="why-title">
+      <h2 id="why-title">Where ordinary Tab runs out of answers</h2>
+      <div class="details">
+        <article>
+          <h3>A script you just wrote</h3>
+          <p>Shells can complete filenames right away. Completing a new command’s flags often takes a definition for that program. COMPLETE-ME can learn the grammar from help, man pages, or supported script source. The Python recording shows it completing <code>--format</code> on the first Tab.</p>
+        </article>
+        <article>
+          <h3>A value that changes</h3>
+          <p>For supported tools, Tab can look at the selected runtime. Pick a tmux window that’s open now, a Docker container with its status, or a Proxmox backup on the selected node. Existing shell completions still handle the commands they already know.</p>
+        </article>
+        <article>
+          <h3>A line worth keeping</h3>
+          <p>Complete in the middle of an SSH command and keep the host at the end. Press <kbd>Alt+J</kbd> when you need a snippet, or type <code>2*(34+sqrt(81))=</code> and press <kbd>Tab</kbd> to fill in the answer. Use <code>ans</code> in the next calculation.</p>
+        </article>
+      </div>
+    </section>
+    <section class="install" id="install" aria-labelledby="install-title">
+      <div><h2 id="install-title">Try it in your shell</h2><p>Build from source with Cargo, then open a new terminal.</p></div>
+      <div class="install-code">
+        <div class="install-head"><span>Install from source</span><button type="button" class="plain" id="copy-install" hidden>Copy commands</button></div>
+        <pre tabindex="0"><code id="install-command">git clone https://github.com/arf-io/COMPLETE-ME.git
+cd COMPLETE-ME
+./install.sh</code></pre>
+        <p id="copy-status" class="visually-hidden" aria-live="polite"></p>
+      </div>
+    </section>
+  </main>
+  <footer class="footer wrap">
+    <a href="./" class="brand"><span aria-hidden="true">$</span> COMPLETE-ME</a>
+    <nav aria-label="Footer"><a href="guide.html">Docs</a><a href="press.html">Press kit</a><a href="https://github.com/arf-io/COMPLETE-ME">Source</a></nav>
+  </footer>
+</body>
+</html>

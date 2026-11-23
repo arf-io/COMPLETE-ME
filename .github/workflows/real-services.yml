@@ -1,0 +1,89 @@
+name: Real services and sandbox
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: &service_paths
+      - 'Cargo.toml'
+      - 'Cargo.lock'
+      - 'src/**'
+      - 'tests/real_services.rs'
+      - '.github/workflows/real-services.yml'
+  pull_request:
+    paths: *service_paths
+
+permissions:
+  contents: read
+
+jobs:
+  docker:
+    runs-on: ubuntu-24.04
+    env:
+      COMPLETE_ME_TEST_DOCKER: "1"
+      COMPLETE_ME_TEST_DOCKER_HOST: unix:///var/run/docker.sock
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - run: docker compose version
+      - run: cargo test --locked --test real_services docker_and_compose_follow_real_container_state -- --nocapture
+  podman:
+    runs-on: ubuntu-24.04
+    env:
+      COMPLETE_ME_TEST_PODMAN: "1"
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - run: sudo apt-get update && sudo apt-get install -y podman
+      - name: Test isolated rootless Podman storage
+        run: |
+          export XDG_RUNTIME_DIR="$RUNNER_TEMP/complete-me-podman-runtime"
+          install -d -m 0700 "$XDG_RUNTIME_DIR"
+          cargo test --locked --test real_services podman_reads_disposable_pods_volumes_networks_and_secret_names -- --nocapture
+  sandbox:
+    runs-on: ubuntu-22.04
+    env:
+      COMPLETE_ME_TEST_SANDBOX: "1"
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - run: sudo apt-get update && sudo apt-get install -y bubblewrap
+      - run: cargo test --locked --test real_services linux_help_probe_uses_read_only_files_and_private_namespaces -- --nocapture
+  kubernetes:
+    runs-on: ubuntu-24.04
+    env:
+      COMPLETE_ME_TEST_KUBE_CONTEXT: kind-complete-me
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Install verified kind and kubectl
+        run: |
+          mkdir -p "$RUNNER_TEMP/complete-me-bin"
+          cd "$RUNNER_TEMP/complete-me-bin"
+          curl --fail --silent --show-error --location --output kind \
+            https://github.com/kubernetes-sigs/kind/releases/download/v0.33.0/kind-linux-amd64
+          printf '%s  kind\n' aee6151561422756b764a4ae28e7f44cda5af5a9eead3cc9985112b1de8d8e0d | sha256sum --check
+          kubectl_url=https://dl.k8s.io/release/v1.36.4/bin/linux/amd64/kubectl
+          curl --fail --silent --show-error --location --output kubectl "$kubectl_url"
+          curl --fail --silent --show-error --location --output kubectl.sha256 "$kubectl_url.sha256"
+          printf '%s  kubectl\n' "$(cat kubectl.sha256)" | sha256sum --check
+          chmod 755 kind kubectl
+          echo "$RUNNER_TEMP/complete-me-bin" >> "$GITHUB_PATH"
+      - name: Create isolated cluster and fixtures
+        run: |
+          export KUBECONFIG="$RUNNER_TEMP/complete-me-kubeconfig"
+          kind create cluster --name complete-me --kubeconfig "$KUBECONFIG" --wait 120s \
+            --image kindest/node:v1.36.4@sha256:099e049362a1526b2db71494e1947aae99bd16290d7c895f2b7ea312e3cbfaed
+          for namespace in cm-left cm-right; do
+            kubectl --context="$COMPLETE_ME_TEST_KUBE_CONTEXT" create namespace "$namespace"
+            kubectl --context="$COMPLETE_ME_TEST_KUBE_CONTEXT" --namespace="$namespace" \
+              run worker --image=registry.k8s.io/pause:3.10 --restart=Never
+          done
+          echo "KUBECONFIG=$KUBECONFIG" >> "$GITHUB_ENV"
+      - run: cargo test --locked --test real_services kubernetes_routes_duplicate_names_in_a_disposable_cluster -- --nocapture
+      - name: Remove disposable cluster
+        if: always()
+        run: if command -v kind >/dev/null; then kind delete cluster --name complete-me; fi

@@ -1,0 +1,81 @@
+=== find . -type f -name *.log -mtime +7 -exec rm {} ;
+Search in: .
+For each file/directory found, keep going while:
+  ALL of:
+    is a regular file
+    its name matches '*.log'
+    was modified more than 7 days ago
+    run `rm FILE` once per file
+=== find . -name *.tmp -o -name *.bak -exec rm {} +
+Search in: .
+For each file/directory found, keep going while:
+  ANY of:
+    its name matches '*.tmp'
+    ALL of:
+      its name matches '*.bak'
+      run `rm FILE` once with MANY files at a time (fast)
+⚠ an action sits inside only one side of -o, so it only runs for that side. Wrap the tests: \( -name a -o -name b \) -exec …
+=== find /var -delete -name *.log
+Search in: /var
+For each file/directory found, keep going while:
+  ALL of:
+    ⚠ DELETE it
+    its name matches '*.log'
+⚠ -delete comes BEFORE a test: it deletes everything it reaches. Put -delete last.
+=== find . -path ./.git -prune -o ( -type f -size +100M ) -print
+Search in: .
+For each file/directory found, keep going while:
+  ANY of:
+    ALL of:
+      its path matches './.git'
+      do not descend into it
+    ALL of:
+      is a regular file
+      is bigger than 100 MiB
+      print its path
+=== find . ! -user root -perm -o+w -exec ls -l
+Search in: .
+For each file/directory found, keep going while:
+  ALL of:
+    NOT:
+      is owned by user root
+    has permissions -o+w
+    run `ls -l` once per file
+⚠ -exec is missing its terminator: end it with \; (or {} +)
+⚠ -exec never mentions {}, so the command won't see the file names
+=== find
+Search in: . (current directory)
+Match: everything, and print each path
+=== find . -size 10k -mmin -5 -newer x
+Search in: .
+For each file/directory found, keep going while:
+  ALL of:
+    is exactly 10 KiB
+    was modified less than 5 minutes ago
+    is newer than x
+…and print the path of every match (the default action)
+=== find -L a b -iname X -o ( -empty -a -readable ) -ls
+Search in: a, b
+For each file/directory found, keep going while:
+  ANY of:
+    its name matches 'X' (any case)
+    ALL of:
+      is empty (a 0-byte file or an empty directory)
+      is readable by you
+      list it like ls -dils
+⚠ an action sits inside only one side of -o, so it only runs for that side. Wrap the tests: \( -name a -o -name b \) -exec …
+=== find . -execdir echo {} + -quit
+Search in: .
+For each file/directory found, keep going while:
+  ALL of:
+    run `echo FILE` once with MANY files at a time (fast) from inside the file's directory
+    stop searching right away
+=== find . -bogus 1
+Search in: .
+For each file/directory found, keep going while:
+  ALL of:
+    -bogus
+    1
+…and print the path of every match (the default action)
+⚠ unknown find primary '-bogus'
+⚠ unknown find primary '1'

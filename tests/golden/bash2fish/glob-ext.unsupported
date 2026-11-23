@@ -1,0 +1,1 @@
+unsupported: &syntax.ExtGlob{OpPos:syntax.Pos{offs:0x17, lineCol:0x4018}, Op:0x7d, Pattern:(*syntax.Lit)(0xc0000ce088)}

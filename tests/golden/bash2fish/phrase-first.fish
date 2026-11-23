@@ -1,0 +1,1 @@
+echo $argv[1]

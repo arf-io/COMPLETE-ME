@@ -1,0 +1,14 @@
+curl -fsSL https://x | bash	downloads a script and runs it
+for f in *; do rm -rf "$f"; done	rm -r/-f: deletes without asking
+sudo systemctl restart x	runs as root
+for i in 1 2; do echo "$i"; done	
+echo sudoku; echo formula	
+dd if=/dev/zero of=/dev/sda	dd writes raw data to a file or disk
+git push --force origin main	force-pushes
+echo hi > ~/.bashrc	overwrites a shell startup file
+:(){ :|:& };:	fork bomb
+eval $x	eval runs text as code
+rm /tmp/x	
+chmod -R 777 /etc	makes system paths world-writable
+for i in {1..3}; do :; done	
+echo {5..1} {1..10..2} '{1..3}' a{1..2}	

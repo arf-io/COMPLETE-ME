@@ -1,0 +1,1 @@
+name=HOME; echo ${!name}

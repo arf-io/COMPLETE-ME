@@ -1,0 +1,52 @@
+name: Provider verification
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  coverage:
+    runs-on: ubuntu-24.04
+    env:
+      COMPLETE_ME_REQUIRE_TEST_TOOLS: "1"
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Install shell test tools
+        run: |
+          sudo add-apt-repository --yes ppa:fish-shell/release-4
+          sudo apt-get update
+          sudo apt-get install -y fish zsh tmux bash-completion python3 man-db openssh-client
+      - name: Install the coverage toolchain
+        run: |
+          rustup toolchain install nightly-2026-11-21 --profile minimal --component llvm-tools-preview
+          cargo install cargo-llvm-cov --version 0.8.7 --locked
+      - name: Measure line and branch coverage
+        run: |
+          mkdir -p target/verification
+          {
+            git rev-parse HEAD
+            rustup run nightly-2026-11-21 rustc --version --verbose
+            cargo llvm-cov --version
+            bash --version | sed -n '1p'
+            zsh --version
+            fish --version
+          } > target/verification/provenance.txt
+          RUSTC="$(rustup which --toolchain nightly-2026-11-21 rustc)" \
+          RUSTDOC="$(rustup which --toolchain nightly-2026-11-21 rustdoc)" \
+          rustup run nightly-2026-11-21 cargo llvm-cov --locked --branch \
+            --ignore-filename-regex '(^|/)(rustlib|tests)/' --json --output-path target/verification/coverage.json
+          python3 tools/coverage_report.py target/verification/coverage.json \
+            --min-lines 79.5 --min-branches 60.5 > target/verification/coverage.md
+          cat target/verification/coverage.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload verification results
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: complete-me-provider-verification
+          path: target/verification
+          if-no-files-found: warn

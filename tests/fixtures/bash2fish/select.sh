@@ -1,0 +1,1 @@
+select x in a b; do echo $x; done

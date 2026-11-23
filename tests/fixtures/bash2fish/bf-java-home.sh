@@ -1,0 +1,1 @@
+if [ -z "${JAVA_HOME-}" ]; then export JAVA_HOME=/bla/lib/openjdk; fi

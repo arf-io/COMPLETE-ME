@@ -1,0 +1,19 @@
+COMPLETE-ME brings live Tab completion to Bash, zsh, and fish
+
+For immediate release
+
+COMPLETE-ME is available as an open-source command-line tool for people who spend their day in a shell. It adds completions for flags, subcommands, and values from running tools. A Docker user can pick a container by name and see its image and state. A tmux user can finish a session name or window target. An operator restoring a Proxmox guest can browse archives in the selected storage before submitting the restore.
+
+COMPLETE-ME generates missing completions from command help, manual pages, and supported script source. Its live providers answer questions that a generated command grammar can’t, such as which tmux windows exist, which S3 keys match a prefix, or what value Git currently uses for the global email address.
+
+Completion works in the middle of a command, too. Press Tab inside an SSH identity-file option and COMPLETE-ME can fill the path while preserving the destination you already typed. Use complete-me doctor to inspect the shell integration or complete-me explain --completion to see which lookup ran, which scope it used, and what it returned.
+
+The project is written in Rust and licensed under MIT. The source, installer, documentation, and issue tracker are available on GitHub. The shell test matrix covers Bash, zsh, and fish on Linux and macOS. The project publishes its verification matrix and the scope of its independent security review.
+
+#About COMPLETE-ME
+
+COMPLETE-ME is an open-source shell completion tool maintained in the arf-io/COMPLETE-ME repository. It provides generated command completions, live argument values, a snippet picker, and shell utilities. Its browser demo compares recorded Bash, fish, and zsh completions side by side, with shell defaults and COMPLETE-ME enabled. The examples cover tmux, Python options, directory completion, the calculator, and the Alt+J snippet picker.
+
+Source and installation  https://github.com/arf-io/COMPLETE-ME
+Project questions  https://github.com/arf-io/COMPLETE-ME/issues
+Verification  https://github.com/arf-io/COMPLETE-ME/blob/main/docs/verification.md

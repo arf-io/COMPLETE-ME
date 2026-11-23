@@ -1,0 +1,1 @@
+show() { for x in "$@"; do echo "[$x]"; done; }; show "a b" c
